@@ -40,6 +40,7 @@ op3_coletar() {
   airflow_no_ar || { bash scripts/codespaces/iniciar.sh || return 1; }
   local run estado="queued"
   run="manual__$(TZ=America/Sao_Paulo date +%Y%m%d_%H%M%S)"
+  local inicio_execucao; inicio_execucao="$(date --iso-8601=seconds)"
   af dags unpause guiding_hand_coleta >/dev/null
   af dags trigger guiding_hand_coleta -r "$run" >/dev/null || { erro "Não consegui disparar o DAG"; return 1; }
   echo "  Execução $run disparada. Acompanhe em $GH_URL_AIRFLOW"
@@ -59,6 +60,12 @@ except Exception: print('?')")"
   [ "$estado" = success ] && ok "Coleta concluída com sucesso" || erro "Coleta terminou como '$estado': abra o Airflow e veja a tarefa vermelha"
   echo "  Arquivos em chegada/:"
   find chegada -name '*.json' -not -path '*_manifestos*' -printf '    %-42f %10s bytes  %TY-%Tm-%Td %TH:%TM\n' | sort | tail -12
+  titulo "Verificação do conteúdo da coleta"
+  if "$PY" scripts/verificar_chegada.py --desde "$inicio_execucao"; then
+    ok "Coleta verificada: docs/evidencias/coleta_$(TZ=America/Sao_Paulo date +%F).md (envie no chat)"
+  else
+    erro "Coleta com pendências: veja docs/evidencias/coleta_$(TZ=America/Sao_Paulo date +%F).md (envie no chat)"
+  fi
 }
 
 op4_lote() {

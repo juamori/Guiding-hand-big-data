@@ -1,0 +1,143 @@
+{
+ "_amostra": "recorte real coletado em 2026-11-15T22:02:57",
+ "dados": {
+  "type": "FeatureCollection",
+  "features": [
+   {
+    "type": "Feature",
+    "id": "sac_tapa_buraco.4195",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.7074717,
+      -23.57422472
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 4195,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-07-03T21:49:32Z",
+     "nm_logradouro": "Rua Miragaia",
+     "nr_logradouro": 171,
+     "dt_parecer": "2020-07-12T02:44:52Z",
+     "sg_orgao_responsavel": "SMSUB",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "CENTRAL TELEFÔNICA",
+     "dc_tema": "Rua e bairro",
+     "dc_assunto": "Reparos em asfalto, pontes e viadutos",
+     "dc_servico": "Tapa-buraco",
+     "dt_carga": "2021-03-25Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "sac_tapa_buraco.5186",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.701401,
+      -23.56027252
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 5186,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-07-08T16:16:29Z",
+     "nm_logradouro": "Rua Sílvia Celeste de Campos",
+     "nr_logradouro": 59,
+     "dt_parecer": "2020-07-10T15:59:07Z",
+     "sg_orgao_responsavel": "SMSUB",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "APLICATIVO",
+     "dc_tema": "Rua e bairro",
+     "dc_assunto": "Reparos em asfalto, pontes e viadutos",
+     "dc_servico": "Tapa-buraco",
+     "dt_carga": "2021-03-25Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "sac_tapa_buraco.5187",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.701401,
+      -23.56027252
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 5187,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-07-08T16:17:24Z",
+     "nm_logradouro": "Rua Sílvia Celeste de Campos",
+     "nr_logradouro": 59,
+     "dt_parecer": "2020-07-10T15:59:10Z",
+     "sg_orgao_responsavel": "SMSUB",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "APLICATIVO",
+     "dc_tema": "Rua e bairro",
+     "dc_assunto": "Reparos em asfalto, pontes e viadutos",
+     "dc_servico": "Tapa-buraco",
+     "dt_carga": "2021-03-25Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "sac_tapa_buraco.5904",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.6993998,
+      -23.56860522
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 5904,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-07-10T19:29:33Z",
+     "nm_logradouro": "Rua Amaro Cavalheiro",
+     "nr_logradouro": 368,
+     "dt_parecer": "2020-07-16T22:48:09Z",
+     "sg_orgao_responsavel": "SMSUB",
+     "tx_situacao_solicitacao": "INDEFERIDO",
+     "tx_canal_atendimento": "APLICATIVO",
+     "dc_tema": "Rua e bairro",
+     "dc_assunto": "Reparos em asfalto, pontes e viadutos",
+     "dc_servico": "Tapa-buraco",
+     "dt_carga": "2021-03-25Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "sac_tapa_buraco.6901",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.6941221,
+      -23.56023692
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 6901,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-07-15T16:22:24Z",
+     "nm_logradouro": "Rua dos Tamanás",
+     "nr_logradouro": 114,
+     "dt_parecer": "2020-07-17T16:50:35Z",
+     "sg_orgao_responsavel": "SMSUB",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "APLICATIVO",
+     "dc_tema": "Rua e bairro",
+     "dc_assunto": "Reparos em asfalto, pontes e viadutos",
+     "dc_servico": "Tapa-buraco",
+     "dt_carga": "2021-03-25Z"
+    }
+   }
+  ]
+ }
+}

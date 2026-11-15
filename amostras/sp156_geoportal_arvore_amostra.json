@@ -1,0 +1,193 @@
+{
+ "_amostra": "recorte real coletado em 2026-11-15T20:33:53",
+ "dados": {
+  "type": "FeatureCollection",
+  "features": [
+   {
+    "type": "Feature",
+    "id": "arvore.632775",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.70199208,
+      -23.56089943
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": "632775",
+     "nm_vulgar_especie": "Jatobá",
+     "dc_nm_popular": null,
+     "cd_especie": 100,
+     "dc_especie": "courbaril var.stilbocarpa",
+     "cd_identificador_arvore_sisgau": "065811-113",
+     "cd_tipo_porte": 3,
+     "dc_tipo_porte": "GRANDE",
+     "qt_diametro_peito_dap": 0.251,
+     "qt_altura_arvore": 8.1,
+     "qt_diametro_copa": 10,
+     "cd_tipo_estado_geral": 2,
+     "dc_tipo_estado_geral": "REGULAR",
+     "nm_logradouro_referencia": "Av. Prof° Frederico Hermann Junior",
+     "nr_logradouro_referencia": 31,
+     "sg_distrito_municipal": "API",
+     "nm_distrito_municipal": "ALTO DE PINHEIROS",
+     "nm_subprefeitura": "PINHEIROS",
+     "cd_inspecao": 12650,
+     "dt_inspecao": "2010-10-21Z",
+     "dt_atualizacao_sisgau": "2011-03-22Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "arvore.626614",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.70200931,
+      -23.56086086
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": "626614",
+     "nm_vulgar_especie": "Ipê roxo",
+     "dc_nm_popular": null,
+     "cd_especie": 253,
+     "dc_especie": "heptaphylla",
+     "cd_identificador_arvore_sisgau": "065811-114",
+     "cd_tipo_porte": 3,
+     "dc_tipo_porte": "GRANDE",
+     "qt_diametro_peito_dap": 0.108,
+     "qt_altura_arvore": 6.3,
+     "qt_diametro_copa": 4,
+     "cd_tipo_estado_geral": 1,
+     "dc_tipo_estado_geral": "BOM",
+     "nm_logradouro_referencia": "Av. Prof° Frederico Hermann Jr.",
+     "nr_logradouro_referencia": 31,
+     "sg_distrito_municipal": "API",
+     "nm_distrito_municipal": "ALTO DE PINHEIROS",
+     "nm_subprefeitura": "PINHEIROS",
+     "cd_inspecao": 12652,
+     "dt_inspecao": "2010-10-28Z",
+     "dt_atualizacao_sisgau": "2011-03-22Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "arvore.626617",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.70229842,
+      -23.56057532
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": "626617",
+     "nm_vulgar_especie": "Ipê",
+     "dc_nm_popular": null,
+     "cd_especie": 246,
+     "dc_especie": "sp",
+     "cd_identificador_arvore_sisgau": "065811-115",
+     "cd_tipo_porte": 3,
+     "dc_tipo_porte": "GRANDE",
+     "qt_diametro_peito_dap": 0.225,
+     "qt_altura_arvore": 10,
+     "qt_diametro_copa": 6,
+     "cd_tipo_estado_geral": 1,
+     "dc_tipo_estado_geral": "BOM",
+     "nm_logradouro_referencia": "",
+     "nr_logradouro_referencia": 49,
+     "sg_distrito_municipal": "API",
+     "nm_distrito_municipal": "ALTO DE PINHEIROS",
+     "nm_subprefeitura": "PINHEIROS",
+     "cd_inspecao": 12655,
+     "dt_inspecao": "2010-10-28Z",
+     "dt_atualizacao_sisgau": "2010-11-04Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "arvore.626619",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.70253398,
+      -23.56032191
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": "626619",
+     "nm_vulgar_especie": "Tipuana",
+     "dc_nm_popular": null,
+     "cd_especie": 130,
+     "dc_especie": "tipu",
+     "cd_identificador_arvore_sisgau": "065811-118",
+     "cd_tipo_porte": 3,
+     "dc_tipo_porte": "GRANDE",
+     "qt_diametro_peito_dap": 0.525,
+     "qt_altura_arvore": 12.5,
+     "qt_diametro_copa": 15,
+     "cd_tipo_estado_geral": 2,
+     "dc_tipo_estado_geral": "REGULAR",
+     "nm_logradouro_referencia": "Av. Frederico Hermann Jr.",
+     "nr_logradouro_referencia": 73,
+     "sg_distrito_municipal": "API",
+     "nm_distrito_municipal": "ALTO DE PINHEIROS",
+     "nm_subprefeitura": "PINHEIROS",
+     "cd_inspecao": 12709,
+     "dt_inspecao": "2010-10-28Z",
+     "dt_atualizacao_sisgau": "2010-11-11Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "arvore.635049",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.70268748,
+      -23.56017763
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": "635049",
+     "nm_vulgar_especie": "Pata de vaca",
+     "dc_nm_popular": null,
+     "cd_especie": 270,
+     "dc_especie": "purpurea",
+     "cd_identificador_arvore_sisgau": "065811-119",
+     "cd_tipo_porte": 1,
+     "dc_tipo_porte": "PEQUENO",
+     "qt_diametro_peito_dap": 0.175,
+     "qt_altura_arvore": 5.7,
+     "qt_diametro_copa": 4,
+     "cd_tipo_estado_geral": 2,
+     "dc_tipo_estado_geral": "REGULAR",
+     "nm_logradouro_referencia": "Av. Frederico Hermann Jr.",
+     "nr_logradouro_referencia": 109,
+     "sg_distrito_municipal": "API",
+     "nm_distrito_municipal": "ALTO DE PINHEIROS",
+     "nm_subprefeitura": "PINHEIROS",
+     "cd_inspecao": 12710,
+     "dt_inspecao": "2010-11-04Z",
+     "dt_atualizacao_sisgau": "2011-03-22Z"
+    }
+   }
+  ],
+  "totalFeatures": 3743,
+  "numberMatched": 3743,
+  "numberReturned": 500,
+  "timeStamp": "2026-11-15T20:33:52.656Z",
+  "crs": {
+   "type": "name",
+   "properties": {
+    "name": "urn:ogc:def:crs:EPSG::4326"
+   }
+  }
+ }
+}

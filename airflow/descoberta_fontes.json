@@ -1,0 +1,20 @@
+{
+ "gh_sp156_camadas": [
+  "geoportal:sac_solicitacao_manutencao_sinalizacao_pintura_ciclofaixa",
+  "geoportal:sac_remocao_lixeira",
+  "geoportal:sac_placa_transito",
+  "geoportal:sac_quadra_arvore_urgencia",
+  "geoportal:sac_remocao_entulho",
+  "geoportal:sac_tapa_buraco",
+  "geoportal:sac_tapa_buraco_faixa_corredor"
+ ],
+ "infraestrutura_nao_usada_como_sp156": [
+  "geoportal:arvore",
+  "geoportal:calcada",
+  "geoportal:sac_conserto_lixeira",
+  "geoportal:sac_pintura_guia_poste",
+  "geoportal:iluminacao_publica",
+  "geoportal:risco_ocorrencia_queda_arvore"
+ ],
+ "descoberto_em": "2026-11-15T22:02:57"
+}

@@ -1,0 +1,62 @@
+{
+ "_amostra": "recorte real coletado em 2026-11-15T22:02:54",
+ "dados": {
+  "type": "FeatureCollection",
+  "features": [
+   {
+    "type": "Feature",
+    "id": "sac_quadra_arvore_urgencia.106143",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.69875847,
+      -23.56694849
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 106143,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-07-27T17:51:47Z",
+     "nm_logradouro": "Rua Amaro Cavalheiro",
+     "nr_logradouro": null,
+     "dt_parecer": "2020-07-27T18:43:00Z",
+     "sg_orgao_responsavel": "SMSU/Defesa Civil",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "CENTRAL TELEFÔNICA",
+     "dc_tema": "Urgência",
+     "dc_assunto": "Defesa Civil",
+     "dc_servico": "Queda de árvore",
+     "dt_carga": "2021-03-25Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "sac_quadra_arvore_urgencia.106329",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.69734423,
+      -23.56638174
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 106329,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-09-09T15:30:48Z",
+     "nm_logradouro": "Rua Padre Carvalho",
+     "nr_logradouro": null,
+     "dt_parecer": "2020-09-09T16:21:24Z",
+     "sg_orgao_responsavel": "SMSU/Defesa Civil",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "CENTRAL TELEFÔNICA",
+     "dc_tema": "Urgência",
+     "dc_assunto": "Defesa Civil",
+     "dc_servico": "Queda de árvore",
+     "dt_carga": "2021-03-25Z"
+    }
+   }
+  ]
+ }
+}

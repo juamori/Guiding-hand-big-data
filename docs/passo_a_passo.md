@@ -32,6 +32,8 @@ Prints (salve em `docs\relatorio\prints\` com os nomes de `docs/relatorio/prints
 
 ## Etapa C — Databricks, lote 1
 
+> Alternativa sem Git folder para a Bronze do lote 1: notebook `databricks/bronze/bronze_lote_1.py` (cole as células num notebook novo e dê *Run all* duas vezes). Ele grava na mesma tabela do `01_bronze_autoloader`, com checkpoint próprio (`controle/checkpoint_bronze_lote_1`); o 01 não duplica o lote 1 porque ignora arquivos com mesmo nome e mesmo SHA-256 já gravados. Depois dele, **não** rode `00_processar_lote` com lote = 1 (a Bronze daria 0 arquivos novos e o aviso seria falso): siga com `prata/02_prata`, `ouro/03_ouro`, `mvp/05_exportar_mvp`. O lote 2 segue normalmente por `00_processar_lote` com lote = 2.
+
 1. Crie a conta gratuita no **Databricks Free Edition**.
 2. Menu **G** publica o repositório no GitHub (ele verifica segredos antes). No Databricks: *Workspace → Create → Git folder* → cole o link.
 3. Abra `databricks/00_setup.sql` no SQL Editor → **Run** (cria schema e Volumes).

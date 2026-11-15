@@ -79,7 +79,11 @@ def t_open_meteo(s):
     return {"url": r.url, "data_referencia": ontem.isoformat(), "horas": r.registros,
             "variaveis": [k for k in h if k != "time"],
             "precipitacao_total_mm": round(sum(x or 0 for x in h.get("precipitation", [])), 2),
-            "grade_lat_lon": [dados.get("latitude"), dados.get("longitude")]}
+            "ponto_pedido": r.detalhes.get("ponto_pedido"),
+            "centro_celula_grade": r.detalhes.get("centro_celula_grade"),
+            "distancia_grade_km": r.detalhes.get("distancia_grade_km"),
+            "celula_dentro_do_recorte": r.detalhes.get("celula_dentro_do_recorte"),
+            "observacao": "a API devolve o centro da célula da grade do modelo; o clima é contexto regional do recorte"}
 
 
 def t_overpass(s):
@@ -95,6 +99,18 @@ def t_overpass(s):
     salvar_amostra("osm", dados)
     return {"instancia": r.detalhes.get("instancia"), "elementos": r.registros,
             "principais_tags": cont.most_common(15)}
+
+
+# Uma camada só entra como "SP156" se for de SOLICITAÇÕES (zeladoria), não cadastro de infraestrutura.
+SINAIS_SOLICITACAO_NOME = ("156", "solicita", "zeladoria", "reclama")
+
+
+def classificar_camada(nome: str, titulo: str, campos: list[str]) -> str:
+    texto = f"{nome} {titulo}".lower()
+    if any(sinal in texto for sinal in SINAIS_SOLICITACAO_NOME) or \
+            coletores.eh_camada_de_solicitacoes([{"properties": {c: None for c in campos}}]):
+        return "solicitacao_sp156"
+    return "infraestrutura_cadastral"
 
 
 def t_geosampa(s):
@@ -116,44 +132,73 @@ def t_geosampa(s):
     testes = []
     for nome, titulo in candidatas[:25]:
         try:
+            # 1) amostra pequena para conhecer os campos e classificar a camada
             r = s.get(config.GEOSAMPA_WFS_URL, params={
                 "service": "WFS", "version": "1.1.0", "request": "GetFeature", "typeName": nome,
-                "srsName": "EPSG:4326", "bbox": BBOX.como_wfs_4326(), "maxFeatures": 500,
+                "srsName": "EPSG:4326", "bbox": BBOX.como_wfs_4326(), "maxFeatures": 50,
                 "outputFormat": "application/json"}, timeout=120)
             r.raise_for_status()
-            fc = r.json()
-            feats = fc.get("features", [])
-            props = sorted({k for f in feats[:50] for k in (f.get("properties") or {})})
-            geom = feats[0]["geometry"]["type"] if feats and feats[0].get("geometry") else None
-            exemplo = feats[0]["geometry"]["coordinates"] if geom == "Point" else None
-            testes.append({"camada": nome, "titulo": titulo, "feicoes_no_recorte": len(feats),
-                           "geometria": geom, "coordenada_exemplo": exemplo, "campos": props})
-            if feats:
+            amostra = r.json().get("features", [])
+            props = sorted({k for f in amostra for k in (f.get("properties") or {})})
+            tipo = classificar_camada(nome, titulo, props)
+            geom = amostra[0]["geometry"]["type"] if amostra and amostra[0].get("geometry") else None
+            item = {"camada": nome, "titulo": titulo, "classificacao": tipo, "geometria": geom,
+                    "coordenada_exemplo": amostra[0]["geometry"]["coordinates"] if geom == "Point" else None,
+                    "campos": props, "total_no_recorte_servidor": coletores._total_wfs(
+                        s, config.GEOSAMPA_WFS_URL, nome, BBOX, 120)}
+            # 2) só as camadas de solicitações são baixadas por completo (paginadas), como no Airflow
+            if tipo == "solicitacao_sp156" and amostra:
+                fc, info = coletores.buscar_camada_wfs(s, config.GEOSAMPA_WFS_URL, nome, BBOX, 120)
+                item.update(feicoes_coletadas=info["coletadas"], paginas=info["paginas"],
+                            completo=info["completo"], paginacao_ignorada=info["paginacao_ignorada"])
                 salvar_amostra("sp156_" + re.sub(r"[^a-z0-9]+", "_", nome.lower()), fc)
+            else:
+                item["feicoes_na_amostra"] = len(amostra)
+            testes.append(item)
         except Exception as exc:
             testes.append({"camada": nome, "titulo": titulo, "erro": str(exc)[:300]})
-    uteis = [t["camada"] for t in testes if t.get("feicoes_no_recorte")]
-    descoberta = {"gh_sp156_camadas": uteis, "descoberto_em": datetime.now().isoformat(timespec="seconds")}
+    sp156 = [t["camada"] for t in testes
+             if t.get("classificacao") == "solicitacao_sp156" and t.get("feicoes_coletadas")]
+    infra = [t["camada"] for t in testes if t.get("classificacao") == "infraestrutura_cadastral"]
+    descoberta = {"gh_sp156_camadas": sp156, "infraestrutura_nao_usada_como_sp156": infra,
+                  "descoberto_em": datetime.now().isoformat(timespec="seconds")}
     (RAIZ / "airflow").mkdir(exist_ok=True)
     (RAIZ / "airflow" / "descoberta_fontes.json").write_text(json.dumps(descoberta, indent=1, ensure_ascii=False),
                                                            encoding="utf-8")
-    return {"total_camadas_wfs": len(camadas), "candidatas_sp156": len(candidatas),
-            "camadas_com_dados_no_recorte": uteis, "testes": testes,
-            "status": "OK" if uteis else "SEM_DADOS_NO_RECORTE"}
+    return {"total_camadas_wfs": len(camadas), "candidatas_por_palavra_chave": len(candidatas),
+            "camadas_sp156_usadas_no_airflow": sp156, "camadas_infraestrutura_ignoradas": infra,
+            "testes": testes,
+            "status": "OK" if sp156 else "SEM_CAMADA_DE_SOLICITACOES_SP156"}
+
+
+def _ano(texto) -> int | None:
+    anos = [int(a) for a in re.findall(r"(?<!\d)(20[0-3]\d)(?!\d)", str(texto or ""))]
+    return max(anos) if anos else None
 
 
 def t_ckan(s):
+    """Portal CKAN: NÃO é fonte das coletas. Serve para documentar o que existe e de quando é."""
     r = s.get("https://dados.prefeitura.sp.gov.br/api/3/action/package_show",
               params={"id": "dados-do-sp156"}, timeout=60)
     inicio = r.text.lstrip()[:300]
     if inicio.startswith("<") or "codigo" in inicio.lower():
         return {"status": "BLOQUEADO_CAPTCHA", "http": r.status_code, "inicio_resposta": inicio}
     pacote = r.json().get("result", {})
-    recursos = [{"nome": x.get("name"), "formato": x.get("format"), "url": x.get("url"),
-                 "atualizado": x.get("last_modified") or x.get("created")}
-                for x in pacote.get("resources", [])]
-    return {"http": r.status_code, "titulo": pacote.get("title"), "recursos": recursos[-8:],
-            "total_recursos": len(recursos)}
+    recursos = []
+    for x in pacote.get("resources", []):
+        recursos.append({"nome": x.get("name"), "formato": x.get("format"), "url": x.get("url"),
+                         "ano_dos_dados": _ano(x.get("name")) or _ano(x.get("url")),
+                         "metadados_atualizados": x.get("last_modified") or x.get("metadata_modified")
+                         or x.get("created")})
+    recursos.sort(key=lambda x: (x["ano_dos_dados"] or 0, str(x["metadados_atualizados"])))
+    anos = [x["ano_dos_dados"] for x in recursos if x["ano_dos_dados"]]
+    mais_recente = max(anos) if anos else None
+    historico = mais_recente is None or mais_recente < date.today().year - 2
+    return {"http": r.status_code, "titulo": pacote.get("title"), "total_recursos": len(recursos),
+            "ano_mais_recente_dos_dados": mais_recente, "recursos": recursos,
+            "uso_no_projeto": ("contexto histórico apenas; NÃO coletado pelo Airflow" if historico
+                               else "não coletado pelo Airflow (o SP156 atual vem do GeoSampa)"),
+            "status": "OK_HISTORICO" if historico else "OK"}
 
 
 def t_olhovivo(s):

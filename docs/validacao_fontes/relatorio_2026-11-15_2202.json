@@ -1,0 +1,1456 @@
+{
+ "Open-Meteo (clima)": {
+  "url": "https://api.open-meteo.com/v1/forecast?latitude=-23.5675&longitude=-46.702&hourly=temperature_2m%2Cprecipitation%2Crain%2Cwind_gusts_10m%2Cvisibility%2Cweather_code&timezone=America%2FSao_Paulo&start_date=2026-11-14&end_date=2026-11-14",
+  "data_referencia": "2026-11-14",
+  "horas": 24,
+  "variaveis": [
+   "temperature_2m",
+   "precipitation",
+   "rain",
+   "wind_gusts_10m",
+   "visibility",
+   "weather_code"
+  ],
+  "precipitacao_total_mm": 1.4,
+  "ponto_pedido": [
+   -23.5675,
+   -46.702
+  ],
+  "centro_celula_grade": [
+   -23.585238,
+   -46.659637
+  ],
+  "distancia_grade_km": 4.75,
+  "celula_dentro_do_recorte": false,
+  "observacao": "a API devolve o centro da célula da grade do modelo; o clima é contexto regional do recorte",
+  "status": "OK",
+  "segundos": 0.2
+ },
+ "OpenStreetMap / Overpass": {
+  "instancia": "https://overpass-api.de/api/interpreter",
+  "elementos": 573,
+  "principais_tags": [
+   [
+    "highway=crossing",
+    233
+   ],
+   [
+    "highway=footway",
+    148
+   ],
+   [
+    "natural=tree",
+    80
+   ],
+   [
+    "footway=crossing",
+    59
+   ],
+   [
+    "highway=bus_stop",
+    55
+   ],
+   [
+    "barrier=gate",
+    48
+   ],
+   [
+    "kerb=lowered",
+    34
+   ],
+   [
+    "barrier=lift_gate",
+    6
+   ],
+   [
+    "footway=sidewalk",
+    6
+   ],
+   [
+    "footway=traffic_island",
+    6
+   ],
+   [
+    "kerb=raised",
+    3
+   ],
+   [
+    "tactile_paving=no",
+    2
+   ],
+   [
+    "barrier=block",
+    1
+   ],
+   [
+    "barrier=yes",
+    1
+   ],
+   [
+    "kerb=flush",
+    1
+   ]
+  ],
+  "status": "OK",
+  "segundos": 39.8
+ },
+ "GeoSampa WFS (SP156)": {
+  "total_camadas_wfs": 488,
+  "candidatas_por_palavra_chave": 16,
+  "camadas_sp156_usadas_no_airflow": [
+   "geoportal:sac_solicitacao_manutencao_sinalizacao_pintura_ciclofaixa",
+   "geoportal:sac_remocao_lixeira",
+   "geoportal:sac_placa_transito",
+   "geoportal:sac_quadra_arvore_urgencia",
+   "geoportal:sac_remocao_entulho",
+   "geoportal:sac_tapa_buraco",
+   "geoportal:sac_tapa_buraco_faixa_corredor"
+  ],
+  "camadas_infraestrutura_ignoradas": [
+   "geoportal:arvore",
+   "geoportal:calcada",
+   "geoportal:sac_conserto_lixeira",
+   "geoportal:sac_pintura_guia_poste",
+   "geoportal:iluminacao_publica",
+   "geoportal:risco_ocorrencia_queda_arvore"
+  ],
+  "testes": [
+   {
+    "camada": "geoportal:arvore",
+    "titulo": "Arborização viária",
+    "classificacao": "infraestrutura_cadastral",
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.70199208,
+     -23.56089943
+    ],
+    "campos": [
+     "cd_especie",
+     "cd_identificador",
+     "cd_identificador_arvore_sisgau",
+     "cd_inspecao",
+     "cd_tipo_estado_geral",
+     "cd_tipo_porte",
+     "dc_especie",
+     "dc_nm_popular",
+     "dc_tipo_estado_geral",
+     "dc_tipo_porte",
+     "dt_atualizacao_sisgau",
+     "dt_inspecao",
+     "nm_distrito_municipal",
+     "nm_logradouro_referencia",
+     "nm_subprefeitura",
+     "nm_vulgar_especie",
+     "nr_logradouro_referencia",
+     "qt_altura_arvore",
+     "qt_diametro_copa",
+     "qt_diametro_peito_dap",
+     "sg_distrito_municipal"
+    ],
+    "total_no_recorte_servidor": 3743,
+    "feicoes_na_amostra": 50
+   },
+   {
+    "camada": "geoportal:calcada",
+    "titulo": "Calçadas",
+    "classificacao": "infraestrutura_cadastral",
+    "geometria": "Polygon",
+    "coordenada_exemplo": null,
+    "campos": [
+     "cd_identificador_calcada",
+     "cd_identificador_segmento_logradouro",
+     "cd_logradouro",
+     "cd_setor_quadra",
+     "dt_inicio",
+     "dt_termino",
+     "nm_logradouro",
+     "pc_declividade_maxima_trecho",
+     "pc_declividade_media_trecho",
+     "pc_declividade_minima_trecho",
+     "qt_area_calcada",
+     "qt_largura_maxima_trecho",
+     "qt_largura_media_trecho",
+     "qt_largura_minima_trecho",
+     "tx_plano_emergencial_calcada",
+     "tx_portaria",
+     "tx_situacao"
+    ],
+    "total_no_recorte_servidor": 1233,
+    "feicoes_na_amostra": 50
+   },
+   {
+    "camada": "geoportal:sac_solicitacao_manutencao_sinalizacao_pintura_ciclofaixa",
+    "titulo": "Ciclovias, ciclofaixas e ciclorrotas - solicitar manutenção da sinalização e pintura",
+    "classificacao": "solicitacao_sp156",
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.709903,
+     -23.57350442
+    ],
+    "campos": [
+     "cd_identificador",
+     "cd_identificador_original_atendimento_cidadao",
+     "dc_assunto",
+     "dc_servico",
+     "dc_tema",
+     "dt_abertura",
+     "dt_carga",
+     "dt_parecer",
+     "nm_logradouro",
+     "nr_logradouro",
+     "sg_orgao_responsavel",
+     "tx_canal_atendimento",
+     "tx_situacao_solicitacao"
+    ],
+    "total_no_recorte_servidor": 2,
+    "feicoes_coletadas": 2,
+    "paginas": 1,
+    "completo": true,
+    "paginacao_ignorada": false
+   },
+   {
+    "camada": "geoportal:sac_conserto_lixeira",
+    "titulo": "Conserto de lixeira",
+    "classificacao": "infraestrutura_cadastral",
+    "geometria": null,
+    "coordenada_exemplo": null,
+    "campos": [],
+    "total_no_recorte_servidor": 0,
+    "feicoes_na_amostra": 0
+   },
+   {
+    "camada": "geoportal:sac_remocao_lixeira",
+    "titulo": "Instalação e remoção de lixeira",
+    "classificacao": "solicitacao_sp156",
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.699166,
+     -23.57013802
+    ],
+    "campos": [
+     "cd_identificador",
+     "cd_identificador_original_atendimento_cidadao",
+     "dc_assunto",
+     "dc_servico",
+     "dc_tema",
+     "dt_abertura",
+     "dt_carga",
+     "dt_parecer",
+     "nm_logradouro",
+     "nr_logradouro",
+     "sg_orgao_responsavel",
+     "tx_canal_atendimento",
+     "tx_situacao_solicitacao"
+    ],
+    "total_no_recorte_servidor": 4,
+    "feicoes_coletadas": 4,
+    "paginas": 1,
+    "completo": true,
+    "paginacao_ignorada": false
+   },
+   {
+    "camada": "geoportal:sac_placa_transito",
+    "titulo": "Manutenção de placas de trânsito",
+    "classificacao": "solicitacao_sp156",
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.7063451,
+     -23.57063372
+    ],
+    "campos": [
+     "cd_identificador",
+     "cd_identificador_original_atendimento_cidadao",
+     "dc_assunto",
+     "dc_servico",
+     "dc_tema",
+     "dt_abertura",
+     "dt_carga",
+     "dt_parecer",
+     "nm_logradouro",
+     "nr_logradouro",
+     "sg_orgao_responsavel",
+     "tx_canal_atendimento",
+     "tx_situacao_solicitacao"
+    ],
+    "total_no_recorte_servidor": 2,
+    "feicoes_coletadas": 2,
+    "paginas": 1,
+    "completo": true,
+    "paginacao_ignorada": false
+   },
+   {
+    "camada": "geoportal:sac_pintura_guia_poste",
+    "titulo": "Pintura de guias e postes",
+    "classificacao": "infraestrutura_cadastral",
+    "geometria": null,
+    "coordenada_exemplo": null,
+    "campos": [],
+    "total_no_recorte_servidor": 0,
+    "feicoes_na_amostra": 0
+   },
+   {
+    "camada": "geoportal:iluminacao_publica",
+    "titulo": "Pontos de iluminação pública",
+    "classificacao": "infraestrutura_cadastral",
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.70410723,
+     -23.57119886
+    ],
+    "campos": [
+     "cd_identificador_iluminacao_publica",
+     "cd_numero_imovel",
+     "cd_placa",
+     "dc_tipo_iluminacao_publica",
+     "dt_carga",
+     "sg_fonte_original",
+     "tx_endereco",
+     "tx_unidade"
+    ],
+    "total_no_recorte_servidor": 2339,
+    "feicoes_na_amostra": 50
+   },
+   {
+    "camada": "geoportal:risco_ocorrencia_queda_arvore",
+    "titulo": "Queda de árvore",
+    "classificacao": "infraestrutura_cadastral",
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.7077692,
+     -23.56932412
+    ],
+    "campos": [
+     "cd_identificador",
+     "dc_tipo_ocorrencia",
+     "dt_carga",
+     "dt_ocorrencia",
+     "nm_distrito",
+     "nm_subprefeitura",
+     "sg_fonte_original"
+    ],
+    "total_no_recorte_servidor": 18,
+    "feicoes_na_amostra": 18
+   },
+   {
+    "camada": "geoportal:sac_quadra_arvore_urgencia",
+    "titulo": "Queda de árvore",
+    "classificacao": "solicitacao_sp156",
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.69875847,
+     -23.56694849
+    ],
+    "campos": [
+     "cd_identificador",
+     "cd_identificador_original_atendimento_cidadao",
+     "dc_assunto",
+     "dc_servico",
+     "dc_tema",
+     "dt_abertura",
+     "dt_carga",
+     "dt_parecer",
+     "nm_logradouro",
+     "nr_logradouro",
+     "sg_orgao_responsavel",
+     "tx_canal_atendimento",
+     "tx_situacao_solicitacao"
+    ],
+    "total_no_recorte_servidor": 2,
+    "feicoes_coletadas": 2,
+    "paginas": 1,
+    "completo": true,
+    "paginacao_ignorada": false
+   },
+   {
+    "camada": "geoportal:sac_reclamacao_falta_lavagem_calcadao",
+    "titulo": "Reclamação de falta de lavagem de calçadões",
+    "classificacao": "solicitacao_sp156",
+    "geometria": null,
+    "coordenada_exemplo": null,
+    "campos": [],
+    "total_no_recorte_servidor": 0,
+    "feicoes_na_amostra": 0
+   },
+   {
+    "camada": "geoportal:sac_reclamacao_sinalizacao_inadequada_terminal_onibus",
+    "titulo": "Reclamação de sinalização inadequada de terminais de ônibus",
+    "classificacao": "solicitacao_sp156",
+    "geometria": null,
+    "coordenada_exemplo": null,
+    "campos": [],
+    "total_no_recorte_servidor": 0,
+    "feicoes_na_amostra": 0
+   },
+   {
+    "camada": "geoportal:sac_remocao_entulho",
+    "titulo": "Remoção de entulho em via pública",
+    "classificacao": "solicitacao_sp156",
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.6940287,
+     -23.57394502
+    ],
+    "campos": [
+     "cd_identificador",
+     "cd_identificador_original_atendimento_cidadao",
+     "dc_assunto",
+     "dc_servico",
+     "dc_tema",
+     "dt_abertura",
+     "dt_carga",
+     "dt_parecer",
+     "nm_logradouro",
+     "nr_logradouro",
+     "sg_orgao_responsavel",
+     "tx_canal_atendimento",
+     "tx_situacao_solicitacao"
+    ],
+    "total_no_recorte_servidor": 9,
+    "feicoes_coletadas": 9,
+    "paginas": 1,
+    "completo": true,
+    "paginacao_ignorada": false
+   },
+   {
+    "camada": "geoportal:sac_sinalizacao_horizontal_apagada_repintura",
+    "titulo": "Sinalização horizontal apagada (pintura de solo) – Solicitar repintura",
+    "classificacao": "solicitacao_sp156",
+    "geometria": null,
+    "coordenada_exemplo": null,
+    "campos": [],
+    "total_no_recorte_servidor": 0,
+    "feicoes_na_amostra": 0
+   },
+   {
+    "camada": "geoportal:sac_tapa_buraco",
+    "titulo": "Tapa-buraco",
+    "classificacao": "solicitacao_sp156",
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.7050688,
+     -23.56692372
+    ],
+    "campos": [
+     "cd_identificador",
+     "cd_identificador_original_atendimento_cidadao",
+     "dc_assunto",
+     "dc_servico",
+     "dc_tema",
+     "dt_abertura",
+     "dt_carga",
+     "dt_parecer",
+     "nm_logradouro",
+     "nr_logradouro",
+     "sg_orgao_responsavel",
+     "tx_canal_atendimento",
+     "tx_situacao_solicitacao"
+    ],
+    "total_no_recorte_servidor": 151,
+    "feicoes_coletadas": 151,
+    "paginas": 1,
+    "completo": true,
+    "paginacao_ignorada": false
+   },
+   {
+    "camada": "geoportal:sac_tapa_buraco_faixa_corredor",
+    "titulo": "Tapa-buraco em faixa exclusiva ou corredor de ônibus",
+    "classificacao": "solicitacao_sp156",
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.7065602,
+     -23.57397042
+    ],
+    "campos": [
+     "cd_identificador",
+     "cd_identificador_original_atendimento_cidadao",
+     "dc_assunto",
+     "dc_servico",
+     "dc_tema",
+     "dt_abertura",
+     "dt_carga",
+     "dt_parecer",
+     "nm_logradouro",
+     "nr_logradouro",
+     "sg_orgao_responsavel",
+     "tx_canal_atendimento",
+     "tx_situacao_solicitacao"
+    ],
+    "total_no_recorte_servidor": 3,
+    "feicoes_coletadas": 3,
+    "paginas": 1,
+    "completo": true,
+    "paginacao_ignorada": false
+   }
+  ],
+  "status": "OK",
+  "segundos": 10.0
+ },
+ "Portal CKAN (SP156 CSV)": {
+  "http": 200,
+  "titulo": "Dados do SP156 - Solicitações",
+  "total_recursos": 136,
+  "ano_mais_recente_dos_dados": 2026,
+  "recursos": [
+   {
+    "nome": "Dados do SP156 - 1º SEM 2012",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/c71cce74-3103-4228-91b8-2124b4161263/download/arquivofinal1sem2012.xlsx.xlsx",
+    "ano_dos_dados": 2012,
+    "metadados_atualizados": "2022-10-11T15:58:51.007995"
+   },
+   {
+    "nome": "Dados do SP156 - 1º SEM 2012",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/e08a9a50-969a-43ec-b5df-dff69b026c7d/download/arquivofinal1sem2012.xlsx.csv",
+    "ano_dos_dados": 2012,
+    "metadados_atualizados": "2022-10-11T16:03:57.311350"
+   },
+   {
+    "nome": "Dados do SP156 - 2º SEM 2012",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/63543bc4-72b7-4a91-a89a-e037a54c5393/download/arquivofinal2sem2012.xlsx.xlsx",
+    "ano_dos_dados": 2012,
+    "metadados_atualizados": "2022-10-11T16:05:23.596872"
+   },
+   {
+    "nome": "Dados do SP156 - 2º SEM 2012",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/ecb2edb1-1a44-4ce0-8343-d4400b744b9e/download/arquivofinal2sem2012.xlsx.csv",
+    "ano_dos_dados": 2012,
+    "metadados_atualizados": "2022-10-11T16:07:19.108228"
+   },
+   {
+    "nome": "Dados do SP156 - 1º SEM 2013",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/16a9a120-0fec-4498-ba14-0d2ef39fd96d/download/arquivofinal1sem2013.xlsx.xlsx",
+    "ano_dos_dados": 2013,
+    "metadados_atualizados": "2022-10-11T16:08:26.758215"
+   },
+   {
+    "nome": "Dados do SP156 - 1º SEM 2013",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/328ab864-b07c-4ec8-9035-56d3dbac19fe/download/arquivofinal1sem2013.xlsx.csv",
+    "ano_dos_dados": 2013,
+    "metadados_atualizados": "2022-10-11T16:14:26.900196"
+   },
+   {
+    "nome": "Dados do SP156 - 2º SEM 2013",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/ff677fb9-bac4-431b-9e03-c79551967f7a/download/arquivofinal2sem2013.xlsx.xlsx",
+    "ano_dos_dados": 2013,
+    "metadados_atualizados": "2022-10-11T16:21:34.513521"
+   },
+   {
+    "nome": "Dados do SP156 - 2º SEM 2013",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/78e30581-c517-4098-81ed-f0ff8d4feda3/download/arquivofinal2sem2013.xlsx.csv",
+    "ano_dos_dados": 2013,
+    "metadados_atualizados": "2022-10-11T16:23:40.949825"
+   },
+   {
+    "nome": "Dados do SP156 - 1º SEM 2014",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/8afb6953-f6cd-478d-bab2-14636df2a961/download/arquivofinal1sem2014.xlsx.xlsx",
+    "ano_dos_dados": 2014,
+    "metadados_atualizados": "2022-10-11T16:27:14.271435"
+   },
+   {
+    "nome": "Dados do SP156 - 1º SEM 2014",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/0f3089e2-ca7e-4b7a-a776-e56af02e23f1/download/arquivofinal1sem2014.xlsx.csv",
+    "ano_dos_dados": 2014,
+    "metadados_atualizados": "2022-10-11T16:31:03.386652"
+   },
+   {
+    "nome": "Dados do SP156 - 2° SEM 2014",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/dd2bc7f6-5c9a-41ad-8c86-f8994d532ccd/download/arquivofinal2sem2014.xlsx.xlsx",
+    "ano_dos_dados": 2014,
+    "metadados_atualizados": "2022-10-11T16:31:58.157570"
+   },
+   {
+    "nome": "Dados do SP156 - 2° SEM 2014",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/a1e179d8-4c28-4f54-9d5f-47e4c40d45ea/download/arquivofinal2sem2014.xlsx.csv",
+    "ano_dos_dados": 2014,
+    "metadados_atualizados": "2022-10-11T16:42:23.736065"
+   },
+   {
+    "nome": "Dicionário dados abertos - SP156 2012 a 2014.txt",
+    "formato": "TXT",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/9163649e-c539-4530-82d9-4a08f32e29d9/download/dicionario-dados-abertos-sp156-2012-a-2014.txt",
+    "ano_dos_dados": 2014,
+    "metadados_atualizados": "2025-11-25T14:41:16.660889"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2015",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/f81d754f-0c1f-4a2b-b769-66b67dbbb964/download/arquivofinal1tride2015.xlsx",
+    "ano_dos_dados": 2015,
+    "metadados_atualizados": "2024-11-21T14:14:36.279945"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2015",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/88c10950-4fc9-4ed7-a86c-53d3e4430619/download/arquivofinal1tride2015.csv",
+    "ano_dos_dados": 2015,
+    "metadados_atualizados": "2024-11-21T14:15:37.345043"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2015",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/172631d1-676a-47b3-b83d-3fa7748e541b/download/arquivofinal2tride2015.xlsx",
+    "ano_dos_dados": 2015,
+    "metadados_atualizados": "2024-11-21T14:17:55.093883"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2015",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/4b21bb94-ee5d-48d8-806b-87dd7acbb678/download/arquivofinal2tride2015.csv",
+    "ano_dos_dados": 2015,
+    "metadados_atualizados": "2024-11-21T14:18:58.937689"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2015",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/136ba4a2-60b0-4cfa-a7ea-3102f991838f/download/arquivofinal3tride2015.xlsx",
+    "ano_dos_dados": 2015,
+    "metadados_atualizados": "2024-11-21T14:20:46.256547"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2015",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/0d89e996-89f4-4154-b6a6-e6e991e0971f/download/arquivofinal3tride2015.csv",
+    "ano_dos_dados": 2015,
+    "metadados_atualizados": "2024-11-21T14:21:53.337307"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2015",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/05c43926-cb7d-48f5-b4d8-798caa6e9b60/download/arquivofinal4tride2015.xlsx",
+    "ano_dos_dados": 2015,
+    "metadados_atualizados": "2024-11-21T14:23:08.832482"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2015",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/de5ce706-b1ce-48c3-97fc-12cafa823445/download/arquivofinal4tride2015.csv",
+    "ano_dos_dados": 2015,
+    "metadados_atualizados": "2024-11-21T14:24:24.396527"
+   },
+   {
+    "nome": "Dados do SP156 - 1° TRI 2016",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/18f3eaa2-c65b-4299-907b-e3fb17a8c6cf/download/arquivofinal1tride2016.xlsx",
+    "ano_dos_dados": 2016,
+    "metadados_atualizados": "2024-11-21T14:36:14.181855"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2016",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/a9297647-db9d-448b-8110-02a0fbbd7848/download/arquivofinal1tride2016.csv",
+    "ano_dos_dados": 2016,
+    "metadados_atualizados": "2024-11-21T14:37:43.046417"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2016",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/04191aa5-badb-4573-885e-d7799147daf4/download/arquivofinal2tride2016.xlsx",
+    "ano_dos_dados": 2016,
+    "metadados_atualizados": "2024-11-21T14:38:47.826568"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2016",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/a48ce8ec-5639-4a2b-9598-f10186119dfd/download/arquivofinal2tride2016.csv",
+    "ano_dos_dados": 2016,
+    "metadados_atualizados": "2024-11-21T14:40:18.532437"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2016",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/dbe074b8-847f-4542-b5c5-5e6001ee2a6e/download/arquivofinal3tride2016.xlsx",
+    "ano_dos_dados": 2016,
+    "metadados_atualizados": "2024-11-21T14:41:55.271579"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2016",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/9188083e-57f3-4c2d-afe5-17f3c5382dd8/download/arquivofinal3tride2016.csv",
+    "ano_dos_dados": 2016,
+    "metadados_atualizados": "2024-11-21T14:44:14.894868"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2016",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/648ba081-1647-4117-bd6b-1aa526efc4ae/download/arquivofinal4tride2016.xlsx",
+    "ano_dos_dados": 2016,
+    "metadados_atualizados": "2024-11-21T14:45:29.497855"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2016",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/7ffee3db-a1a8-4e70-af5c-b3002d035aa8/download/arquivofinal4tride2016.csv",
+    "ano_dos_dados": 2016,
+    "metadados_atualizados": "2024-11-21T14:47:11.711049"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2017",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/78b35ad3-bdb9-4a67-a9b6-c93ad9031b48/download/arquivofinal4tride2017.csv",
+    "ano_dos_dados": 2017,
+    "metadados_atualizados": "2024-10-25T15:16:53.483263"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2017",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/bec9286e-7816-4f63-a794-6f945253f45e/download/arquivofinal1tride2017.xlsx",
+    "ano_dos_dados": 2017,
+    "metadados_atualizados": "2024-11-21T15:03:55.394566"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2017",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/193bd5a3-66c0-4dde-8efb-c0c78031bf7c/download/arquivofinal1tride2017.csv",
+    "ano_dos_dados": 2017,
+    "metadados_atualizados": "2024-11-21T15:05:40.151854"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2017",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/db4609b7-e4fa-4e57-b080-f5163062bbcb/download/arquivofinal2tride2017.xlsx",
+    "ano_dos_dados": 2017,
+    "metadados_atualizados": "2024-11-21T15:06:55.537336"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2017",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/ad6a5b74-fa05-49ca-984d-73d8af395880/download/arquivofinal2tride2017.csv",
+    "ano_dos_dados": 2017,
+    "metadados_atualizados": "2024-11-21T15:08:22.007842"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2017",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/f829ec0b-e37d-4dbc-b396-fd59326c23ea/download/arquivofinal3tride2017.xlsx",
+    "ano_dos_dados": 2017,
+    "metadados_atualizados": "2024-11-21T15:10:11.886143"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2017",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/cae8b355-f70f-4ecd-8659-04c6efc9fcf2/download/arquivofinal3tride2017.csv",
+    "ano_dos_dados": 2017,
+    "metadados_atualizados": "2024-11-21T15:11:22.376686"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2017",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/b226e17d-8911-4549-86a8-cb4a42ce5ae2/download/arquivofinal4tride2017.xlsx",
+    "ano_dos_dados": 2017,
+    "metadados_atualizados": "2024-11-21T15:12:55.878609"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2018",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/037d867e-53d3-47f3-af96-0999697367be/download/arquivofinal1tride2018.xlsx",
+    "ano_dos_dados": 2018,
+    "metadados_atualizados": "2024-11-21T16:01:09.291395"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2018",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/f6b6583f-1ea5-4be6-8ff1-a7c9ef38701a/download/arquivofinal1tride2018.csv",
+    "ano_dos_dados": 2018,
+    "metadados_atualizados": "2024-11-21T16:03:10.451146"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2018",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/4fad8c9e-2628-4482-a842-b914cfa867d7/download/arquivofinal2tride2018.xlsx",
+    "ano_dos_dados": 2018,
+    "metadados_atualizados": "2024-11-21T16:04:00.635368"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2018",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/48e72ece-0fca-4220-bf85-052f0e172cfc/download/arquivofinal2tride2018.csv",
+    "ano_dos_dados": 2018,
+    "metadados_atualizados": "2024-11-21T16:05:24.310475"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2018",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/a92916ae-f194-456e-b0b2-2b3d5e36d95b/download/arquivofinal3tride2018.xlsx",
+    "ano_dos_dados": 2018,
+    "metadados_atualizados": "2024-11-21T16:06:43.029367"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2018",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/bdcd19e1-d5a0-4972-ae6f-53b9b76994cf/download/arquivofinal3tride2018.csv",
+    "ano_dos_dados": 2018,
+    "metadados_atualizados": "2024-11-21T16:08:08.670092"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2018",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/78ebb881-83b9-43c1-8e44-4b5cce0733b8/download/arquivofinal4tride2018.xlsx",
+    "ano_dos_dados": 2018,
+    "metadados_atualizados": "2024-11-21T16:11:19.062608"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2018",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/9fbfeae7-cbdc-4abd-9a06-115943ff86c7/download/arquivofinal4tride2018.csv",
+    "ano_dos_dados": 2018,
+    "metadados_atualizados": "2024-11-21T16:13:03.770100"
+   },
+   {
+    "nome": "Release 2° Trimestre 2019",
+    "formato": "PDF",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/56ea3df4-6546-47ac-8789-1560a2987406/download/balano-sp1562o-trimestre.v2.pdf",
+    "ano_dos_dados": 2019,
+    "metadados_atualizados": "2019-08-07T14:34:25.880959"
+   },
+   {
+    "nome": "Release 3° Trimestre 2019",
+    "formato": "PDF",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/ef83f1cf-e427-405d-95a2-8288888a8364/download/release-3-trimestre-2019.pdf",
+    "ano_dos_dados": 2019,
+    "metadados_atualizados": "2019-10-30T18:25:06.270034"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2019",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/545f60e2-4935-4fe9-a016-b80dff7a84a6/download/arquivofinal1tride2019.xlsx",
+    "ano_dos_dados": 2019,
+    "metadados_atualizados": "2024-11-21T13:50:44.390142"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2019",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/c9d2c14d-e31a-4c92-90fb-43ecb91fba17/download/arquivofinal1tride2019.csv",
+    "ano_dos_dados": 2019,
+    "metadados_atualizados": "2024-11-21T13:52:24.161184"
+   },
+   {
+    "nome": "Dados do SP156 - 2° TRI 2019",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/8d334ca7-3f5f-4986-9fc7-285bdd44b640/download/arquivofinal2tride2019.xlsx",
+    "ano_dos_dados": 2019,
+    "metadados_atualizados": "2024-11-21T16:24:55.700551"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2019",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/ca0c51f6-3a48-478e-817e-b5a396474923/download/arquivofinal2tride2019.csv",
+    "ano_dos_dados": 2019,
+    "metadados_atualizados": "2024-11-21T16:26:58.248647"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2019",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/4c93fbb6-0940-432b-a85f-e3d1e7ec8654/download/arquivofinal3tride2019.xlsx",
+    "ano_dos_dados": 2019,
+    "metadados_atualizados": "2024-11-21T16:29:04.924651"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2019",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/d5632822-913a-4fac-bf53-fe7c123b70c4/download/arquivofinal3tride2019.csv",
+    "ano_dos_dados": 2019,
+    "metadados_atualizados": "2024-11-21T16:30:24.416642"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2019",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/5831d275-4bae-4525-898b-6de5aaf9e2bf/download/arquivofinal4tride2019.xlsx",
+    "ano_dos_dados": 2019,
+    "metadados_atualizados": "2024-11-21T16:32:48.336071"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2019",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/0444ac8b-c47d-4799-9b29-69a8906419db/download/arquivofinal4tride2019.csv",
+    "ano_dos_dados": 2019,
+    "metadados_atualizados": "2024-11-21T16:36:34.851097"
+   },
+   {
+    "nome": "Dicionário dados abertos - SP156 2015 a 2019.txt",
+    "formato": "TXT",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/a888b935-db6f-4ee6-8b68-24bd6a811832/download/dicionario-dados-abertos-sp156-2015-a-2019.txt",
+    "ano_dos_dados": 2019,
+    "metadados_atualizados": "2025-12-05T17:05:19.633123"
+   },
+   {
+    "nome": "Avaliação dos Canais - 2019",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/f1cb664b-cf06-4045-a5b4-a996cbf29f76/download/avaliacao-canais-2019.xlsx",
+    "ano_dos_dados": 2019,
+    "metadados_atualizados": "2026-04-08T19:49:42.131535"
+   },
+   {
+    "nome": "Avaliação dos Canais - 2019",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/1f27df95-8c6e-46e2-bd25-fd7965ef9b70/download/avaliacao-canais-2019.csv",
+    "ano_dos_dados": 2019,
+    "metadados_atualizados": "2026-04-08T19:50:45.921250"
+   },
+   {
+    "nome": "Dicionário dados abertos - Avaliações dos canais SP156 2019 em diante.txt",
+    "formato": "TXT",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/831557b7-ac44-4062-81c2-38407b00adee/download/dicionario-dados-abertos-avaliacoes-dos-canais-sp156-2019-em-diante.txt",
+    "ano_dos_dados": 2019,
+    "metadados_atualizados": "2026-04-09T13:48:50.546076"
+   },
+   {
+    "nome": "Avaliação dos Canais - 2020",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/43d0ee2f-1bb1-4650-9623-8a7c41b600a5/download/avaliacao-canais-2020.xlsx",
+    "ano_dos_dados": 2020,
+    "metadados_atualizados": "2026-04-08T19:51:17.521726"
+   },
+   {
+    "nome": "Avaliação dos Canais - 2020",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/9513279c-b759-48b4-a4a6-1de752be1655/download/avaliacao-canais-2020.csv",
+    "ano_dos_dados": 2020,
+    "metadados_atualizados": "2026-04-08T19:51:47.079786"
+   },
+   {
+    "nome": "Release - por TRI 2020",
+    "formato": "PDF",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/887b0da4-028b-4e72-9a20-9192e660ebd3/download/release-2020.pdf",
+    "ano_dos_dados": 2020,
+    "metadados_atualizados": "2026-04-10T15:20:55.580213"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2020",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/91745827-93ac-4ef6-9055-21cc88b0d231/download/1-trimestre-2020.csv",
+    "ano_dos_dados": 2020,
+    "metadados_atualizados": "2026-08-10T16:26:06.669111"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2020",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/75356e9d-585d-4aa6-ac6c-b6245624623b/download/2-trimestre-2020.csv",
+    "ano_dos_dados": 2020,
+    "metadados_atualizados": "2026-08-10T16:27:14.467334"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2020",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/b9c5aabf-bfe8-4933-95df-c880ff927dc0/download/3-trimestre-2020.csv",
+    "ano_dos_dados": 2020,
+    "metadados_atualizados": "2026-08-10T16:27:55.453012"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2020",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/a96a91e1-9328-4cf2-b77b-96865c978033/download/4-trimestre-2020.csv",
+    "ano_dos_dados": 2020,
+    "metadados_atualizados": "2026-08-10T16:29:46.322122"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2020",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/aef2c432-2e73-4763-a85a-0472e12d7621/download/arquivo-final-1-trim.-2020.xlsx",
+    "ano_dos_dados": 2020,
+    "metadados_atualizados": "2026-08-10T17:24:13.591936"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2020",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/52d2cd9f-e8a1-4143-a1c6-1e71204db810/download/arquivo-final-2-trim.-2020.xlsx",
+    "ano_dos_dados": 2020,
+    "metadados_atualizados": "2026-08-10T17:25:02.408749"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2020",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/03bd7d5e-604f-4390-a723-80dd7f67fe5a/download/arquivo-final-3-trim.-2020.xlsx",
+    "ano_dos_dados": 2020,
+    "metadados_atualizados": "2026-08-10T17:26:08.016820"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2020",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/d69bb158-69c4-49fe-a3c4-49aa903614aa/download/arquivo-final-4-trim.-2020.xlsx",
+    "ano_dos_dados": 2020,
+    "metadados_atualizados": "2026-08-10T17:27:01.998478"
+   },
+   {
+    "nome": "Dicionário dados abertos - SP156 2020 em diante.txt",
+    "formato": "TXT",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/e5c102e2-f27a-4e0a-ae99-5948abecff0e/download/dicionario-dados-abertos-sp156-2020-em-diante.txt",
+    "ano_dos_dados": 2020,
+    "metadados_atualizados": "2026-08-10T18:15:41.298619"
+   },
+   {
+    "nome": "Avaliação dos Canais - 2021",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/8d31002c-db37-4c58-b1a3-7c6db8f361e3/download/avaliacao-canais-2021.xlsx",
+    "ano_dos_dados": 2021,
+    "metadados_atualizados": "2026-04-08T19:52:20.522987"
+   },
+   {
+    "nome": "Avaliação dos Canais - 2021",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/e50dc3af-64cc-4296-913c-17a3d7f5ef09/download/avaliacao-canais-2021.csv",
+    "ano_dos_dados": 2021,
+    "metadados_atualizados": "2026-04-08T19:52:52.717703"
+   },
+   {
+    "nome": "Release - por TRI 2021",
+    "formato": "PDF",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/6dc495a7-bdfc-410e-abf4-b9091bc36843/download/release-2021.pdf",
+    "ano_dos_dados": 2021,
+    "metadados_atualizados": "2026-04-10T15:22:12.223137"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2021",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/c8dce0e6-ef65-485d-aac9-7e85f53c3c26/download/arquivo-final-2-trim.-2021.xlsx",
+    "ano_dos_dados": 2021,
+    "metadados_atualizados": "2026-08-06T20:35:27.742060"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2021",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/3014d1de-8c16-4aa1-b03a-b8434905eab1/download/arquivo-final-1-trim.-2021.csv",
+    "ano_dos_dados": 2021,
+    "metadados_atualizados": "2026-08-10T16:31:57.886115"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2021",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/9b42cbd8-3d2e-4c9f-993e-6c49e62f1818/download/arquivo-final-3-trim.-2021.csv",
+    "ano_dos_dados": 2021,
+    "metadados_atualizados": "2026-08-10T16:35:46.027009"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2021",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/a08159cf-5263-430f-a16b-8d0683c5cb4c/download/arquivo-final-4-trim.-2021.csv",
+    "ano_dos_dados": 2021,
+    "metadados_atualizados": "2026-08-10T16:36:44.580342"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2021",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/96f253d8-8aab-4652-95a7-d9a5566f5674/download/arquivo-final-1-trim.-2021.xlsx",
+    "ano_dos_dados": 2021,
+    "metadados_atualizados": "2026-08-10T17:28:20.839542"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2021",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/9aac32a3-67fb-4ce4-847a-29967f909ef6/download/arquivo-final-2-trim.-2021.xlsx",
+    "ano_dos_dados": 2021,
+    "metadados_atualizados": "2026-08-10T17:29:39.699404"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2021",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/34574c2b-51f2-45df-8384-98d29c22d8ce/download/arquivo-final-3-trim.-2021.xlsx",
+    "ano_dos_dados": 2021,
+    "metadados_atualizados": "2026-08-10T17:31:52.041400"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2021",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/ee10f0e2-2778-45fb-b3b1-47daa029b6fe/download/arquivo-final-4-trim.-2021.xlsx",
+    "ano_dos_dados": 2021,
+    "metadados_atualizados": "2026-08-10T17:32:36.771602"
+   },
+   {
+    "nome": "Glossário de Dados SP156 (Status das Solicitações) - 2012 até 2022",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/76e2d7af-524e-40a9-a62a-8b0015f4431f/download/glossario-de-dados-sp156-2012-ate-2022.xlsx",
+    "ano_dos_dados": 2022,
+    "metadados_atualizados": "2022-10-17T14:08:41.611935"
+   },
+   {
+    "nome": "Avaliação dos Canais - 2022",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/b9f40e01-f6eb-493d-8f45-920dfd8d764e/download/avaliacao-canais-2022.xlsx",
+    "ano_dos_dados": 2022,
+    "metadados_atualizados": "2026-04-08T19:53:25.515518"
+   },
+   {
+    "nome": "Avaliação dos Canais - 2022",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/936b8284-ea45-4ce1-86db-afbfabd7dfa8/download/avaliacao-canais-2022.csv",
+    "ano_dos_dados": 2022,
+    "metadados_atualizados": "2026-04-08T19:53:56.368629"
+   },
+   {
+    "nome": "Release - por TRI 2022",
+    "formato": "PDF",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/1ab3fd44-b71d-488b-8cd5-7bdcdc5907ad/download/release-2022.pdf",
+    "ano_dos_dados": 2022,
+    "metadados_atualizados": "2026-04-10T15:23:58.889693"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2022",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/6e6b299c-1952-433c-be06-797a2bc14fda/download/arquivo-final-1-trim.-2022.csv",
+    "ano_dos_dados": 2022,
+    "metadados_atualizados": "2026-08-10T16:39:10.124014"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2022",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/6de63b14-e804-44cb-9be1-e8b2971504ce/download/arquivo-final-2-trim.-2022.csv",
+    "ano_dos_dados": 2022,
+    "metadados_atualizados": "2026-08-10T16:40:09.931753"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2022",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/69b1460a-a245-47fa-bbb0-51f5e57c2f28/download/arquivo-final-3-trim.-2022.csv",
+    "ano_dos_dados": 2022,
+    "metadados_atualizados": "2026-08-10T16:41:51.050659"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2022",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/68408b82-9123-4be0-87cf-bff9096947c6/download/arquivo-final-4-trim.-2022.csv",
+    "ano_dos_dados": 2022,
+    "metadados_atualizados": "2026-08-10T16:44:13.755026"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2022",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/19793094-38ca-46ad-85d9-805555c5d0e2/download/arquivo-final-1-trim.-2022.xlsx",
+    "ano_dos_dados": 2022,
+    "metadados_atualizados": "2026-08-10T17:33:59.815948"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2022",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/7b6c72d7-0b77-4e0d-8634-440f043aa8b4/download/arquivo-final-2-trim.-2022.xlsx",
+    "ano_dos_dados": 2022,
+    "metadados_atualizados": "2026-08-10T17:34:40.960029"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2022",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/9cd8c705-bf82-4480-9d7c-0a506a3196a5/download/arquivo-final-3-trim.-2022.xlsx",
+    "ano_dos_dados": 2022,
+    "metadados_atualizados": "2026-08-10T17:35:28.817947"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2022",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/5fb9b183-22ae-4dcf-8121-415a01f7e6f7/download/arquivo-final-4-trim.-2022.xlsx",
+    "ano_dos_dados": 2022,
+    "metadados_atualizados": "2026-08-10T17:36:27.968653"
+   },
+   {
+    "nome": "Avaliação dos Canais - 2023",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/7f9f9fe6-4a3e-4c76-bf1b-960c0606167c/download/avaliacao-canais-2023.xlsx",
+    "ano_dos_dados": 2023,
+    "metadados_atualizados": "2026-04-08T19:54:28.641610"
+   },
+   {
+    "nome": "Avaliação dos Canais - 2023",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/236f9e5e-f21b-4a63-9bbd-c2d22d49100b/download/avaliacao-canais-2023.csv",
+    "ano_dos_dados": 2023,
+    "metadados_atualizados": "2026-04-08T19:55:02.899965"
+   },
+   {
+    "nome": "Release - por TRI 2023",
+    "formato": "PDF",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/58789a6d-723a-4569-a237-ea7d31ed97be/download/release-2023.pdf",
+    "ano_dos_dados": 2023,
+    "metadados_atualizados": "2026-04-10T15:24:44.579548"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2023",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/d3043e41-4270-47b5-9922-9e35edd10950/download/arquivo-final-1-trim.-2023.csv",
+    "ano_dos_dados": 2023,
+    "metadados_atualizados": "2026-08-10T16:46:05.108605"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2023",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/7978d3ba-d379-44db-993b-61b9ff406435/download/arquivo-final-2-trim.-2023.csv",
+    "ano_dos_dados": 2023,
+    "metadados_atualizados": "2026-08-10T16:47:44.914093"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2023",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/b01a9038-969e-4630-bd3a-4abe188b7259/download/arquivo-final-3-trim.-2023.csv",
+    "ano_dos_dados": 2023,
+    "metadados_atualizados": "2026-08-10T16:49:51.875888"
+   },
+   {
+    "nome": " Dados do SP156 - 4º TRI 2023",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/33d41278-02de-417a-a99a-5e01d3d87952/download/arquivo-final-4-trim.-2023.csv",
+    "ano_dos_dados": 2023,
+    "metadados_atualizados": "2026-08-10T16:53:32.233378"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2023",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/c9965bab-d545-4d96-aab0-7e0fb0ca23ba/download/arquivo-final-1-trim.-2023.xlsx",
+    "ano_dos_dados": 2023,
+    "metadados_atualizados": "2026-08-10T17:40:45.517900"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2023",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/2a2fab4a-cf6f-4045-987e-7faa7cda1b96/download/arquivo-final-2-trim.-2023.xlsx",
+    "ano_dos_dados": 2023,
+    "metadados_atualizados": "2026-08-10T17:42:36.711268"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2023",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/8dc17345-2d96-4084-b52e-481c34943e97/download/arquivo-final-3-trim.-2023.xlsx",
+    "ano_dos_dados": 2023,
+    "metadados_atualizados": "2026-08-10T17:43:29.575534"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2023",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/dadc0864-b05f-4e2f-a403-a4c51932db37/download/arquivo-final-4-trim.-2023.xlsx",
+    "ano_dos_dados": 2023,
+    "metadados_atualizados": "2026-08-10T17:44:16.404812"
+   },
+   {
+    "nome": "Avaliação dos Canais - 2024",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/54117b7a-1303-4634-8b94-a6774464fa4a/download/avaliacao-canais-2024.xlsx",
+    "ano_dos_dados": 2024,
+    "metadados_atualizados": "2026-04-08T19:55:43.521186"
+   },
+   {
+    "nome": "Avaliação dos Canais - 2024",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/639e3439-bb4f-4954-8aea-fdaacb86f22b/download/avaliacao-canais-2024.csv",
+    "ano_dos_dados": 2024,
+    "metadados_atualizados": "2026-04-08T19:56:17.031614"
+   },
+   {
+    "nome": "Release - por TRI 2024",
+    "formato": "PDF",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/c8a1f2cf-547a-42ee-b4fc-1517cf08abf5/download/release-2024.pdf",
+    "ano_dos_dados": 2024,
+    "metadados_atualizados": "2026-04-10T15:25:32.283644"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2024",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/787c054d-3e77-46c8-8713-e4e26eb2dd55/download/arquivo-final-1-trim.-2024.csv",
+    "ano_dos_dados": 2024,
+    "metadados_atualizados": "2026-08-10T16:55:01.725813"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2024",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/2d020379-fa40-4dc0-8d17-add74b119550/download/arquivo-final-2-trim.-2024.csv",
+    "ano_dos_dados": 2024,
+    "metadados_atualizados": "2026-08-10T16:56:40.771580"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2024",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/3c12fe0a-ec4f-4a20-a987-dd177330f4ce/download/arquivo-final-3-trim.-2024.csv",
+    "ano_dos_dados": 2024,
+    "metadados_atualizados": "2026-08-10T17:00:51.481102"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2024",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/ed357147-f15c-4bf0-ad15-edc963a9f130/download/arquivo-final-4-trim.-2024.csv",
+    "ano_dos_dados": 2024,
+    "metadados_atualizados": "2026-08-10T17:11:38.277028"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2024",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/36e1bfa5-9e27-4057-aec1-b9e7d6c3aa0c/download/arquivo-final-1-trim.-2024.xlsx",
+    "ano_dos_dados": 2024,
+    "metadados_atualizados": "2026-08-10T17:47:26.172944"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2024",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/dcb226bd-cb38-4f22-9bba-139d5a7f0bf1/download/arquivo-final-2-trim.-2024.xlsx",
+    "ano_dos_dados": 2024,
+    "metadados_atualizados": "2026-08-10T17:48:14.563382"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2024",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/94bc3958-10f4-4931-926f-b2df9fb1246a/download/arquivo-final-3-trim.-2024.xlsx",
+    "ano_dos_dados": 2024,
+    "metadados_atualizados": "2026-08-10T17:48:55.934144"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2024",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/c9e600da-ff5f-4c49-8597-7f0ac2eb4ac1/download/arquivo-final-4-trim.-2024.xlsx",
+    "ano_dos_dados": 2024,
+    "metadados_atualizados": "2026-08-10T17:50:36.710363"
+   },
+   {
+    "nome": "Avaliação dos Canais - 2025",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/459653a2-b070-4e6d-b609-799d7a6850f3/download/avaliacao-canais-2025.xlsx",
+    "ano_dos_dados": 2025,
+    "metadados_atualizados": "2026-04-09T13:41:11.268207"
+   },
+   {
+    "nome": "Avaliação dos Canais - 2025",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/d4b79174-8021-4f5c-bd2a-db8fa5ed5c15/download/avaliacao-canais-2025.csv",
+    "ano_dos_dados": 2025,
+    "metadados_atualizados": "2026-04-09T13:41:39.625294"
+   },
+   {
+    "nome": "Release - por TRI 2025",
+    "formato": "PDF",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/7f9608ae-ed1d-413f-b705-82c9cdb9eb9e/download/release-2025.pdf",
+    "ano_dos_dados": 2025,
+    "metadados_atualizados": "2026-04-10T15:26:18.473348"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2025",
+    "formato": ".csv",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/7c5aeb58-2cad-40ba-9e9e-af1c17cc5070/download/arquivo-final-1-trim-25.csv",
+    "ano_dos_dados": 2025,
+    "metadados_atualizados": "2026-08-10T17:13:13.191257"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2025",
+    "formato": ".csv",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/f5df7f4a-d614-4f85-b4a0-263ec9370cd9/download/arquivo-final-2-trim-25.csv",
+    "ano_dos_dados": 2025,
+    "metadados_atualizados": "2026-08-10T17:14:34.380739"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2025",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/3b1d2648-d586-40c8-819c-24fbb8005343/download/arquivo-final-3-trim-25.csv",
+    "ano_dos_dados": 2025,
+    "metadados_atualizados": "2026-08-10T17:16:07.276353"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2025",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/d3a98097-8128-45d4-b8fe-21874b81c971/download/arquivo-final-4-trim-25.csv",
+    "ano_dos_dados": 2025,
+    "metadados_atualizados": "2026-08-10T17:17:33.566732"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2025",
+    "formato": ".xlsx",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/e92924f8-7b95-482b-8f53-e90fe5a44992/download/arquivo-final-1-trim-25.xlsx",
+    "ano_dos_dados": 2025,
+    "metadados_atualizados": "2026-08-10T17:52:55.629505"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2025",
+    "formato": ".xlsx",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/0ac23fb7-5e6e-48ee-8615-9789d30cc94d/download/arquivo-final-2-trim-25.xlsx",
+    "ano_dos_dados": 2025,
+    "metadados_atualizados": "2026-08-10T17:55:08.445527"
+   },
+   {
+    "nome": "Dados do SP156 - 3º TRI 2025",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/67dc3ed6-95b1-4806-9e48-d4f30d1d80ad/download/arquivo-final-3-trim-25.xlsx",
+    "ano_dos_dados": 2025,
+    "metadados_atualizados": "2026-08-10T17:56:03.766001"
+   },
+   {
+    "nome": "Dados do SP156 - 4º TRI 2025",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/d748469e-ca93-4aa6-a757-dd282f2bed4a/download/arquivo-final-4-trim-25.xlsx",
+    "ano_dos_dados": 2025,
+    "metadados_atualizados": "2026-08-10T17:57:23.973448"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2026",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/75105148-4efd-48f3-8ae0-fc6c2adf7060/download/arquivo-final-1-trim-26.csv",
+    "ano_dos_dados": 2026,
+    "metadados_atualizados": "2026-08-10T17:19:16.624694"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2026",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/368eb32d-ef25-4441-be8f-fce0146575a1/download/arquivo-final-2-trim-26.csv",
+    "ano_dos_dados": 2026,
+    "metadados_atualizados": "2026-08-10T17:20:14.548675"
+   },
+   {
+    "nome": "Dados do SP156 - 1º TRI 2026",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/71859131-9dd1-458c-ae95-1092799c7d95/download/arquivo-final-1-trim-26.xlsx",
+    "ano_dos_dados": 2026,
+    "metadados_atualizados": "2026-08-10T17:58:35.579848"
+   },
+   {
+    "nome": "Dados do SP156 - 2º TRI 2026",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/3ae65d07-d3e2-417a-becc-659a51cdce57/download/arquivo-final-2-trim-26.xlsx",
+    "ano_dos_dados": 2026,
+    "metadados_atualizados": "2026-08-10T18:00:48.667961"
+   },
+   {
+    "nome": "Dados do SP156 - 3° TRI 2026 ",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/4288a1e6-d495-42d6-be1e-6169f729cced/download/arquivo-final-3-trim-26.xlsx",
+    "ano_dos_dados": 2026,
+    "metadados_atualizados": "2026-10-09T13:39:44.397063"
+   },
+   {
+    "nome": "Dados do SP156 - 3° TRI 2026",
+    "formato": ".csv",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/f67fcc12-8da4-485f-92a3-d2af40cc771e/download/arquivo-final-3-trim-26.csv",
+    "ano_dos_dados": 2026,
+    "metadados_atualizados": "2026-10-13T14:05:09.758198"
+   },
+   {
+    "nome": "Avaliações dos canais - 2026",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/f93ae2bc-97e7-4c04-94cc-d009398efef8/download/avaliacao-canais-2026.xlsx",
+    "ano_dos_dados": 2026,
+    "metadados_atualizados": "2026-10-15T13:51:15.943971"
+   },
+   {
+    "nome": "Avaliação dos canais - 2026",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/c4fd015c-124d-4235-9ed2-39304a7fa714/download/avaliacao-canais-2026.csv",
+    "ano_dos_dados": 2026,
+    "metadados_atualizados": "2026-10-15T13:53:26.186251"
+   },
+   {
+    "nome": "Release - por TRI 2026",
+    "formato": "PDF",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/479ccc69-9deb-4753-ab85-9067af1967e2/download/release-2026.pdf",
+    "ano_dos_dados": 2026,
+    "metadados_atualizados": "2026-10-19T16:40:54.742756"
+   }
+  ],
+  "uso_no_projeto": "não coletado pelo Airflow (o SP156 atual vem do GeoSampa)",
+  "status": "OK",
+  "segundos": 1.2
+ },
+ "SPTrans Olho Vivo": {
+  "status": "NAO_TESTADO",
+  "motivo": "variável OLHOVIVO_TOKEN não definida",
+  "segundos": 0.0
+ }
+}

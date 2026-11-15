@@ -37,6 +37,7 @@ o proxy deste ambiente bloqueia as APIs. Isso valida o **Airflow e o DAG**, não
 | Menu 7 ficava preso esperando o servidor da tela | Servidor em grupo próprio, com PID e `disown` |
 | O PDF de prévia ("NÃO ENTREGAR") ia para o GitHub | `docs/relatorio/*.pdf` ignorado (o relatório é entregue pelo Teams) |
 | Opção inválida era ignorada em silêncio | Aviso "Opção inválida" |
+| **Encontrado pela usuária no Codespaces real:** `apt-get update` falhava com `GPG error ... dl.yarnpkg.com ... NO_PUBKEY` / `is not signed`. A imagem traz uma fonte APT do Yarn (que o projeto não usa) e o `update` lê todas as fontes | Novo `scripts/codespaces/apt_oficial.sh`: o apt consulta só as fontes oficiais Debian/Ubuntu (verificação GPG mantida), ignora fontes de terceiros sem alterá-las e instala só `postgresql` (`--no-install-recommends`). Erro reproduzido aqui com uma fonte sem assinatura (mesma mensagem, saída 100); com a correção, `instalar.sh` completo passou como usuário `vscode` com a fonte quebrada presente e o PostgreSQL removido antes. Teste automatizado cobre Debian (deb822), Ubuntu (inclusive espelho Azure), Yarn, Microsoft, arquivo misto e vazio |
 
 ### Não executado por falta de acesso
 
@@ -46,8 +47,56 @@ o proxy deste ambiente bloqueia as APIs. Isso valida o **Airflow e o DAG**, não
 | Codespaces real na sua conta (imagem, encaminhamento de porta, segredos, *Rebuild Container*) | Exige a sua conta GitHub |
 | Databricks (Auto Loader, Delta MERGE, Volumes) | Exige a sua conta |
 
-Arquivos **sem alteração** desde a verificação de 12/11 (evidências daquela rodada continuam válidas): DAG e biblioteca de
-coleta, notebooks e SQL do Databricks, tela do MVP, `GuidingHand.bat` e scripts PowerShell.
+### Revisão após o relatório REAL de validação das fontes (15/11, 18h)
+
+A usuária executou a validação no Codespaces: Open-Meteo, Overpass, GeoSampa WFS e CKAN responderam (**conectividade
+comprovada**; nenhuma coleta oficial feita ainda). O relatório não foi anexado a esta conversa; os pontos abaixo vêm da
+descrição dela e da revisão do código.
+
+| Ponto | Diagnóstico | Ajuste (testado) |
+|---|---|---|
+| CKAN com recursos de 2012/2013 | Dados antigos; não é fonte do pipeline | Marcado como contexto histórico (`OK_HISTORICO`), fora do Airflow |
+| GeoSampa com exatamente 500 feições | Corte `maxFeatures=500` no validador; coletor sem paginação | Busca paginada com verificação de completude no coletor e no validador; teste com teto de 500: 1.234/1.234 |
+| Camadas de cadastro tratadas como SP156 (achado da revisão) | Descoberta por palavras genéricas | Classificação solicitações x cadastro; coletor recusa camada sem protocolo e status |
+| Célula do Open-Meteo a ~4,75 km, fora do recorte | Centro da célula da grade do modelo | Distância registrada por coleta; documentado como contexto regional |
+
+### Verificação automática da coleta (15/11, 19h)
+
+O relatório de validação de 22:02 (UTC) não chegou a esta conversa, e este ambiente segue sem acesso às APIs (HTTP 403
+do proxy). **A coleta oficial não foi executada aqui**: ela roda no Codespace da usuária.
+
+| Achado | Correção (testada) |
+|---|---|
+| Faltava conferir o CONTEÚDO da coleta (datas, totais, origem real, campos x Prata) | `scripts/verificar_chegada.py`, executado ao fim do menu 3: gera `docs/evidencias/coleta_<data>.md/.json`; lê o mapeamento SP156 do próprio código da Prata |
+| SP156 e Olho Vivo do simulador passavam como reais (o coletor descarta o envelope com o aviso) | Simulador marca cada feição/parada (`_origem: SIMULADOR_LOCAL`); verificador reprova |
+| Fonte pulada deixava em `chegada/` o arquivo de uma execução ANTERIOR do mesmo dia, que iria para o lote | DAG move esse arquivo para `chegada/_descartados/` (preservado); verificador aponta arquivo mais antigo que o início da execução; `preparar_lote.py` ignora `_descartados/` |
+
+### Mapeamento real do SP156 (15/11, 19h) — após a 1ª coleta real
+
+A verificação da coleta real (feita pela usuária no Codespace) mostrou que a Prata não reconhecia protocolo, serviço e
+status das 7 camadas. Os dados reais não foram enviados a esta conversa; a escolha do protocolo é feita **no Codespace,
+sobre a coleta existente**, por `scripts/perfil_sp156.py` (sem chamada externa).
+
+| Item | Situação |
+|---|---|
+| servico ← `dc_servico`, status ← `tx_situacao_solicitacao` | Mapeados; testados na Prata com os nomes reais |
+| data_abertura ← `dt_abertura`, data_conclusao ← `dt_parecer` | Já reconhecidos; formato `AAAA-MM-DDZ` do GeoServer incluído |
+| protocolo | **Pendente** até o perfil rodar nos dados reais (regra de decisão documentada; recusa dados simulados) |
+| Consolidação das 7 camadas | MERGE pelo protocolo; chave composta se houver colisão; testado (22 → 21 sem duplicar; 14 → 14 sem fundir) |
+| Datas abr–out/2020 | Documentado como série histórica; decisão pendente sobre como o MVP exibe o SP156 |
+
+### Decisão do protocolo e erro na verificação (15/11, 19h30)
+
+No Codespace, o perfil dos dados reais decidiu `protocolo = cd_identificador` (100% preenchido em todas as camadas,
+nenhuma solicitação repetida entre camadas), gravado em `databricks/lib/mapeamento_sp156.json` (relato da usuária).
+A verificação seguinte falhou com `ModuleNotFoundError: requests` porque o comando enviado chamava `python3` (Python do
+sistema) em vez do Python do projeto. Correções, testadas reproduzindo o erro com um Python sem `requests`:
+`scripts/ambiente_python.py` reexecuta o script com o Python do projeto; a verificação registra o mapeamento usado
+(campo do protocolo, situação e evidência); o módulo de mapeamento lê o arquivo atual a cada chamada.
+
+Arquivos **sem alteração** desde a verificação de 12/11 (evidências daquela rodada continuam válidas): notebooks e SQL do Databricks, tela do MVP, `GuidingHand.bat` e scripts PowerShell.
+O DAG (só o tratamento de fonte pulada) e a biblioteca de coleta (`coletores.py`, `config.py`) mudaram em 15/11 (paginação do GeoSampa, recusa de camadas de
+cadastro, distância da grade do clima), com testes próprios. A transformação da Prata (`databricks/lib/gh_transform.py`) mudou só no mapeamento SP156 (módulo comum `sp156_mapeamento.py`, chave composta opcional e formatos de data); os notebooks não mudaram.
 
 
 ## 1. Executado e confirmado
@@ -58,6 +107,8 @@ coleta, notebooks e SQL do Databricks, tela do MVP, `GuidingHand.bat` e scripts 
 | Estrutura do DAG (agendamento, paralelismo, retries, callback) | Airflow 3.0.6 | 3 passaram |
 | DAG em stack equivalente ao Docker Compose (PostgreSQL + LocalExecutor + api-server + scheduler + dag-processor) | Airflow 3.0.6 | 3 execuções `success`: a agendada das 07:00 (disparada sozinha, com falha recuperada por retry) e 2 manuais; na última, as 5 coletas começaram dentro de 105 ms (paralelismo real) |
 | Bronze incremental com streaming real do Spark (checkpoint + availableNow) | PySpark 4.0.1 | lote 1 = 5 · reexecução = 5 · lote 2 = 10 · reexecução = 10; zero duplicados |
+| Notebook `bronze/bronze_lote_1` (Auto Loader autônomo, checkpoint exclusivo `controle/checkpoint_bronze_lote_1`) e `01_bronze_autoloader` (checkpoint `checkpoint_bronze_arquivos_v2`, gravação foreachBatch sem duplicar) executados célula a célula em Spark local, com cloudFiles trocado pela fonte de arquivos e Delta por Parquet | PySpark 4.0.1 | lote 1: 0 → 4, reexecução 0 novos · `tamanho_bytes` = bytes reais do arquivo (sp156 com acentos: 1294 bytes / 1292 caracteres) · checkpoint antigo do 01 já usado não impede o lote 1 · checkpoint próprio inconsistente (tabela recriada) é detectado e reiniciado sem duplicar · lote 2 pelo 01: 4 → 8, reexecução 0 · integridade SHA-256 e bytes. **No Databricks: ainda não executado** |
+| Correção (15/11, 20h30) das 2 falhas do menu 5 no Codespace | venv Python 3.12 criado com `python -m venv` (link simbólico), base sem requests; mapeamento com `cd_identificador`; Airflow 3.0.6 | (1) `ambiente_python`: comparava executáveis resolvidos e, com venv por link simbólico, achava que o venv era o próprio Python do sistema e não reexecutava; agora testa se o candidato importa os módulos. O teste criava o venv com `system_site_packages`, que herda o Python base (sem requests). (2) Perfilador: a recusa com dados simulados já preservava a decisão real; o teste supunha o arquivo de fábrica (protocolo nulo). Agora cobre os dois estados e exige o arquivo byte a byte igual. Guarda de sessão: nenhum teste pode alterar `mapeamento_sp156.json` nem `chegada/`. Resultado: conjunto do menu 5 = 68 passaram, 2 pulados (sem PySpark); suíte completa com Spark = 94 passaram (DAG pulado sem Airflow) nos dois estados do mapeamento; DAG = 3 passaram |
 | Sintaxe de todo SQL dos notebooks (MERGE, CREATE TABLE AS, COMMENT, ALTER, arquivos .sql) | parser do Spark | válida (exceto sintaxe exclusiva do Databricks, listada no item 3) |
 | Notebooks sem APIs ausentes no serverless (sparkContext, RDD, cache) | análise estática | nenhum uso |
 | Scripts do Windows | PowerShell 7.4.6 | 12 sem erro de sintaxe; funções comuns executadas; leitura do estado e da evidência do Airflow testada com saída real da CLI (inclusive poluída por avisos); importação da pasta Downloads testada |

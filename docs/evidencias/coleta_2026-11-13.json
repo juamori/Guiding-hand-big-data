@@ -1,0 +1,196 @@
+{
+ "data_coleta": "2026-11-13",
+ "mapeamento_sp156": {
+  "arquivo": "databricks/lib/mapeamento_sp156.json",
+  "campos": {
+   "protocolo": "cd_identificador",
+   "servico": "dc_servico",
+   "status": "tx_situacao_solicitacao",
+   "data_abertura": "dt_abertura",
+   "data_conclusao": "dt_parecer"
+  },
+  "protocolo_composto_com_camada": false,
+  "situacao_protocolo": "DECIDIDO pelos dados reais em 2026-11-15T19:25:37-03:00: único em todas as camadas, preenchido em 100.0% e reconhece 0 solicitações repetidas entre camadas",
+  "evidencia": "docs/evidencias/perfil_sp156_2026-11-15.md"
+ },
+ "execucao_iniciada_em": null,
+ "verificado_em": "2026-11-15T20:40:26-03:00",
+ "fontes": {
+  "clima": {
+   "existe": true,
+   "arquivo": "/tmp/pytest-of-vscode/pytest-1/test_venv_com_link_simbolico_p0/chegada/clima/clima_2026-11-13.json",
+   "bytes": 1588,
+   "sha256": "bfccdc692d16fafde772a2db12ea54a96bf29068972d069549b36617f3c9c8d6",
+   "modificado_em": "2026-11-15T15:58:09-03:00",
+   "marcas_nao_reais": [
+    "_fixture"
+   ],
+   "obrigatoria": true,
+   "horas": 24,
+   "dias_no_conteudo": [
+    "2026-11-12"
+   ],
+   "esperado": "2026-11-12",
+   "precipitacao_total_mm": 0,
+   "centro_celula_grade": [
+    -23.5625,
+    -46.6875
+   ],
+   "distancia_grade_km": 1.58,
+   "problemas": [
+    "conteúdo de SIMULADOR/TESTE, não é coleta real"
+   ]
+  },
+  "osm": {
+   "existe": true,
+   "arquivo": "/tmp/pytest-of-vscode/pytest-1/test_venv_com_link_simbolico_p0/chegada/osm/osm_2026-11-13.json",
+   "bytes": 780,
+   "sha256": "c65484e1e8d35bd9d919823174cab6df3fdae18f185be1edd888147b68290a62",
+   "modificado_em": "2026-11-15T15:58:09-03:00",
+   "marcas_nao_reais": [
+    "FIXTURE DE TESTE"
+   ],
+   "obrigatoria": true,
+   "elementos": 7,
+   "base_osm_em": null,
+   "principais_tags": [
+    [
+     "highway=street_lamp",
+     1
+    ],
+    [
+     "natural=tree",
+     1
+    ],
+    [
+     "kerb=lowered",
+     1
+    ],
+    [
+     "amenity=waste_basket",
+     1
+    ],
+    [
+     "power=pole",
+     1
+    ],
+    [
+     "footway=sidewalk",
+     1
+    ],
+    [
+     "highway=bus_stop",
+     1
+    ]
+   ],
+   "fora_do_recorte": 1,
+   "problemas": [
+    "conteúdo de SIMULADOR/TESTE, não é coleta real"
+   ]
+  },
+  "eventos_oculos": {
+   "existe": true,
+   "arquivo": "/tmp/pytest-of-vscode/pytest-1/test_venv_com_link_simbolico_p0/chegada/eventos_oculos/eventos_oculos_2026-11-13.json",
+   "bytes": 27669,
+   "sha256": "5a977117089175f45ab79b6bf44d08ba2e6ab3c37b61b8eeadd53739f7e60d19",
+   "modificado_em": "2026-11-15T15:58:09-03:00",
+   "marcas_nao_reais": [],
+   "obrigatoria": true,
+   "eventos": 77,
+   "data_referencia": "2026-11-12",
+   "sintetico": true
+  },
+  "sp156": {
+   "existe": true,
+   "arquivo": "/tmp/pytest-of-vscode/pytest-1/test_venv_com_link_simbolico_p0/chegada/sp156/sp156_2026-11-13.json",
+   "bytes": 1334,
+   "sha256": "c13233b322d9f8c31ca9d9737a8e0215f1964699172ac86c4362130657af3bee",
+   "modificado_em": "2026-11-15T15:58:09-03:00",
+   "marcas_nao_reais": [
+    "ESTRUTURA PRESUMIDA"
+   ],
+   "obrigatoria": false,
+   "camadas": [
+    {
+     "camada": "geoportal:camada_teste",
+     "feicoes": 4,
+     "paginacao": null,
+     "eh_solicitacao": true,
+     "campos_disponiveis": [
+      "data_abertura",
+      "data_conclusao",
+      "protocolo",
+      "servico",
+      "status"
+     ],
+     "compatibilidade_prata": {
+      "protocolo": "protocolo",
+      "servico": "servico",
+      "status": "status",
+      "data_abertura": "data_abertura",
+      "data_conclusao": "data_conclusao"
+     },
+     "campos_canonicos_sem_correspondencia": [],
+     "status_encontrados": [
+      [
+       "FINALIZADA",
+       3
+      ],
+      [
+       "ABERTA",
+       1
+      ]
+     ],
+     "servicos_encontrados": [
+      [
+       "Tapa-buraco",
+       2
+      ],
+      [
+       "Reparo de calçada",
+       1
+      ],
+      [
+       "Poda de árvore",
+       1
+      ]
+     ],
+     "feicoes_com_tipo_de_obstaculo": 4,
+     "abertura_mais_antiga": "2026-10-20",
+     "abertura_mais_recente": "2026-11-06",
+     "pontos_no_recorte": "3/4"
+    }
+   ],
+   "metadados_coleta": {
+    "fonte": "sp156_geosampa_wfs",
+    "fixture": "ESTRUTURA PRESUMIDA (GeoJSON WFS); substituir apos validacao real"
+   },
+   "total_feicoes": 4,
+   "problemas": [
+    "conteúdo de SIMULADOR/TESTE, não é coleta real"
+   ]
+  },
+  "olhovivo": {
+   "existe": true,
+   "arquivo": "/tmp/pytest-of-vscode/pytest-1/test_venv_com_link_simbolico_p0/chegada/olhovivo/olhovivo_2026-11-13.json",
+   "bytes": 335,
+   "sha256": "809e3f2d157f429042015347967e4fb4c28dcedefd7caf493b35df46e2454b78",
+   "modificado_em": "2026-11-15T15:58:09-03:00",
+   "marcas_nao_reais": [
+    "ESTRUTURA PRESUMIDA"
+   ],
+   "obrigatoria": false,
+   "paradas": 2,
+   "problemas": [
+    "conteúdo de SIMULADOR/TESTE, não é coleta real"
+   ]
+  }
+ },
+ "aprovada": false,
+ "fontes_com_pendencia": [
+  "clima",
+  "osm",
+  "sp156",
+  "olhovivo"
+ ]
+}

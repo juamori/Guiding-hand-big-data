@@ -1,0 +1,128 @@
+{
+ "_amostra": "recorte real coletado em 2026-11-15T20:33:55",
+ "dados": {
+  "type": "FeatureCollection",
+  "features": [
+   {
+    "type": "Feature",
+    "id": "iluminacao_publica.23996",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.70410723,
+      -23.57119886
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador_iluminacao_publica": 23996,
+     "cd_numero_imovel": null,
+     "dc_tipo_iluminacao_publica": "LED",
+     "dt_carga": "2026-10-21Z",
+     "sg_fonte_original": "SMUL/ILUME",
+     "tx_endereco": "RUA DESEMBARGADOR ARMANDO FAIRBANKS",
+     "cd_placa": "IP0722141",
+     "tx_unidade": " "
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "iluminacao_publica.29914",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.70811699,
+      -23.56880639
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador_iluminacao_publica": 29914,
+     "cd_numero_imovel": null,
+     "dc_tipo_iluminacao_publica": "LED",
+     "dt_carga": "2026-10-21Z",
+     "sg_fonte_original": "SMUL/ILUME",
+     "tx_endereco": "PRACA MONTE CASTELO",
+     "cd_placa": "IP0706923",
+     "tx_unidade": " "
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "iluminacao_publica.29915",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.70811699,
+      -23.56880639
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador_iluminacao_publica": 29915,
+     "cd_numero_imovel": null,
+     "dc_tipo_iluminacao_publica": "LED",
+     "dt_carga": "2026-10-21Z",
+     "sg_fonte_original": "SMUL/ILUME",
+     "tx_endereco": "PRACA MONTE CASTELO",
+     "cd_placa": "IP0706923",
+     "tx_unidade": " "
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "iluminacao_publica.29916",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.70826432,
+      -23.56850351
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador_iluminacao_publica": 29916,
+     "cd_numero_imovel": null,
+     "dc_tipo_iluminacao_publica": "LED",
+     "dt_carga": "2026-10-21Z",
+     "sg_fonte_original": "SMUL/ILUME",
+     "tx_endereco": "PRACA MONTE CASTELO",
+     "cd_placa": "IP0706922",
+     "tx_unidade": " "
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "iluminacao_publica.29917",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.707904,
+      -23.56860481
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador_iluminacao_publica": 29917,
+     "cd_numero_imovel": null,
+     "dc_tipo_iluminacao_publica": "LED",
+     "dt_carga": "2026-10-21Z",
+     "sg_fonte_original": "SMUL/ILUME",
+     "tx_endereco": "PRACA MONTE CASTELO",
+     "cd_placa": "IP0706921",
+     "tx_unidade": " "
+    }
+   }
+  ],
+  "totalFeatures": 2339,
+  "numberMatched": 2339,
+  "numberReturned": 500,
+  "timeStamp": "2026-11-15T20:33:55.375Z",
+  "crs": {
+   "type": "name",
+   "properties": {
+    "name": "urn:ogc:def:crs:EPSG::4326"
+   }
+  }
+ }
+}

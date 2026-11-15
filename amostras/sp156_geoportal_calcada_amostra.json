@@ -1,0 +1,273 @@
+{
+ "_amostra": "recorte real coletado em 2026-11-15T20:33:54",
+ "dados": {
+  "type": "FeatureCollection",
+  "features": [
+   {
+    "type": "Feature",
+    "id": "calcada.241255",
+    "geometry": {
+     "type": "Polygon",
+     "coordinates": [
+      [
+       [
+        -46.6964879,
+        -23.56115087
+       ],
+       [
+        -46.69651187,
+        -23.56114852
+       ],
+       [
+        -46.69651459,
+        -23.5609766
+       ],
+       [
+        -46.69648385,
+        -23.56097822
+       ],
+       [
+        -46.69648389,
+        -23.56098469
+       ]
+      ]
+     ]
+    },
+    "geometry_name": "ge_poligono",
+    "properties": {
+     "cd_identificador_calcada": 241255,
+     "cd_logradouro": "045110",
+     "cd_identificador_segmento_logradouro": 238643,
+     "cd_setor_quadra": "083204001",
+     "nm_logradouro": "R PDE CARVALHO",
+     "qt_area_calcada": 53,
+     "qt_largura_minima_trecho": 2.05,
+     "qt_largura_maxima_trecho": 3.45,
+     "qt_largura_media_trecho": 3.16,
+     "pc_declividade_minima_trecho": 0,
+     "pc_declividade_maxima_trecho": 0,
+     "pc_declividade_media_trecho": 0,
+     "tx_plano_emergencial_calcada": null,
+     "tx_portaria": null,
+     "dt_inicio": null,
+     "dt_termino": null,
+     "tx_situacao": null
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "calcada.241256",
+    "geometry": {
+     "type": "Polygon",
+     "coordinates": [
+      [
+       [
+        -46.69648374,
+        -23.56095626
+       ],
+       [
+        -46.69651496,
+        -23.56095518
+       ],
+       [
+        -46.69652251,
+        -23.56054132
+       ],
+       [
+        -46.69652262,
+        -23.56039778
+       ],
+       [
+        -46.69652739,
+        -23.56020361
+       ]
+      ]
+     ]
+    },
+    "geometry_name": "ge_poligono",
+    "properties": {
+     "cd_identificador_calcada": 241256,
+     "cd_logradouro": "045110",
+     "cd_identificador_segmento_logradouro": 238643,
+     "cd_setor_quadra": "083204001",
+     "nm_logradouro": "R PDE CARVALHO",
+     "qt_area_calcada": 381,
+     "qt_largura_minima_trecho": 2.05,
+     "qt_largura_maxima_trecho": 3.45,
+     "qt_largura_media_trecho": 3.16,
+     "pc_declividade_minima_trecho": 0.04,
+     "pc_declividade_maxima_trecho": 1.6,
+     "pc_declividade_media_trecho": 1,
+     "tx_plano_emergencial_calcada": null,
+     "tx_portaria": null,
+     "dt_inicio": null,
+     "dt_termino": null,
+     "tx_situacao": null
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "calcada.241750",
+    "geometry": {
+     "type": "Polygon",
+     "coordinates": [
+      [
+       [
+        -46.6937986,
+        -23.56064528
+       ],
+       [
+        -46.69380595,
+        -23.5606325
+       ],
+       [
+        -46.69380618,
+        -23.56063211
+       ],
+       [
+        -46.69383572,
+        -23.56058074
+       ],
+       [
+        -46.69390646,
+        -23.56043291
+       ]
+      ]
+     ]
+    },
+    "geometry_name": "ge_poligono",
+    "properties": {
+     "cd_identificador_calcada": 241750,
+     "cd_logradouro": "186171",
+     "cd_identificador_segmento_logradouro": 48921,
+     "cd_setor_quadra": "081220001",
+     "nm_logradouro": "R DOS TAMANAS",
+     "qt_area_calcada": 251,
+     "qt_largura_minima_trecho": 3.69,
+     "qt_largura_maxima_trecho": 5.15,
+     "qt_largura_media_trecho": 3.94,
+     "pc_declividade_minima_trecho": 0.02,
+     "pc_declividade_maxima_trecho": 2.33,
+     "pc_declividade_media_trecho": 0.74,
+     "tx_plano_emergencial_calcada": null,
+     "tx_portaria": null,
+     "dt_inicio": null,
+     "dt_termino": null,
+     "tx_situacao": null
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "calcada.242991",
+    "geometry": {
+     "type": "Polygon",
+     "coordinates": [
+      [
+       [
+        -46.69557836,
+        -23.56275336
+       ],
+       [
+        -46.69557817,
+        -23.5627461
+       ],
+       [
+        -46.69554556,
+        -23.56274439
+       ],
+       [
+        -46.69551921,
+        -23.56274284
+       ],
+       [
+        -46.69551914,
+        -23.56270328
+       ]
+      ]
+     ]
+    },
+    "geometry_name": "ge_poligono",
+    "properties": {
+     "cd_identificador_calcada": 242991,
+     "cd_logradouro": "070637",
+     "cd_identificador_segmento_logradouro": 290125,
+     "cd_setor_quadra": "083205001",
+     "nm_logradouro": "R  FERNAO DIAS",
+     "qt_area_calcada": 21,
+     "qt_largura_minima_trecho": 0.83,
+     "qt_largura_maxima_trecho": 2.71,
+     "qt_largura_media_trecho": 2.35,
+     "pc_declividade_minima_trecho": 1.66,
+     "pc_declividade_maxima_trecho": 2.24,
+     "pc_declividade_media_trecho": 1.94,
+     "tx_plano_emergencial_calcada": null,
+     "tx_portaria": null,
+     "dt_inicio": null,
+     "dt_termino": null,
+     "tx_situacao": null
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "calcada.243364",
+    "geometry": {
+     "type": "Polygon",
+     "coordinates": [
+      [
+       [
+        -46.69523645,
+        -23.56126759
+       ],
+       [
+        -46.69525029,
+        -23.56126142
+       ],
+       [
+        -46.69525604,
+        -23.56126087
+       ],
+       [
+        -46.69528599,
+        -23.56122997
+       ],
+       [
+        -46.69527388,
+        -23.56122766
+       ]
+      ]
+     ]
+    },
+    "geometry_name": "ge_poligono",
+    "properties": {
+     "cd_identificador_calcada": 243364,
+     "cd_logradouro": "070637",
+     "cd_identificador_segmento_logradouro": 47378,
+     "cd_setor_quadra": "083032002",
+     "nm_logradouro": "R  FERNAO DIAS",
+     "qt_area_calcada": 20,
+     "qt_largura_minima_trecho": 2.01,
+     "qt_largura_maxima_trecho": 3.34,
+     "qt_largura_media_trecho": 2.49,
+     "pc_declividade_minima_trecho": 0,
+     "pc_declividade_maxima_trecho": 0,
+     "pc_declividade_media_trecho": 0,
+     "tx_plano_emergencial_calcada": null,
+     "tx_portaria": null,
+     "dt_inicio": null,
+     "dt_termino": null,
+     "tx_situacao": null
+    }
+   }
+  ],
+  "totalFeatures": 1233,
+  "numberMatched": 1233,
+  "numberReturned": 500,
+  "timeStamp": "2026-11-15T20:33:54.031Z",
+  "crs": {
+   "type": "name",
+   "properties": {
+    "name": "urn:ogc:def:crs:EPSG::4326"
+   }
+  }
+ }
+}

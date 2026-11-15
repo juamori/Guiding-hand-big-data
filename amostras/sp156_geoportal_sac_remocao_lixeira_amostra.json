@@ -1,0 +1,116 @@
+{
+ "_amostra": "recorte real coletado em 2026-11-15T22:02:52",
+ "dados": {
+  "type": "FeatureCollection",
+  "features": [
+   {
+    "type": "Feature",
+    "id": "sac_remocao_lixeira.125692",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.699166,
+      -23.57013802
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 125692,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-07-20T21:43:47Z",
+     "nm_logradouro": "Rua Amaro Cavalheiro",
+     "nr_logradouro": 530,
+     "dt_parecer": "2020-07-21T09:47:04Z",
+     "sg_orgao_responsavel": "AMLURB",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "APLICATIVO",
+     "dc_tema": "Lixo e limpeza",
+     "dc_assunto": "Lixeiras Públicas",
+     "dc_servico": "Instalação e remoção de lixeira",
+     "dt_carga": "2021-03-25Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "sac_remocao_lixeira.127204",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.6979435,
+      -23.56567792
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 127204,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-09-30T16:18:09Z",
+     "nm_logradouro": "Rua Ferreira de Araújo",
+     "nr_logradouro": 887,
+     "dt_parecer": "2020-09-30T19:31:00Z",
+     "sg_orgao_responsavel": "AMLURB",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "PORTAL ONLINE",
+     "dc_tema": "Lixo e limpeza",
+     "dc_assunto": "Lixeiras Públicas",
+     "dc_servico": "Instalação e remoção de lixeira",
+     "dt_carga": "2021-03-25Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "sac_remocao_lixeira.127315",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.6948287,
+      -23.56480512
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 127315,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-04-08T01:12:23Z",
+     "nm_logradouro": "Avenida Brigadeiro Faria Lima",
+     "nr_logradouro": 694,
+     "dt_parecer": "2020-04-08T14:59:51Z",
+     "sg_orgao_responsavel": "AMLURB",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "CENTRAL TELEFÔNICA",
+     "dc_tema": "Lixo e limpeza",
+     "dc_assunto": "Lixeiras Públicas",
+     "dc_servico": "Instalação e remoção de lixeira",
+     "dt_carga": "2021-03-25Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "sac_remocao_lixeira.127951",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.6969737,
+      -23.56861062
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 127951,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-05-13T16:20:59Z",
+     "nm_logradouro": "Rua Butantã",
+     "nr_logradouro": 123,
+     "dt_parecer": "2020-05-15T11:55:40Z",
+     "sg_orgao_responsavel": "AMLURB",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "APLICATIVO",
+     "dc_tema": "Lixo e limpeza",
+     "dc_assunto": "Lixeiras Públicas",
+     "dc_servico": "Instalação e remoção de lixeira",
+     "dt_carga": "2021-03-25Z"
+    }
+   }
+  ]
+ }
+}

@@ -24,16 +24,26 @@ def clima(qs):
 
 
 OSM = {"_aviso": AVISO, "elements": [
-    {"type": "node", "id": 1, "lat": -23.5668, "lon": -46.7015, "tags": {"highway": "street_lamp"}},
+    {"type": "node", "id": 1, "_origem": "SIMULADOR_LOCAL", "lat": -23.5668, "lon": -46.7015, "tags": {"highway": "street_lamp"}},
     {"type": "node", "id": 2, "lat": -23.5651, "lon": -46.6990, "tags": {"natural": "tree"}},
     {"type": "node", "id": 3, "lat": -23.5660, "lon": -46.7001, "tags": {"kerb": "lowered"}}]}
 
 SP156 = {"type": "FeatureCollection", "_aviso": AVISO, "features": [
     {"type": "Feature", "id": "sim.1", "geometry": {"type": "Point", "coordinates": [-46.7005, -23.5662]},
-     "properties": {"protocolo": "SIM-1", "servico": "Tapa-buraco", "status": "ABERTA",
+     "properties": {"_origem": "SIMULADOR_LOCAL", "protocolo": "SIM-1", "servico": "Tapa-buraco", "status": "ABERTA",
                     "data_abertura": "2026-11-01T09:00:00Z"}}]}
 
-PARADAS = [{"cp": 1, "np": "PARADA SIMULADA", "ed": "R TESTE", "py": -23.5672, "px": -46.7019}]
+TETO_SERVIDOR = 500
+SP156_PAGINADO = [
+    {"type": "Feature", "id": f"sim.{i}", "geometry": {"type": "Point",
+     "coordinates": [-46.7080 + (i % 30) * 0.0004, -23.5730 + (i // 30) * 0.0004]},
+     "properties": {"_origem": "SIMULADOR_LOCAL", "protocolo": f"SIM-{i}", "servico": "Tapa-buraco",
+                    "status": "FINALIZADA" if i % 3 == 0 else "ABERTA",
+                    "data_abertura": "2026-11-01T09:00:00Z"}} for i in range(1234)]
+ARVORES = [{"type": "Feature", "id": f"arv.{i}", "geometry": {"type": "Point", "coordinates": [-46.70, -23.567]},
+            "properties": {"_origem": "SIMULADOR_LOCAL", "especie": "ipe", "altura_m": 8}} for i in range(800)]
+
+PARADAS = [{"_origem": "SIMULADOR_LOCAL", "cp": 1, "np": "PARADA SIMULADA", "ed": "R TESTE", "py": -23.5672, "px": -46.7019}]
 
 
 class Manipulador(BaseHTTPRequestHandler):
@@ -51,10 +61,28 @@ class Manipulador(BaseHTTPRequestHandler):
         if u.path.endswith("/v1/forecast"):
             return self._json(clima(qs))
         if u.path.endswith("/wfs"):
-            return self._json(SP156)
+            return self._wfs(qs)
         if u.path.endswith("/Parada/Buscar"):
             return self._json(PARADAS)
         self.send_error(404)
+
+    def _wfs(self, qs):
+        req = qs.get("request", [""])[0]
+        if req == "GetCapabilities":
+            xml = ('<wfs:WFS_Capabilities xmlns:wfs="http://www.opengis.net/wfs"><FeatureTypeList>'
+                   '<FeatureType><Name>geoportal:sp156_tapa_buraco</Name><Title>SP156 tapa-buraco</Title></FeatureType>'
+                   '<FeatureType><Name>geoportal:arvore_viaria</Name><Title>Arvores</Title></FeatureType>'
+                   '<FeatureType><Name>geoportal:limite_distrito</Name><Title>Distritos</Title></FeatureType>'
+                   '</FeatureTypeList></wfs:WFS_Capabilities>')
+            return self._json(xml, "text/xml")
+        camada = qs.get("typeName", [""])[0]
+        feats = SP156_PAGINADO if "sp156" in camada else ARVORES
+        if qs.get("resultType", [""])[0] == "hits":
+            return self._json(f'<wfs:FeatureCollection numberOfFeatures="{len(feats)}"/>', "text/xml")
+        inicio = int(qs.get("startIndex", ["0"])[0])
+        pedido = int(qs.get("maxFeatures", ["1000000"])[0])
+        tamanho = min(pedido, TETO_SERVIDOR)  # o servidor simulado tem teto de 500 por resposta
+        return self._json({"type": "FeatureCollection", "_aviso": AVISO, "features": feats[inicio:inicio + tamanho]})
 
     def do_POST(self):
         u = urlparse(self.path)

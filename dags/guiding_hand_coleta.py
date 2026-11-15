@@ -71,12 +71,12 @@ def _executar_coleta(fonte: str, funcao) -> dict:
     data_coleta = _data_coleta()
     try:
         resultado = funcao(data_coleta)
-    except coletores.FonteNaoConfigurada as exc:
-        raise AirflowSkipException(str(exc)) from exc
-    except coletores.FonteIndisponivel as exc:
-        if config.FONTES[fonte]["obrigatoria"]:
+    except (coletores.FonteNaoConfigurada, coletores.FonteIndisponivel) as exc:
+        if isinstance(exc, coletores.FonteIndisponivel) and config.FONTES[fonte]["obrigatoria"]:
             raise
-        raise AirflowSkipException(f"fonte opcional indisponível: {exc}") from exc
+        movido = coletores.descartar_arquivo_anterior(fonte, _pasta_chegada(), data_coleta)
+        aviso = f" Arquivo de execução anterior do mesmo dia movido para {movido}." if movido else ""
+        raise AirflowSkipException(f"{fonte} pulada nesta coleta: {exc}.{aviso}") from exc
     destino = coletores.gravar(resultado, _pasta_chegada(), data_coleta)
     resumo = {"fonte": fonte, "arquivo": str(destino), "registros": resultado.registros,
               "sha256": resultado.sha256, "url": resultado.url, **resultado.detalhes}

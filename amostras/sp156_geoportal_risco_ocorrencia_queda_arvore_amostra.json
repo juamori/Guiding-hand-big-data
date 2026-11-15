@@ -1,0 +1,123 @@
+{
+ "_amostra": "recorte real coletado em 2026-11-15T20:33:55",
+ "dados": {
+  "type": "FeatureCollection",
+  "features": [
+   {
+    "type": "Feature",
+    "id": "risco_ocorrencia_queda_arvore.998",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.7077692,
+      -23.56932412
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": "998",
+     "dt_ocorrencia": "2026-02-19Z",
+     "dc_tipo_ocorrencia": "QUEDA DE ARVORE",
+     "nm_distrito": null,
+     "dt_carga": "2026-10-06Z",
+     "nm_subprefeitura": "BT - BUTANTA",
+     "sg_fonte_original": "SIGRC"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "risco_ocorrencia_queda_arvore.183",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.7070647,
+      -23.57072892
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": "183",
+     "dt_ocorrencia": "2026-01-14Z",
+     "dc_tipo_ocorrencia": "QUEDA DE ARVORE",
+     "nm_distrito": null,
+     "dt_carga": "2026-10-06Z",
+     "nm_subprefeitura": "BT - BUTANTA",
+     "sg_fonte_original": "SIGRC"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "risco_ocorrencia_queda_arvore.533",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.7079649,
+      -23.56902482
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": "533",
+     "dt_ocorrencia": "2026-01-28Z",
+     "dc_tipo_ocorrencia": "QUEDA DE ARVORE",
+     "nm_distrito": null,
+     "dt_carga": "2026-10-06Z",
+     "nm_subprefeitura": "BT - BUTANTA",
+     "sg_fonte_original": "SIGRC"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "risco_ocorrencia_queda_arvore.1558",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.7069655,
+      -23.56376092
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": "1558",
+     "dt_ocorrencia": "2026-04-23Z",
+     "dc_tipo_ocorrencia": "QUEDA DE ARVORE",
+     "nm_distrito": null,
+     "dt_carga": "2026-10-06Z",
+     "nm_subprefeitura": "BT - BUTANTA",
+     "sg_fonte_original": "SIGRC"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "risco_ocorrencia_queda_arvore.1769",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.6962871,
+      -23.56018902
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": "1769",
+     "dt_ocorrencia": "2026-06-12Z",
+     "dc_tipo_ocorrencia": "QUEDA DE ARVORE",
+     "nm_distrito": null,
+     "dt_carga": "2026-10-06Z",
+     "nm_subprefeitura": "PI - PINHEIROS",
+     "sg_fonte_original": "SIGRC"
+    }
+   }
+  ],
+  "totalFeatures": 18,
+  "numberMatched": 18,
+  "numberReturned": 18,
+  "timeStamp": "2026-11-15T20:33:55.625Z",
+  "crs": {
+   "type": "name",
+   "properties": {
+    "name": "urn:ogc:def:crs:EPSG::4326"
+   }
+  }
+ }
+}

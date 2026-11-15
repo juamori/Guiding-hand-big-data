@@ -1,0 +1,486 @@
+{
+ "Open-Meteo (clima)": {
+  "url": "https://api.open-meteo.com/v1/forecast?latitude=-23.5675&longitude=-46.702&hourly=temperature_2m%2Cprecipitation%2Crain%2Cwind_gusts_10m%2Cvisibility%2Cweather_code&timezone=America%2FSao_Paulo&start_date=2026-11-14&end_date=2026-11-14",
+  "data_referencia": "2026-11-14",
+  "horas": 24,
+  "variaveis": [
+   "temperature_2m",
+   "precipitation",
+   "rain",
+   "wind_gusts_10m",
+   "visibility",
+   "weather_code"
+  ],
+  "precipitacao_total_mm": 1.4,
+  "grade_lat_lon": [
+   -23.585238,
+   -46.659637
+  ],
+  "status": "OK",
+  "segundos": 0.2
+ },
+ "OpenStreetMap / Overpass": {
+  "instancia": "https://overpass-api.de/api/interpreter",
+  "elementos": 573,
+  "principais_tags": [
+   [
+    "highway=crossing",
+    233
+   ],
+   [
+    "highway=footway",
+    148
+   ],
+   [
+    "natural=tree",
+    80
+   ],
+   [
+    "footway=crossing",
+    59
+   ],
+   [
+    "highway=bus_stop",
+    55
+   ],
+   [
+    "barrier=gate",
+    48
+   ],
+   [
+    "kerb=lowered",
+    34
+   ],
+   [
+    "barrier=lift_gate",
+    6
+   ],
+   [
+    "footway=sidewalk",
+    6
+   ],
+   [
+    "footway=traffic_island",
+    6
+   ],
+   [
+    "kerb=raised",
+    3
+   ],
+   [
+    "tactile_paving=no",
+    2
+   ],
+   [
+    "barrier=block",
+    1
+   ],
+   [
+    "barrier=yes",
+    1
+   ],
+   [
+    "kerb=flush",
+    1
+   ]
+  ],
+  "status": "OK",
+  "segundos": 52.4
+ },
+ "GeoSampa WFS (SP156)": {
+  "total_camadas_wfs": 488,
+  "candidatas_sp156": 16,
+  "camadas_com_dados_no_recorte": [
+   "geoportal:arvore",
+   "geoportal:calcada",
+   "geoportal:sac_solicitacao_manutencao_sinalizacao_pintura_ciclofaixa",
+   "geoportal:sac_remocao_lixeira",
+   "geoportal:sac_placa_transito",
+   "geoportal:iluminacao_publica",
+   "geoportal:risco_ocorrencia_queda_arvore",
+   "geoportal:sac_quadra_arvore_urgencia",
+   "geoportal:sac_remocao_entulho",
+   "geoportal:sac_tapa_buraco",
+   "geoportal:sac_tapa_buraco_faixa_corredor"
+  ],
+  "testes": [
+   {
+    "camada": "geoportal:arvore",
+    "titulo": "Arborização viária",
+    "feicoes_no_recorte": 500,
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.70199208,
+     -23.56089943
+    ],
+    "campos": [
+     "cd_especie",
+     "cd_identificador",
+     "cd_identificador_arvore_sisgau",
+     "cd_inspecao",
+     "cd_tipo_estado_geral",
+     "cd_tipo_porte",
+     "dc_especie",
+     "dc_nm_popular",
+     "dc_tipo_estado_geral",
+     "dc_tipo_porte",
+     "dt_atualizacao_sisgau",
+     "dt_inspecao",
+     "nm_distrito_municipal",
+     "nm_logradouro_referencia",
+     "nm_subprefeitura",
+     "nm_vulgar_especie",
+     "nr_logradouro_referencia",
+     "qt_altura_arvore",
+     "qt_diametro_copa",
+     "qt_diametro_peito_dap",
+     "sg_distrito_municipal"
+    ]
+   },
+   {
+    "camada": "geoportal:calcada",
+    "titulo": "Calçadas",
+    "feicoes_no_recorte": 500,
+    "geometria": "Polygon",
+    "coordenada_exemplo": null,
+    "campos": [
+     "cd_identificador_calcada",
+     "cd_identificador_segmento_logradouro",
+     "cd_logradouro",
+     "cd_setor_quadra",
+     "dt_inicio",
+     "dt_termino",
+     "nm_logradouro",
+     "pc_declividade_maxima_trecho",
+     "pc_declividade_media_trecho",
+     "pc_declividade_minima_trecho",
+     "qt_area_calcada",
+     "qt_largura_maxima_trecho",
+     "qt_largura_media_trecho",
+     "qt_largura_minima_trecho",
+     "tx_plano_emergencial_calcada",
+     "tx_portaria",
+     "tx_situacao"
+    ]
+   },
+   {
+    "camada": "geoportal:sac_solicitacao_manutencao_sinalizacao_pintura_ciclofaixa",
+    "titulo": "Ciclovias, ciclofaixas e ciclorrotas - solicitar manutenção da sinalização e pintura",
+    "feicoes_no_recorte": 2,
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.709903,
+     -23.57350442
+    ],
+    "campos": [
+     "cd_identificador",
+     "cd_identificador_original_atendimento_cidadao",
+     "dc_assunto",
+     "dc_servico",
+     "dc_tema",
+     "dt_abertura",
+     "dt_carga",
+     "dt_parecer",
+     "nm_logradouro",
+     "nr_logradouro",
+     "sg_orgao_responsavel",
+     "tx_canal_atendimento",
+     "tx_situacao_solicitacao"
+    ]
+   },
+   {
+    "camada": "geoportal:sac_conserto_lixeira",
+    "titulo": "Conserto de lixeira",
+    "feicoes_no_recorte": 0,
+    "geometria": null,
+    "coordenada_exemplo": null,
+    "campos": []
+   },
+   {
+    "camada": "geoportal:sac_remocao_lixeira",
+    "titulo": "Instalação e remoção de lixeira",
+    "feicoes_no_recorte": 4,
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.699166,
+     -23.57013802
+    ],
+    "campos": [
+     "cd_identificador",
+     "cd_identificador_original_atendimento_cidadao",
+     "dc_assunto",
+     "dc_servico",
+     "dc_tema",
+     "dt_abertura",
+     "dt_carga",
+     "dt_parecer",
+     "nm_logradouro",
+     "nr_logradouro",
+     "sg_orgao_responsavel",
+     "tx_canal_atendimento",
+     "tx_situacao_solicitacao"
+    ]
+   },
+   {
+    "camada": "geoportal:sac_placa_transito",
+    "titulo": "Manutenção de placas de trânsito",
+    "feicoes_no_recorte": 2,
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.7063451,
+     -23.57063372
+    ],
+    "campos": [
+     "cd_identificador",
+     "cd_identificador_original_atendimento_cidadao",
+     "dc_assunto",
+     "dc_servico",
+     "dc_tema",
+     "dt_abertura",
+     "dt_carga",
+     "dt_parecer",
+     "nm_logradouro",
+     "nr_logradouro",
+     "sg_orgao_responsavel",
+     "tx_canal_atendimento",
+     "tx_situacao_solicitacao"
+    ]
+   },
+   {
+    "camada": "geoportal:sac_pintura_guia_poste",
+    "titulo": "Pintura de guias e postes",
+    "feicoes_no_recorte": 0,
+    "geometria": null,
+    "coordenada_exemplo": null,
+    "campos": []
+   },
+   {
+    "camada": "geoportal:iluminacao_publica",
+    "titulo": "Pontos de iluminação pública",
+    "feicoes_no_recorte": 500,
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.70410723,
+     -23.57119886
+    ],
+    "campos": [
+     "cd_identificador_iluminacao_publica",
+     "cd_numero_imovel",
+     "cd_placa",
+     "dc_tipo_iluminacao_publica",
+     "dt_carga",
+     "sg_fonte_original",
+     "tx_endereco",
+     "tx_unidade"
+    ]
+   },
+   {
+    "camada": "geoportal:risco_ocorrencia_queda_arvore",
+    "titulo": "Queda de árvore",
+    "feicoes_no_recorte": 18,
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.7077692,
+     -23.56932412
+    ],
+    "campos": [
+     "cd_identificador",
+     "dc_tipo_ocorrencia",
+     "dt_carga",
+     "dt_ocorrencia",
+     "nm_distrito",
+     "nm_subprefeitura",
+     "sg_fonte_original"
+    ]
+   },
+   {
+    "camada": "geoportal:sac_quadra_arvore_urgencia",
+    "titulo": "Queda de árvore",
+    "feicoes_no_recorte": 2,
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.69875847,
+     -23.56694849
+    ],
+    "campos": [
+     "cd_identificador",
+     "cd_identificador_original_atendimento_cidadao",
+     "dc_assunto",
+     "dc_servico",
+     "dc_tema",
+     "dt_abertura",
+     "dt_carga",
+     "dt_parecer",
+     "nm_logradouro",
+     "nr_logradouro",
+     "sg_orgao_responsavel",
+     "tx_canal_atendimento",
+     "tx_situacao_solicitacao"
+    ]
+   },
+   {
+    "camada": "geoportal:sac_reclamacao_falta_lavagem_calcadao",
+    "titulo": "Reclamação de falta de lavagem de calçadões",
+    "feicoes_no_recorte": 0,
+    "geometria": null,
+    "coordenada_exemplo": null,
+    "campos": []
+   },
+   {
+    "camada": "geoportal:sac_reclamacao_sinalizacao_inadequada_terminal_onibus",
+    "titulo": "Reclamação de sinalização inadequada de terminais de ônibus",
+    "feicoes_no_recorte": 0,
+    "geometria": null,
+    "coordenada_exemplo": null,
+    "campos": []
+   },
+   {
+    "camada": "geoportal:sac_remocao_entulho",
+    "titulo": "Remoção de entulho em via pública",
+    "feicoes_no_recorte": 9,
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.6940287,
+     -23.57394502
+    ],
+    "campos": [
+     "cd_identificador",
+     "cd_identificador_original_atendimento_cidadao",
+     "dc_assunto",
+     "dc_servico",
+     "dc_tema",
+     "dt_abertura",
+     "dt_carga",
+     "dt_parecer",
+     "nm_logradouro",
+     "nr_logradouro",
+     "sg_orgao_responsavel",
+     "tx_canal_atendimento",
+     "tx_situacao_solicitacao"
+    ]
+   },
+   {
+    "camada": "geoportal:sac_sinalizacao_horizontal_apagada_repintura",
+    "titulo": "Sinalização horizontal apagada (pintura de solo) – Solicitar repintura",
+    "feicoes_no_recorte": 0,
+    "geometria": null,
+    "coordenada_exemplo": null,
+    "campos": []
+   },
+   {
+    "camada": "geoportal:sac_tapa_buraco",
+    "titulo": "Tapa-buraco",
+    "feicoes_no_recorte": 151,
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.7050688,
+     -23.56692372
+    ],
+    "campos": [
+     "cd_identificador",
+     "cd_identificador_original_atendimento_cidadao",
+     "dc_assunto",
+     "dc_servico",
+     "dc_tema",
+     "dt_abertura",
+     "dt_carga",
+     "dt_parecer",
+     "nm_logradouro",
+     "nr_logradouro",
+     "sg_orgao_responsavel",
+     "tx_canal_atendimento",
+     "tx_situacao_solicitacao"
+    ]
+   },
+   {
+    "camada": "geoportal:sac_tapa_buraco_faixa_corredor",
+    "titulo": "Tapa-buraco em faixa exclusiva ou corredor de ônibus",
+    "feicoes_no_recorte": 3,
+    "geometria": "Point",
+    "coordenada_exemplo": [
+     -46.7065602,
+     -23.57397042
+    ],
+    "campos": [
+     "cd_identificador",
+     "cd_identificador_original_atendimento_cidadao",
+     "dc_assunto",
+     "dc_servico",
+     "dc_tema",
+     "dt_abertura",
+     "dt_carga",
+     "dt_parecer",
+     "nm_logradouro",
+     "nr_logradouro",
+     "sg_orgao_responsavel",
+     "tx_canal_atendimento",
+     "tx_situacao_solicitacao"
+    ]
+   }
+  ],
+  "status": "OK",
+  "segundos": 5.5
+ },
+ "Portal CKAN (SP156 CSV)": {
+  "http": 200,
+  "titulo": "Dados do SP156 - Solicitações",
+  "recursos": [
+   {
+    "nome": "Dados do SP156 - 2º SEM 2013",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/78e30581-c517-4098-81ed-f0ff8d4feda3/download/arquivofinal2sem2013.xlsx.csv",
+    "atualizado": "2022-10-11T16:23:40.949825"
+   },
+   {
+    "nome": "Dados do SP156 - 2º SEM 2013",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/ff677fb9-bac4-431b-9e03-c79551967f7a/download/arquivofinal2sem2013.xlsx.xlsx",
+    "atualizado": "2022-10-11T16:21:34.513521"
+   },
+   {
+    "nome": "Dados do SP156 - 1º SEM 2013",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/328ab864-b07c-4ec8-9035-56d3dbac19fe/download/arquivofinal1sem2013.xlsx.csv",
+    "atualizado": "2022-10-11T16:14:26.900196"
+   },
+   {
+    "nome": "Dados do SP156 - 1º SEM 2013",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/16a9a120-0fec-4498-ba14-0d2ef39fd96d/download/arquivofinal1sem2013.xlsx.xlsx",
+    "atualizado": "2022-10-11T16:08:26.758215"
+   },
+   {
+    "nome": "Dados do SP156 - 2º SEM 2012",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/ecb2edb1-1a44-4ce0-8343-d4400b744b9e/download/arquivofinal2sem2012.xlsx.csv",
+    "atualizado": "2022-10-11T16:07:19.108228"
+   },
+   {
+    "nome": "Dados do SP156 - 2º SEM 2012",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/63543bc4-72b7-4a91-a89a-e037a54c5393/download/arquivofinal2sem2012.xlsx.xlsx",
+    "atualizado": "2022-10-11T16:05:23.596872"
+   },
+   {
+    "nome": "Dados do SP156 - 1º SEM 2012",
+    "formato": "CSV",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/e08a9a50-969a-43ec-b5df-dff69b026c7d/download/arquivofinal1sem2012.xlsx.csv",
+    "atualizado": "2022-10-11T16:03:57.311350"
+   },
+   {
+    "nome": "Dados do SP156 - 1º SEM 2012",
+    "formato": "XLSX",
+    "url": "https://dados.prefeitura.sp.gov.br/dataset/0aecfa2b-aa3a-40d4-8183-0d4351b7fd0a/resource/c71cce74-3103-4228-91b8-2124b4161263/download/arquivofinal1sem2012.xlsx.xlsx",
+    "atualizado": "2022-10-11T15:58:51.007995"
+   }
+  ],
+  "total_recursos": 136,
+  "status": "OK",
+  "segundos": 1.1
+ },
+ "SPTrans Olho Vivo": {
+  "status": "NAO_TESTADO",
+  "motivo": "variável OLHOVIVO_TOKEN não definida",
+  "segundos": 0.0
+ }
+}

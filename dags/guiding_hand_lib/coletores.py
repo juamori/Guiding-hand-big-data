@@ -99,8 +99,23 @@ def coletar_clima(sessao: requests.Session, data_ref: date, bbox: config.BBox,
     horas = dados.get("hourly", {}).get("time", [])
     if not horas:
         raise FonteIndisponivel("clima: resposta sem série horária")
-    return ResultadoColeta("clima", resp.content, resp.url, len(horas),
-                           {"data_referencia": data_ref.isoformat()})
+    # A API devolve o centro da célula da grade usada (escolhida por altitude parecida, padrão
+    # cell_selection=land), que pode ficar a alguns km do ponto pedido. Registramos a distância.
+    grade = (dados.get("latitude"), dados.get("longitude"))
+    detalhes = {"data_referencia": data_ref.isoformat(), "ponto_pedido": [params["latitude"], params["longitude"]],
+                "centro_celula_grade": list(grade)}
+    if None not in grade:
+        detalhes["distancia_grade_km"] = round(distancia_km(lat, lon, *grade), 2)
+        detalhes["celula_dentro_do_recorte"] = bbox.contem(*grade)
+    return ResultadoColeta("clima", resp.content, resp.url, len(horas), detalhes)
+
+
+def distancia_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    """Distância aproximada (equiretangular), suficiente para poucos km."""
+    import math
+    dy = (lat2 - lat1) * 111.32
+    dx = (lon2 - lon1) * 111.32 * math.cos(math.radians((lat1 + lat2) / 2))
+    return math.hypot(dx, dy)
 
 
 # --------------------------------------------------------------------------- OSM
@@ -142,12 +157,82 @@ def coletar_osm(sessao: requests.Session, bbox: config.BBox, urls: list[str] | N
 
 
 # --------------------------------------------------------------------------- SP156
+WFS_TAMANHO_PAGINA = 1000
+WFS_MAX_PAGINAS = 50
+
+
+def _total_wfs(sessao, url: str, camada: str, bbox: config.BBox, timeout: int) -> int | None:
+    """Total de feições no recorte segundo o servidor (resultType=hits). None se não informado."""
+    try:
+        r = sessao.get(url, params={"service": "WFS", "version": "1.1.0", "request": "GetFeature",
+                                    "typeName": camada, "srsName": "EPSG:4326", "bbox": bbox.como_wfs_4326(),
+                                    "resultType": "hits"}, timeout=timeout)
+        r.raise_for_status()
+        m = re.search(r'numberOf(?:Features|Matched)="(\d+)"', r.text)
+        return int(m.group(1)) if m else None
+    except requests.RequestException:
+        return None
+
+
+def buscar_camada_wfs(sessao, url: str, camada: str, bbox: config.BBox, timeout: int = 90,
+                      tamanho_pagina: int = WFS_TAMANHO_PAGINA,
+                      max_paginas: int = WFS_MAX_PAGINAS) -> tuple[dict, dict]:
+    """Busca TODAS as feições da camada no recorte, paginando com maxFeatures + startIndex
+    (GeoServer aceita paginação também no WFS 1.1.0).
+
+    Avança pelo número de feições realmente devolvidas (funciona mesmo se o servidor tiver um
+    teto menor que a página pedida) e para quando: a página vem vazia, não traz feições novas
+    (servidor ignorando startIndex) ou o total informado pelo servidor foi atingido.
+    Retorna (FeatureCollection completa, informações de completude).
+    """
+    total_servidor = _total_wfs(sessao, url, camada, bbox, timeout)
+    feicoes: list[dict] = []
+    vistos: set[str] = set()
+    inicio, paginas, paginacao_ignorada, ultima_url = 0, 0, False, url
+    while paginas < max_paginas:
+        r = sessao.get(url, params={"service": "WFS", "version": "1.1.0", "request": "GetFeature",
+                                    "typeName": camada, "srsName": "EPSG:4326", "bbox": bbox.como_wfs_4326(),
+                                    "outputFormat": "application/json", "maxFeatures": tamanho_pagina,
+                                    "startIndex": inicio}, timeout=timeout)
+        r.raise_for_status()
+        ultima_url = r.url
+        pagina = _exigir_json(r, f"sp156[{camada}]").get("features", [])
+        paginas += 1
+        novas = 0
+        for f in pagina:
+            chave = str(f.get("id") or json.dumps(f, sort_keys=True))
+            if chave not in vistos:
+                vistos.add(chave)
+                feicoes.append(f)
+                novas += 1
+        if not pagina:
+            break
+        if novas == 0:
+            paginacao_ignorada = True
+            break
+        inicio += len(pagina)
+        if total_servidor is not None and len(feicoes) >= total_servidor:
+            break
+        # Sem total conhecido NÃO paramos numa página "curta": o servidor pode ter teto próprio
+        # (ex.: 500 por resposta). Seguimos até uma página vazia.
+    # completo: True = comprovado; False = faltam feições; None = não verificável
+    if total_servidor is not None:
+        completo = len(feicoes) >= total_servidor
+    elif paginacao_ignorada:
+        completo = False if paginas and len(feicoes) >= tamanho_pagina else None
+    else:
+        completo = paginas < max_paginas
+    info = {"paginas": paginas, "total_servidor": total_servidor, "coletadas": len(feicoes),
+            "completo": completo, "paginacao_ignorada": paginacao_ignorada, "url_ultima_pagina": ultima_url}
+    return {"type": "FeatureCollection", "features": feicoes}, info
+
+
 def coletar_sp156(sessao: requests.Session, bbox: config.BBox, camadas: list[str],
                   timeout: int = 90, url: str | None = None) -> ResultadoColeta:
-    """Solicitações SP156 georreferenciadas (GeoSampa WFS) dentro do recorte.
+    """Solicitações SP156 georreferenciadas (GeoSampa WFS) dentro do recorte, COMPLETAS (paginadas).
 
-    ``camadas`` vem da Variable ``gh_sp156_camadas`` e é preenchida depois da
-    validação de fontes (os nomes das camadas não estão documentados publicamente).
+    ``camadas`` vem da Variable ``gh_sp156_camadas``, preenchida pela validação de fontes.
+    Cada camada registra páginas, total informado pelo servidor e se a coleta ficou completa.
     """
     url = url or config.GEOSAMPA_WFS_URL
     if not camadas:
@@ -161,32 +246,41 @@ def coletar_sp156(sessao: requests.Session, bbox: config.BBox, camadas: list[str
         "camadas": [],
     }
     total = 0
-    falhas = []
+    falhas, incompletas, nao_verificadas, recusadas = [], [], [], []
     for camada in camadas:
-        params = {
-            "service": "WFS",
-            "version": "1.1.0",
-            "request": "GetFeature",
-            "typeName": camada,
-            "srsName": "EPSG:4326",
-            "bbox": bbox.como_wfs_4326(),
-            "outputFormat": "application/json",
-        }
         try:
-            resp = sessao.get(url, params=params, timeout=timeout)
-            resp.raise_for_status()
-            fc = _exigir_json(resp, f"sp156[{camada}]")
-            n = len(fc.get("features", []))
-            total += n
-            pacote["camadas"].append({"camada": camada, "url": resp.url, "resposta": fc})
+            fc, info = buscar_camada_wfs(sessao, url, camada, bbox, timeout)
+            if fc["features"] and not eh_camada_de_solicitacoes(fc["features"]):
+                recusadas.append(camada)
+                continue
+            total += info["coletadas"]
+            if info["completo"] is False:
+                incompletas.append(camada)
+            elif info["completo"] is None:
+                nao_verificadas.append(camada)
+            pacote["camadas"].append({"camada": camada, "url": info["url_ultima_pagina"], "paginacao": info,
+                                      "resposta": fc})
         except (requests.RequestException, FonteIndisponivel) as exc:
             falhas.append(f"{camada}: {exc}")
     if not pacote["camadas"]:
-        raise FonteIndisponivel("sp156: nenhuma camada respondeu -> " + " | ".join(falhas))
-    pacote["_coleta"]["falhas"] = falhas
+        motivo = " | ".join(falhas + [f"{c}: não é camada de solicitações" for c in recusadas])
+        raise FonteIndisponivel("sp156: nenhuma camada de solicitações utilizável -> " + motivo)
+    pacote["_coleta"].update(falhas=falhas, camadas_recusadas_nao_solicitacao=recusadas,
+                             camadas_incompletas=incompletas,
+                             camadas_completude_nao_verificavel=nao_verificadas)
     conteudo = json.dumps(pacote, ensure_ascii=False).encode("utf-8")
     return ResultadoColeta("sp156", conteudo, url, total,
-                           {"camadas_ok": len(pacote["camadas"]), "falhas": falhas})
+                           {"camadas_ok": len(pacote["camadas"]), "falhas": falhas,
+                            "camadas_incompletas": incompletas,
+                            "camadas_completude_nao_verificavel": nao_verificadas,
+                            "camadas_recusadas_nao_solicitacao": recusadas})
+
+
+def eh_camada_de_solicitacoes(features: list[dict]) -> bool:
+    """True se as feições têm protocolo e status (solicitação SP156), não só cadastro de infraestrutura."""
+    campos = {k.lower() for f in features[:50] for k in (f.get("properties") or {})}
+    tem = lambda trechos: any(t in c for c in campos for t in trechos)  # aceita ds_situacao, nr_protocolo_156...
+    return tem(config.TRECHOS_PROTOCOLO_SP156) and tem(config.TRECHOS_STATUS_SP156)
 
 
 # --------------------------------------------------------------------------- Olho Vivo
@@ -235,6 +329,19 @@ def gravar(resultado: ResultadoColeta, pasta_chegada: Path, data_coleta: date) -
     temporario = destino.with_suffix(".json.tmp")
     temporario.write_bytes(resultado.conteudo)
     temporario.replace(destino)
+    return destino
+
+
+def descartar_arquivo_anterior(fonte: str, pasta_chegada: Path, data_coleta: date) -> Path | None:
+    """Fonte pulada nesta execução: o arquivo do MESMO dia, de uma execução anterior, não pode
+    continuar em chegada/ como se fosse desta coleta. É movido (não apagado) para chegada/_descartados/."""
+    atual = pasta_chegada / fonte / nome_arquivo(fonte, data_coleta)
+    if not atual.exists():
+        return None
+    destino = pasta_chegada / "_descartados" / (
+        f"{atual.stem}__descartado_{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}.json")
+    destino.parent.mkdir(parents=True, exist_ok=True)
+    atual.replace(destino)
     return destino
 
 

@@ -1,0 +1,68 @@
+{
+ "_amostra": "recorte real coletado em 2026-11-15T22:02:47",
+ "dados": {
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+   "timestamp_osm_base": "2026-11-15T22:01:06Z",
+   "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+   {
+    "type": "node",
+    "id": 30474021,
+    "lat": -23.5721493,
+    "lon": -46.7023585,
+    "tags": {
+     "crossing": "marked",
+     "crossing:markings": "yes",
+     "highway": "crossing",
+     "traffic_calming": "table"
+    }
+   },
+   {
+    "type": "node",
+    "id": 157188519,
+    "lat": -23.5615163,
+    "lon": -46.6948558,
+    "tags": {
+     "crossing": "marked",
+     "highway": "crossing",
+     "kerb": "lowered"
+    }
+   },
+   {
+    "type": "node",
+    "id": 173361759,
+    "lat": -23.568395,
+    "lon": -46.6970047,
+    "tags": {
+     "crossing": "marked",
+     "highway": "crossing"
+    }
+   },
+   {
+    "type": "node",
+    "id": 465878086,
+    "lat": -23.5676252,
+    "lon": -46.6960304,
+    "tags": {
+     "crossing": "traffic_signals",
+     "highway": "crossing"
+    }
+   },
+   {
+    "type": "node",
+    "id": 466070443,
+    "lat": -23.5681084,
+    "lon": -46.6964714,
+    "tags": {
+     "crossing": "marked",
+     "crossing:island": "no",
+     "highway": "crossing",
+     "kerb": "lowered"
+    }
+   }
+  ]
+ }
+}

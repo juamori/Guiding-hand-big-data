@@ -42,27 +42,13 @@ TIPOS_OBSTACULO = {
 }
 TIPOS_BARREIRA = [t for t in TIPOS_OBSTACULO if t != "pessoa"]
 
-# Palavras-chave do nome do serviço SP156 -> tipo de obstáculo do Guiding Hand.
-MAPA_SERVICO_SP156 = [
-    ("buraco", "buraco"), ("pavimenta", "buraco"), ("asfalto", "buraco"),
-    ("calcada", "calcada_irregular"), ("calçada", "calcada_irregular"), ("passeio", "calcada_irregular"),
-    ("poda", "galho_arvore"), ("arvore", "galho_arvore"), ("árvore", "galho_arvore"),
-    ("placa", "placa"), ("sinaliza", "placa"),
-    ("poste", "poste"), ("ilumina", "poste"),
-    ("lixeira", "lixeira"), ("entulho", "entulho"), ("cacamba", "cacamba"), ("caçamba", "cacamba"),
-    ("veiculo", "carro_calcada"), ("veículo", "carro_calcada"),
-]
+# Mapeamento SP156 (campos e serviços): módulo comum, sem Spark, também usado pela verificação
+# da coleta e pelo perfilador. O campo do protocolo é escolhido nos dados reais (mapeamento_sp156.json).
+import sp156_mapeamento as _mapa  # noqa: E402
 
-# Nomes candidatos dos campos SP156 no GeoSampa (confirmados na validação de fontes;
-# a função escolhe o primeiro que existir, sem diferenciar maiúsculas).
-CAMPOS_SP156 = {
-    "protocolo": ["protocolo", "nr_protocolo", "numero_protocolo", "cd_protocolo", "id_solicitacao", "id"],
-    "servico": ["servico", "nm_servico", "assunto", "tema", "tipo_servico", "ds_servico"],
-    "status": ["status", "situacao", "status_solicitacao", "ds_status"],
-    "data_abertura": ["data_abertura", "dt_abertura", "data_solicitacao", "dt_solicitacao", "data_registro"],
-    "data_conclusao": ["data_conclusao", "dt_conclusao", "data_encerramento", "dt_encerramento",
-                       "data_parecer", "dt_parecer"],
-}
+MAPA_SERVICO_SP156 = _mapa.MAPA_SERVICO_SP156
+CAMPOS_SP156 = _mapa.campos_sp156()
+PROTOCOLO_COMPOSTO_COM_CAMADA = _mapa.carregar_mapeamento()["protocolo_composto_com_camada"]
 
 # ------------------------------------------------------------------ geohash
 _BASE32 = "0123456789bcdefghjkmnpqrstuvwxyz"
@@ -129,19 +115,48 @@ def dentro_recorte(lat: Column, lon: Column, r: dict = RECORTE) -> Column:
 PADRAO_ARQUIVO = r"([a-z0-9_]+)_(\d{4}-\d{2}-\d{2})\.json$"
 
 
-def enriquecer_bronze(df_texto: DataFrame, caminho_col: str = "_metadata.file_path") -> DataFrame:
+def enriquecer_bronze(df_texto: DataFrame, caminho_col: str = "_metadata.file_path",
+                      tamanho_col: str | None = None) -> DataFrame:
     """Recebe o DataFrame lido como texto inteiro (uma linha por arquivo) e adiciona
-    metadados de origem e carga. O conteúdo bruto é preservado sem alteração."""
-    caminho = F.col(caminho_col)
+    metadados de origem e carga. O conteúdo bruto é preservado sem alteração.
+
+    ``tamanho_bytes`` é o tamanho REAL do arquivo em bytes: vem de ``tamanho_col``
+    (``_metadata.file_size`` no Auto Loader) ou, sem ela, dos bytes UTF-8 do conteúdo
+    (``octet_length``; ``length`` contaria caracteres, e acentos ocupam 2 bytes)."""
+    caminho = F.regexp_replace(F.col(caminho_col), r"^(dbfs:|file:)", "")
+    tamanho = F.col(tamanho_col).cast("long") if tamanho_col else F.octet_length("conteudo_bruto").cast("long")
     return (df_texto
             .withColumnRenamed("value", "conteudo_bruto")
             .withColumn("arquivo_origem", caminho)
             .withColumn("nome_arquivo", F.regexp_extract(caminho, r"([^/]+)$", 1))
-            .withColumn("fonte", F.regexp_extract(caminho, PADRAO_ARQUIVO, 1))
-            .withColumn("data_coleta", F.to_date(F.regexp_extract(caminho, PADRAO_ARQUIVO, 2)))
-            .withColumn("tamanho_bytes", F.length("conteudo_bruto"))
+            .withColumn("fonte", F.regexp_extract("nome_arquivo", "^" + PADRAO_ARQUIVO, 1))
+            .withColumn("data_coleta", F.to_date(F.regexp_extract("nome_arquivo", "^" + PADRAO_ARQUIVO, 2)))
+            .withColumn("tamanho_bytes", tamanho)
             .withColumn("hash_conteudo", F.sha2("conteudo_bruto", 256))
-            .withColumn("carregado_em", F.current_timestamp()))
+            .withColumn("carregado_em", F.current_timestamp())
+            .select(*COLUNAS_BRONZE))
+
+
+COLUNAS_BRONZE = ["conteudo_bruto", "arquivo_origem", "nome_arquivo", "fonte", "data_coleta",
+                  "tamanho_bytes", "hash_conteudo", "carregado_em"]
+
+# Pastas internas do Volume (``_descartados``, ``_manifestos``, ocultas) nunca entram na Bronze.
+PASTA_INTERNA_RE = r"/chegada/(.*/)?[_.][^/]*/"
+
+
+def gravador_sem_duplicar(tabela: str):
+    """Função para ``foreachBatch``: grava só os arquivos que ainda não estão na tabela.
+    Mesmo nome + mesmo SHA-256 = mesmo arquivo, mesmo que tenha vindo de outro caminho ou de
+    outro checkpoint. Ajusta ``tamanho_bytes`` ao tipo da tabela, se ela já existir com INT."""
+    def gravar(lote_df: DataFrame, lote_id: int) -> None:
+        sessao = lote_df.sparkSession
+        alvo = sessao.table(tabela)
+        tipo = dict(alvo.dtypes).get("tamanho_bytes", "bigint")
+        novos = (lote_df.dropDuplicates(["nome_arquivo", "hash_conteudo"])
+                 .join(alvo.select("nome_arquivo", "hash_conteudo"), ["nome_arquivo", "hash_conteudo"], "left_anti")
+                 .withColumn("tamanho_bytes", F.col("tamanho_bytes").cast(tipo)))
+        novos.write.mode("append").saveAsTable(tabela)
+    return gravar
 
 
 # ------------------------------------------------------------------ PRATA: utilidades
@@ -431,8 +446,9 @@ def _campo(props: Column, nomes: list[str]) -> Column:
 
 
 def _para_timestamp(c: Column) -> Column:
-    formatos = ["yyyy-MM-dd'T'HH:mm:ss'Z'", "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd HH:mm:ss",
-                "yyyy-MM-dd", "dd/MM/yyyy HH:mm:ss", "dd/MM/yyyy"]
+    # inclui os formatos do GeoServer: data pura com "Z" (2020-04-15Z) e milissegundos
+    formatos = ["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", "yyyy-MM-dd'T'HH:mm:ss'Z'", "yyyy-MM-dd'T'HH:mm:ss",
+                "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd'Z'", "yyyy-MM-dd", "dd/MM/yyyy HH:mm:ss", "dd/MM/yyyy"]
     return F.coalesce(*[F.try_to_timestamp(c, F.lit(f)) for f in formatos])
 
 
@@ -446,8 +462,8 @@ def _tipo_sp156(servico: Column) -> Column:
 
 def _status_sp156(status: Column) -> Column:
     s = F.lower(status)
-    return (F.when(s.rlike("finaliz|conclu|atendid|execut|encerrad"), "resolvida")
-            .when(s.rlike("cancel|indefer|improced"), "cancelada")
+    return (F.when(s.rlike(_mapa.STATUS_RESOLVIDA_RE), "resolvida")
+            .when(s.rlike(_mapa.STATUS_CANCELADA_RE), "cancelada")
             .when(s.isNull(), "desconhecido")
             .otherwise("aberta"))
 
@@ -469,6 +485,8 @@ def prata_sp156(bronze: DataFrame, recorte: dict = RECORTE) -> tuple[DataFrame, 
         F.col("f.geometry.coordinates")[1].alias("lat"),
         F.col("f.geometry.coordinates")[0].alias("lon"),
     )
+    if PROTOCOLO_COMPOSTO_COM_CAMADA:  # identificador único só dentro de cada camada (decidido pelo perfilador)
+        df = df.withColumn("protocolo", F.concat_ws(":", "camada", "protocolo"))
     df = (df.withColumn("servico", F.coalesce("servico", "camada"))
           .withColumn("tipo_obstaculo", _tipo_sp156(F.col("servico")))
           .withColumn("status", _status_sp156(F.col("status_original")))

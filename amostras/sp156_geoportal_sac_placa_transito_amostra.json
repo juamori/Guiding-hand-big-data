@@ -1,0 +1,62 @@
+{
+ "_amostra": "recorte real coletado em 2026-11-15T22:02:53",
+ "dados": {
+  "type": "FeatureCollection",
+  "features": [
+   {
+    "type": "Feature",
+    "id": "sac_placa_transito.122543",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.7063451,
+      -23.57063372
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 122543,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-07-13T17:22:55Z",
+     "nm_logradouro": "Rua Pirajussara",
+     "nr_logradouro": 326,
+     "dt_parecer": "2020-07-20T22:49:36Z",
+     "sg_orgao_responsavel": "CET",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "CENTRAL TELEFÔNICA",
+     "dc_tema": "Trânsito e Transporte",
+     "dc_assunto": "Sinalização e Circulação de Veículos e Pedestres",
+     "dc_servico": "Manutenção de placas de trânsito",
+     "dt_carga": "2021-03-25Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "sac_placa_transito.123311",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.6986407,
+      -23.57233122
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 123311,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-06-12T13:51:49Z",
+     "nm_logradouro": "Avenida Eusébio Matoso",
+     "nr_logradouro": 891,
+     "dt_parecer": "2020-06-23T13:29:20Z",
+     "sg_orgao_responsavel": "CET",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "CENTRAL TELEFÔNICA",
+     "dc_tema": "Trânsito e Transporte",
+     "dc_assunto": "Sinalização e Circulação de Veículos e Pedestres",
+     "dc_servico": "Manutenção de placas de trânsito",
+     "dt_carga": "2021-03-25Z"
+    }
+   }
+  ]
+ }
+}

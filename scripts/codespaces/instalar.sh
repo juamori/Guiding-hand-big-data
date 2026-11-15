@@ -8,8 +8,8 @@ mkdir -p "$GH_ESTADO" "$GH_LOGS"
 
 titulo "1/4 PostgreSQL"
 if ! ls /usr/lib/postgresql/*/bin/initdb >/dev/null 2>&1; then
-  $SUDO apt-get update -qq
-  $SUDO DEBIAN_FRONTEND=noninteractive apt-get install -y -qq postgresql >/dev/null
+  # Só as fontes oficiais do sistema: fontes de terceiros da imagem (ex.: Yarn) não podem bloquear a instalação
+  $SUDO bash "$GH_REPO/scripts/codespaces/apt_oficial.sh" postgresql
 fi
 PGBIN="$(ls -d /usr/lib/postgresql/*/bin | sort -V | tail -1)"
 PGVER="$("$PGBIN/postgres" --version | grep -oE '[0-9]+' | head -1)"

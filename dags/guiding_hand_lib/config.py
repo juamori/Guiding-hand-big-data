@@ -89,3 +89,11 @@ TIPOS_OBSTACULO = {
 }
 
 USER_AGENT = "GuidingHand-FIAP-GS2026/1.0 (projeto academico; contato via repositorio)"
+
+# Campos que identificam uma camada do GeoSampa como SOLICITAÇÕES do SP156 (e não cadastro de
+# infraestrutura, como árvores ou postes). Usado pelo coletor e pela validação de fontes.
+CAMPOS_PROTOCOLO_SP156 = ("protocolo", "nr_protocolo", "numero_protocolo", "id_solicitacao")
+CAMPOS_STATUS_SP156 = ("status", "situacao", "status_solicitacao", "ds_status")
+# Trechos aceitos em nomes de campo (variações como ds_situacao, nr_protocolo_sp156).
+TRECHOS_PROTOCOLO_SP156 = ("protocolo", "solicitacao", "solicitação")
+TRECHOS_STATUS_SP156 = ("status", "situacao", "situação")

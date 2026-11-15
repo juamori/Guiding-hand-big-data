@@ -1,0 +1,89 @@
+{
+ "_amostra": "recorte real coletado em 2026-11-15T22:02:57",
+ "dados": {
+  "type": "FeatureCollection",
+  "features": [
+   {
+    "type": "Feature",
+    "id": "sac_tapa_buraco_faixa_corredor.3043",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.7065602,
+      -23.57397042
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 3043,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-07-27T20:47:16Z",
+     "nm_logradouro": "Avenida Professor Francisco Morato",
+     "nr_logradouro": 276,
+     "dt_parecer": "2020-08-21T12:50:00Z",
+     "sg_orgao_responsavel": "SPTRANS",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "PORTAL ONLINE",
+     "dc_tema": "Rua e bairro",
+     "dc_assunto": "Reparos em asfalto, pontes e viadutos",
+     "dc_servico": "Tapa-buraco em faixa exclusiva ou corredor de ônibus",
+     "dt_carga": "2021-03-25Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "sac_tapa_buraco_faixa_corredor.3050",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.7015756,
+      -23.57218152
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 3050,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-07-28T20:48:44Z",
+     "nm_logradouro": "Ponte Eusébio Matoso",
+     "nr_logradouro": 7,
+     "dt_parecer": "2020-08-21T12:50:00Z",
+     "sg_orgao_responsavel": "SPTRANS",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "PORTAL ONLINE",
+     "dc_tema": "Rua e bairro",
+     "dc_assunto": "Reparos em asfalto, pontes e viadutos",
+     "dc_servico": "Tapa-buraco em faixa exclusiva ou corredor de ônibus",
+     "dt_carga": "2021-03-25Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "sac_tapa_buraco_faixa_corredor.3164",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.7038003,
+      -23.57270722
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 3164,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-09-13T14:01:35Z",
+     "nm_logradouro": "Avenida Eusébio Matoso",
+     "nr_logradouro": 1385,
+     "dt_parecer": "2020-09-13T14:02:11Z",
+     "sg_orgao_responsavel": "SPTRANS",
+     "tx_situacao_solicitacao": "AGUARDANDO ATENDIMENTO",
+     "tx_canal_atendimento": "PORTAL ONLINE",
+     "dc_tema": "Rua e bairro",
+     "dc_assunto": "Reparos em asfalto, pontes e viadutos",
+     "dc_servico": "Tapa-buraco em faixa exclusiva ou corredor de ônibus",
+     "dt_carga": "2021-03-25Z"
+    }
+   }
+  ]
+ }
+}

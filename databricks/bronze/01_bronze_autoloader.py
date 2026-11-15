@@ -5,6 +5,10 @@
 # MAGIC **uma linha por arquivo, com o conteúdo bruto intacto** + metadados de origem e carga.
 # MAGIC
 # MAGIC - Auto Loader (`cloudFiles`) + checkpoint: cada arquivo é lido **uma única vez**.
+# MAGIC - Gravação via `foreachBatch`: um arquivo com o mesmo nome e o mesmo SHA-256 já presente na tabela não é
+# MAGIC   gravado de novo. Isso permite que o lote 1 tenha sido ingerido pelo notebook `bronze_lote_1` (checkpoint próprio)
+# MAGIC   sem que este notebook o duplique ao processar o lote 2.
+# MAGIC - `tamanho_bytes` = tamanho real do arquivo (`_metadata.file_size`).
 # MAGIC - `trigger(availableNow=True)`: processa o que é novo e para (modo lote, adequado ao Free Edition).
 # MAGIC - Rodar de novo sem arquivos novos **não insere nada** (idempotente).
 # MAGIC - Cada execução registra contagens antes/depois em `controle_execucoes_bronze` (evidência do relatório).
@@ -23,15 +27,19 @@ CAT, SCH = dbutils.widgets.get("catalogo"), dbutils.widgets.get("schema")
 ROTULO = dbutils.widgets.get("rotulo_execucao")
 S = f"{CAT}.{SCH}."
 ORIGEM = f"/Volumes/{CAT}/{SCH}/chegada"
-CHECKPOINT = f"/Volumes/{CAT}/{SCH}/controle/checkpoint_bronze_arquivos"
+# v2: a gravação passou a ser foreachBatch (sem duplicar). Um checkpoint de outro tipo de destino não é reaproveitado.
+CHECKPOINT = f"/Volumes/{CAT}/{SCH}/controle/checkpoint_bronze_arquivos_v2"
 TABELA = f"{S}bronze_arquivos"
 spark.conf.set("spark.sql.session.timeZone", "America/Sao_Paulo")
 
 # COMMAND ----------
 
+spark.sql(f"""CREATE TABLE IF NOT EXISTS {TABELA} (
+  conteudo_bruto STRING, arquivo_origem STRING, nome_arquivo STRING, fonte STRING, data_coleta DATE,
+  tamanho_bytes BIGINT, hash_conteudo STRING, carregado_em TIMESTAMP) USING DELTA""")
+
 def contar():
-    if not spark.catalog.tableExists(TABELA):
-        return 0, {}
+    spark.catalog.refreshTable(TABELA)
     df = spark.table(TABELA)
     return df.count(), {r["fonte"]: r["count"] for r in df.groupBy("fonte").count().collect()}
 
@@ -45,15 +53,18 @@ fluxo = (spark.readStream.format("cloudFiles")
          .option("wholetext", "true")          # 1 linha = 1 arquivo inteiro (bruto preservado)
          .option("pathGlobFilter", "*.json")
          .load(ORIGEM)
-         .select("value", F.col("_metadata.file_path").alias("file_path")))
+         .select("value", F.col("_metadata.file_path").alias("file_path"),
+                 F.col("_metadata.file_size").alias("file_size")))
 
-bronze = (gt.enriquecer_bronze(fluxo, "file_path").drop("file_path")
-          .filter(F.col("fonte").isin(gt.FONTES)))  # ignora manifestos e arquivos fora do padrão
+bronze = (gt.enriquecer_bronze(fluxo, "file_path", "file_size")
+          .filter(F.col("fonte").isin(gt.FONTES))                    # ignora manifestos e arquivos fora do padrão
+          .filter(~F.col("arquivo_origem").rlike(gt.PASTA_INTERNA_RE)))  # ignora _descartados, _manifestos
 
 (bronze.writeStream
+ .foreachBatch(gt.gravador_sem_duplicar(TABELA))
  .option("checkpointLocation", CHECKPOINT)
  .trigger(availableNow=True)
- .toTable(TABELA)
+ .start()
  .awaitTermination())
 
 # COMMAND ----------

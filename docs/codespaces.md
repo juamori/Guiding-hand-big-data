@@ -40,7 +40,7 @@ No terminal: `bash scripts/codespaces/menu.sh` — mesmos números do `GuidingHa
 | **0** | Verifica o ambiente | Itens em verde |
 | **1** | Valida as fontes **de verdade** no recorte de Pinheiros | Relatório em `docs/validacao_fontes/` — **envie no chat** |
 | **2** | Inicia o Airflow (já sobe sozinho ao abrir) | Link da interface; também na aba **PORTS** > porta 8080 > ícone do globo |
-| **3** | Executa a coleta agora e salva a evidência | "Coleta concluída com sucesso" e os arquivos de `chegada/` |
+| **3** | Executa a coleta agora, salva a evidência e **verifica o conteúdo** | "Coleta concluída" + `docs/evidencias/coleta_<data>.md` (datas, totais, campos x Prata, origem real) |
 | **4** | Prepara o lote para o Databricks | `lotes/lote_N.zip` para baixar |
 | **5** | Testes automatizados | Testes passando |
 | **6** | Verifica segredos | "Nada sensível no repositório" |
@@ -68,3 +68,11 @@ No terminal: `bash scripts/codespaces/menu.sh` — mesmos números do `GuidingHa
    `docs/evidencias/` e `mvp_demo/data/`, respectivamente.
 4. Menu **7** → print `10_tela_mvp.png`. Arraste os prints para `docs/relatorio/prints/`.
 5. Preencha `docs/relatorio/integrantes.csv` → menu **8** → baixe o PDF → menu **G** → envie o PDF no Teams.
+
+## Se algo der errado
+
+| Sintoma | Causa | O que fazer |
+|---|---|---|
+| `GPG error: https://dl.yarnpkg.com/... NO_PUBKEY` ou `The repository ... is not signed` | A imagem do Codespaces traz uma fonte de pacotes do Yarn sem chave. O projeto não usa Yarn | Corrigido em 15/11: `instalar.sh` instala o PostgreSQL só pelas fontes oficiais Debian/Ubuntu (com verificação GPG), ignorando fontes de terceiros sem alterá-las. Rode `bash scripts/codespaces/instalar.sh` de novo |
+| `PostgreSQL 12 é antigo` ou `Nenhum Python entre 3.9 e 3.12` | O Codespace está sem a configuração do projeto | Ctrl+Shift+P > **Codespaces: Rebuild Container** (os arquivos em `/workspaces` são mantidos) |
+| Tarefa vermelha no Airflow | Fonte fora do ar ou erro de coleta | Clique na tarefa > Logs; copie a mensagem para o chat |

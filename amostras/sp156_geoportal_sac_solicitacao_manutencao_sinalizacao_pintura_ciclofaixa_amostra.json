@@ -1,0 +1,62 @@
+{
+ "_amostra": "recorte real coletado em 2026-11-15T22:02:51",
+ "dados": {
+  "type": "FeatureCollection",
+  "features": [
+   {
+    "type": "Feature",
+    "id": "sac_solicitacao_manutencao_sinalizacao_pintura_ciclofaixa.135169",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.709903,
+      -23.57350442
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 135169,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-07-21T00:41:10Z",
+     "nm_logradouro": "Rua Camargo",
+     "nr_logradouro": 46,
+     "dt_parecer": "2020-07-21T14:19:56Z",
+     "sg_orgao_responsavel": "CET",
+     "tx_situacao_solicitacao": "AGUARDANDO ATENDIMENTO",
+     "tx_canal_atendimento": "PORTAL ONLINE",
+     "dc_tema": "Trânsito e Transporte",
+     "dc_assunto": "Bicicleta",
+     "dc_servico": "Ciclovias, ciclofaixas e ciclorrotas - solicitar manutenção da sinalização e pintura",
+     "dt_carga": "2021-03-25Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "sac_solicitacao_manutencao_sinalizacao_pintura_ciclofaixa.135187",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.7066226,
+      -23.56880552
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 135187,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-08-30T06:39:06Z",
+     "nm_logradouro": "Rua Romão Gomes",
+     "nr_logradouro": 300,
+     "dt_parecer": "2020-08-31T14:18:58Z",
+     "sg_orgao_responsavel": "CET",
+     "tx_situacao_solicitacao": "AGUARDANDO ATENDIMENTO",
+     "tx_canal_atendimento": "PORTAL ONLINE",
+     "dc_tema": "Trânsito e Transporte",
+     "dc_assunto": "Bicicleta",
+     "dc_servico": "Ciclovias, ciclofaixas e ciclorrotas - solicitar manutenção da sinalização e pintura",
+     "dt_carga": "2021-03-25Z"
+    }
+   }
+  ]
+ }
+}

@@ -29,7 +29,7 @@ def listar_chegada(chegada: Path) -> list[tuple[Path, str, str]]:
     itens = []
     for p in sorted(chegada.rglob("*.json")):
         m = PADRAO.match(p.name)
-        if m and m.group(1) in FONTES and "_manifestos" not in p.parts:
+        if m and m.group(1) in FONTES and not {"_manifestos", "_descartados"} & set(p.parts):
             itens.append((p, m.group(1), m.group(2)))
     return itens
 

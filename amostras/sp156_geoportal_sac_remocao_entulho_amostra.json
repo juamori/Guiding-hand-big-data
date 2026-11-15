@@ -1,0 +1,143 @@
+{
+ "_amostra": "recorte real coletado em 2026-11-15T22:02:56",
+ "dados": {
+  "type": "FeatureCollection",
+  "features": [
+   {
+    "type": "Feature",
+    "id": "sac_remocao_entulho.79829",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.6964848,
+      -23.56111812
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 79829,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-07-16T16:49:40Z",
+     "nm_logradouro": "Rua Padre Carvalho",
+     "nr_logradouro": 141,
+     "dt_parecer": "2020-07-17T15:04:44Z",
+     "sg_orgao_responsavel": "AMLURB",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "CENTRAL TELEFÔNICA",
+     "dc_tema": "Lixo e limpeza",
+     "dc_assunto": "Ponto viciado, entulho e caçamba de entulho",
+     "dc_servico": "Remoção de entulho em via pública",
+     "dt_carga": "2021-03-25Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "sac_remocao_entulho.84904",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.6965888,
+      -23.56665072
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 84904,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-09-17T17:16:01Z",
+     "nm_logradouro": "Rua Padre Carvalho",
+     "nr_logradouro": 752,
+     "dt_parecer": "2020-09-18T16:24:24Z",
+     "sg_orgao_responsavel": "AMLURB",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "CENTRAL TELEFÔNICA",
+     "dc_tema": "Lixo e limpeza",
+     "dc_assunto": "Ponto viciado, entulho e caçamba de entulho",
+     "dc_servico": "Remoção de entulho em via pública",
+     "dt_carga": "2021-03-25Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "sac_remocao_entulho.86049",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.6979435,
+      -23.56567792
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 86049,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-09-30T16:14:13Z",
+     "nm_logradouro": "Rua Ferreira de Araújo",
+     "nr_logradouro": 887,
+     "dt_parecer": "2020-10-01T04:50:38Z",
+     "sg_orgao_responsavel": "AMLURB",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "PORTAL ONLINE",
+     "dc_tema": "Lixo e limpeza",
+     "dc_assunto": "Ponto viciado, entulho e caçamba de entulho",
+     "dc_servico": "Remoção de entulho em via pública",
+     "dt_carga": "2021-03-25Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "sac_remocao_entulho.86632",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.6950076,
+      -23.56784802
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 86632,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-04-08T20:15:51Z",
+     "nm_logradouro": "Rua Cardeal Arcoverde",
+     "nr_logradouro": 2742,
+     "dt_parecer": "2020-04-08T20:57:07Z",
+     "sg_orgao_responsavel": "AMLURB",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "PORTAL ONLINE",
+     "dc_tema": "Lixo e limpeza",
+     "dc_assunto": "Ponto viciado, entulho e caçamba de entulho",
+     "dc_servico": "Remoção de entulho em via pública",
+     "dt_carga": "2021-03-25Z"
+    }
+   },
+   {
+    "type": "Feature",
+    "id": "sac_remocao_entulho.86788",
+    "geometry": {
+     "type": "Point",
+     "coordinates": [
+      -46.7023671,
+      -23.57316842
+     ]
+    },
+    "geometry_name": "ge_ponto",
+    "properties": {
+     "cd_identificador": 86788,
+     "cd_identificador_original_atendimento_cidadao": null,
+     "dt_abertura": "2020-04-13T09:22:09Z",
+     "nm_logradouro": "Rua Pero Leão",
+     "nr_logradouro": 50,
+     "dt_parecer": "2020-04-13T15:19:15Z",
+     "sg_orgao_responsavel": "AMLURB",
+     "tx_situacao_solicitacao": "FINALIZADA",
+     "tx_canal_atendimento": "PORTAL ONLINE",
+     "dc_tema": "Lixo e limpeza",
+     "dc_assunto": "Ponto viciado, entulho e caçamba de entulho",
+     "dc_servico": "Remoção de entulho em via pública",
+     "dt_carga": "2021-03-25Z"
+    }
+   }
+  ]
+ }
+}

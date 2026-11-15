@@ -1,0 +1,173 @@
+{
+ "dados_nao_reais": [],
+ "arquivo": "chegada/sp156/sp156_2026-11-15.json",
+ "perfilado_em": "2026-11-15T19:25:37-03:00",
+ "registros": 173,
+ "camadas": {
+  "geoportal:sac_solicitacao_manutencao_sinalizacao_pintura_ciclofaixa": 2,
+  "geoportal:sac_remocao_lixeira": 4,
+  "geoportal:sac_placa_transito": 2,
+  "geoportal:sac_quadra_arvore_urgencia": 2,
+  "geoportal:sac_remocao_entulho": 9,
+  "geoportal:sac_tapa_buraco": 151,
+  "geoportal:sac_tapa_buraco_faixa_corredor": 3
+ },
+ "campos_disponiveis": [
+  "cd_identificador",
+  "cd_identificador_original_atendimento_cidadao",
+  "dc_assunto",
+  "dc_servico",
+  "dc_tema",
+  "dt_abertura",
+  "dt_carga",
+  "dt_parecer",
+  "nm_logradouro",
+  "nr_logradouro",
+  "sg_orgao_responsavel",
+  "tx_canal_atendimento",
+  "tx_situacao_solicitacao"
+ ],
+ "candidatos_protocolo": [
+  {
+   "campo": "cd_identificador",
+   "registros": 173,
+   "preenchidos": 173,
+   "preenchimento_pct": 100.0,
+   "valores_distintos": 173,
+   "repeticoes_dentro_da_mesma_camada": 0,
+   "valores_em_mais_de_uma_camada": 0,
+   "mesma_solicitacao_em_varias_camadas": 0,
+   "colisoes_entre_camadas": 0,
+   "formato": "numérico, tamanho 5 (144), 4 (19), 6 (10)"
+  },
+  {
+   "campo": "cd_identificador_original_atendimento_cidadao",
+   "registros": 173,
+   "preenchidos": 0,
+   "preenchimento_pct": 0.0,
+   "valores_distintos": 0,
+   "repeticoes_dentro_da_mesma_camada": 0,
+   "valores_em_mais_de_uma_camada": 0,
+   "mesma_solicitacao_em_varias_camadas": 0,
+   "colisoes_entre_camadas": 0,
+   "formato": "—"
+  }
+ ],
+ "decisao_protocolo": {
+  "protocolo": "cd_identificador",
+  "composto_com_camada": false,
+  "motivo": "único em todas as camadas, preenchido em 100.0% e reconhece 0 solicitações repetidas entre camadas",
+  "elegiveis": [
+   "cd_identificador"
+  ]
+ },
+ "consolidacao": {
+  "registros_nas_camadas": 173,
+  "solicitacoes_unicas": 173,
+  "registros_repetidos_que_a_prata_consolida": 0,
+  "registros_sem_protocolo": 0
+ },
+ "datas": {
+  "abertura_mais_antiga": "2020-04-06",
+  "abertura_mais_recente": "2020-10-01",
+  "por_camada": {
+   "geoportal:sac_solicitacao_manutencao_sinalizacao_pintura_ciclofaixa": [
+    "2020-07-21",
+    "2020-08-30"
+   ],
+   "geoportal:sac_remocao_lixeira": [
+    "2020-04-08",
+    "2020-09-30"
+   ],
+   "geoportal:sac_placa_transito": [
+    "2020-06-12",
+    "2020-07-13"
+   ],
+   "geoportal:sac_quadra_arvore_urgencia": [
+    "2020-07-27",
+    "2020-09-09"
+   ],
+   "geoportal:sac_remocao_entulho": [
+    "2020-04-08",
+    "2020-09-30"
+   ],
+   "geoportal:sac_tapa_buraco": [
+    "2020-04-06",
+    "2020-10-01"
+   ],
+   "geoportal:sac_tapa_buraco_faixa_corredor": [
+    "2020-07-27",
+    "2020-09-13"
+   ]
+  },
+  "historico": true
+ },
+ "formatos_de_data": {
+  "data_abertura": [
+   [
+    "9999-99-99T99:99:99Z",
+    173
+   ]
+  ],
+  "data_conclusao": [
+   [
+    "9999-99-99T99:99:99Z",
+    173
+   ]
+  ]
+ },
+ "status": [
+  {
+   "valor": "FINALIZADA",
+   "n": 111,
+   "classificacao_prata": "resolvida"
+  },
+  {
+   "valor": "INDEFERIDO",
+   "n": 51,
+   "classificacao_prata": "cancelada"
+  },
+  {
+   "valor": "AGUARDANDO ATENDIMENTO",
+   "n": 11,
+   "classificacao_prata": "aberta"
+  }
+ ],
+ "servicos": [
+  {
+   "valor": "Tapa-buraco",
+   "n": 151,
+   "tipo_obstaculo": "buraco"
+  },
+  {
+   "valor": "Remoção de entulho em via pública",
+   "n": 9,
+   "tipo_obstaculo": "entulho"
+  },
+  {
+   "valor": "Instalação e remoção de lixeira",
+   "n": 4,
+   "tipo_obstaculo": "lixeira"
+  },
+  {
+   "valor": "Tapa-buraco em faixa exclusiva ou corredor de ônibus",
+   "n": 3,
+   "tipo_obstaculo": "buraco"
+  },
+  {
+   "valor": "Ciclovias, ciclofaixas e ciclorrotas - solicitar manutenção da sinalização e pintura",
+   "n": 2,
+   "tipo_obstaculo": "placa"
+  },
+  {
+   "valor": "Manutenção de placas de trânsito",
+   "n": 2,
+   "tipo_obstaculo": "placa"
+  },
+  {
+   "valor": "Queda de árvore",
+   "n": 2,
+   "tipo_obstaculo": "galho_arvore"
+  }
+ ]
+}

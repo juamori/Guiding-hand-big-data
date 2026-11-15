@@ -81,13 +81,60 @@ def test_sp156_sem_camadas_nao_configurado():
         coletores.coletar_sp156(SessaoFalsa([]), config.BBOX_PINHEIROS, [])
 
 
-def test_sp156_empacota_camadas_e_falhas():
-    fc = json.dumps({"type": "FeatureCollection", "features": [{"id": "a"}, {"id": "b"}]})
-    s = SessaoFalsa([RespostaFalsa(fc), RespostaFalsa("<html>erro</html>", tipo="text/html")])
+def _fc(*ids, props=None):
+    p = {"protocolo": "x", "status": "ABERTA"} if props is None else props
+    return RespostaFalsa(json.dumps({"type": "FeatureCollection",
+                                     "features": [{"id": i, "properties": p} for i in ids]}))
+
+
+def _hits(n):
+    return RespostaFalsa(f'<wfs:FeatureCollection numberOfFeatures="{n}"/>', tipo="text/xml")
+
+
+def test_sp156_pagina_ate_o_total_mesmo_com_teto_do_servidor():
+    """Servidor devolve no máximo 2 por página (teto menor que o pedido): a coleta precisa seguir."""
+    s = SessaoFalsa([_hits(5), _fc("a", "b"), _fc("c", "d"), _fc("e")])
+    r = coletores.coletar_sp156(s, config.BBOX_PINHEIROS, ["geoportal:a"])
+    camada = json.loads(r.conteudo)["camadas"][0]
+    assert r.registros == 5 and [f["id"] for f in camada["resposta"]["features"]] == list("abcde")
+    assert camada["paginacao"] == {**camada["paginacao"], "paginas": 3, "total_servidor": 5, "completo": True}
+    assert [c[2]["startIndex"] for c in s.chamadas[1:]] == [0, 2, 4]
+    assert s.chamadas[0][2]["resultType"] == "hits" and s.chamadas[1][2]["srsName"] == "EPSG:4326"
+    assert r.detalhes["camadas_incompletas"] == []
+
+
+def test_sp156_sem_total_segue_ate_pagina_vazia_apesar_de_teto_do_servidor():
+    """Sem 'hits' e com teto de 2 no servidor: não pode parar na 1ª página 'curta'."""
+    s = SessaoFalsa([RespostaFalsa("sem total", tipo="text/xml"), _fc("a", "b"), _fc("c"), _fc()])
+    r = coletores.coletar_sp156(s, config.BBOX_PINHEIROS, ["geoportal:a"])
+    info = json.loads(r.conteudo)["camadas"][0]["paginacao"]
+    assert r.registros == 3 and info["completo"] is True and info["paginas"] == 3
+
+
+def test_servidor_que_ignora_paginacao():
+    sessao = lambda: SessaoFalsa([RespostaFalsa("sem total", tipo="text/xml")] + [_fc("a", "b")] * 3)
+    # página cheia repetida -> certamente faltam feições
+    _, info = coletores.buscar_camada_wfs(sessao(), "u", "c", config.BBOX_PINHEIROS, tamanho_pagina=2)
+    assert info["paginacao_ignorada"] and info["completo"] is False
+    # página curta repetida, sem total -> não dá para afirmar
+    _, info = coletores.buscar_camada_wfs(sessao(), "u", "c", config.BBOX_PINHEIROS)
+    assert info["completo"] is None
+    r = coletores.coletar_sp156(sessao(), config.BBOX_PINHEIROS, ["geoportal:a"])
+    assert r.detalhes["camadas_completude_nao_verificavel"] == ["geoportal:a"]
+
+
+def test_sp156_camada_com_falha_nao_derruba_as_outras():
+    s = SessaoFalsa([_hits(2), _fc("a", "b"), _hits(1), RespostaFalsa("<html>erro</html>", tipo="text/html")])
     r = coletores.coletar_sp156(s, config.BBOX_PINHEIROS, ["geoportal:a", "geoportal:b"])
     pacote = json.loads(r.conteudo)
     assert r.registros == 2 and len(pacote["camadas"]) == 1 and len(pacote["_coleta"]["falhas"]) == 1
-    assert s.chamadas[0][2]["srsName"] == "EPSG:4326"
+
+
+def test_clima_registra_distancia_da_celula_da_grade():
+    corpo = json.dumps({"latitude": -23.585238, "longitude": -46.659637, "hourly": {"time": ["x"] * 24}})
+    r = coletores.coletar_clima(SessaoFalsa([RespostaFalsa(corpo)]), date(2026, 11, 14), config.BBOX_PINHEIROS)
+    assert r.detalhes["distancia_grade_km"] == pytest.approx(4.75, abs=0.05)
+    assert r.detalhes["celula_dentro_do_recorte"] is False
 
 
 def test_olhovivo_sem_token_e_token_fora_da_url():
@@ -127,3 +174,35 @@ def test_falha_de_conexao_no_login_nao_vaza_token():
     with pytest.raises(coletores.FonteIndisponivel) as exc:
         coletores.coletar_olhovivo(SessaoFalsa([erro]), "SEGREDO-REAL-123", ["Pinheiros"])
     assert "SEGREDO-REAL-123" not in str(exc.value) and exc.value.__cause__ is None
+
+
+def test_sp156_recusa_camada_de_cadastro_de_infraestrutura():
+    """Camadas de cadastro (ex.: árvores) não podem virar 'solicitações' no pipeline."""
+    s = SessaoFalsa([_hits(2), _fc("t1", "t2", props={"especie": "ipê"}), _hits(1), _fc("s1")])
+    r = coletores.coletar_sp156(s, config.BBOX_PINHEIROS, ["geoportal:arvores", "geoportal:sp156"])
+    pacote = json.loads(r.conteudo)
+    assert [c["camada"] for c in pacote["camadas"]] == ["geoportal:sp156"] and r.registros == 1
+    assert r.detalhes["camadas_recusadas_nao_solicitacao"] == ["geoportal:arvores"]
+    so_cadastro = SessaoFalsa([_hits(1), _fc("t1", props={"especie": "ipê"})])
+    with pytest.raises(coletores.FonteIndisponivel, match="não é camada de solicitações"):
+        coletores.coletar_sp156(so_cadastro, config.BBOX_PINHEIROS, ["geoportal:arvores"])
+
+
+def test_reconhece_variacoes_de_nome_de_campo():
+    assert coletores.eh_camada_de_solicitacoes([{"properties": {"NR_PROTOCOLO_SP156": 1, "DS_SITUACAO": "x"}}])
+    assert not coletores.eh_camada_de_solicitacoes([{"properties": {"especie": "ipê", "altura": 5}}])
+
+
+def test_validador_classifica_camadas():
+    import validar_fontes as vf
+    assert vf.classificar_camada("geoportal:sp156_tapa_buraco", "", []) == "solicitacao_sp156"
+    assert vf.classificar_camada("geoportal:arvore", "Árvores", ["especie"]) == "infraestrutura_cadastral"
+    assert vf.classificar_camada("geoportal:x", "", ["protocolo", "situacao"]) == "solicitacao_sp156"
+
+
+def test_fonte_pulada_nao_deixa_arquivo_antigo_do_mesmo_dia(tmp_path):
+    antigo = coletores.gravar(coletores.ResultadoColeta("sp156", b'{"camadas": []}', "u", 0), tmp_path, date(2026, 11, 16))
+    movido = coletores.descartar_arquivo_anterior("sp156", tmp_path, date(2026, 11, 16))
+    assert not antigo.exists() and movido.exists() and movido.parent.name == "_descartados"
+    assert movido.read_bytes() == b'{"camadas": []}'  # preservado, não apagado
+    assert coletores.descartar_arquivo_anterior("sp156", tmp_path, date(2026, 11, 16)) is None

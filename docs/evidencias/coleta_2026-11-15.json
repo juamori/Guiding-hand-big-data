@@ -1,0 +1,509 @@
+{
+ "data_coleta": "2026-11-15",
+ "mapeamento_sp156": {
+  "arquivo": "databricks/lib/mapeamento_sp156.json",
+  "campos": {
+   "protocolo": "cd_identificador",
+   "servico": "dc_servico",
+   "status": "tx_situacao_solicitacao",
+   "data_abertura": "dt_abertura",
+   "data_conclusao": "dt_parecer"
+  },
+  "protocolo_composto_com_camada": false,
+  "situacao_protocolo": "DECIDIDO pelos dados reais em 2026-11-15T19:25:37-03:00: único em todas as camadas, preenchido em 100.0% e reconhece 0 solicitações repetidas entre camadas",
+  "evidencia": "docs/evidencias/perfil_sp156_2026-11-15.md"
+ },
+ "execucao_iniciada_em": null,
+ "verificado_em": "2026-11-15T19:30:53-03:00",
+ "fontes": {
+  "clima": {
+   "existe": true,
+   "arquivo": "chegada/clima/clima_2026-11-15.json",
+   "bytes": 1663,
+   "sha256": "54accda54deb3f45f5a9f16225a73a18f58ea82d6439cdfed1f98b5609ad6db2",
+   "modificado_em": "2026-11-15T19:14:23-03:00",
+   "marcas_nao_reais": [],
+   "obrigatoria": true,
+   "horas": 24,
+   "dias_no_conteudo": [
+    "2026-11-14"
+   ],
+   "esperado": "2026-11-14",
+   "precipitacao_total_mm": 1.4,
+   "centro_celula_grade": [
+    -23.585238,
+    -46.659637
+   ],
+   "distancia_grade_km": 4.75
+  },
+  "osm": {
+   "existe": true,
+   "arquivo": "chegada/osm/osm_2026-11-15.json",
+   "bytes": 129356,
+   "sha256": "b4e2de482a09d9e4e82a23f75a404f6144ab9769501ee9d98c009021704deeb9",
+   "modificado_em": "2026-11-15T19:14:57-03:00",
+   "marcas_nao_reais": [],
+   "obrigatoria": true,
+   "elementos": 573,
+   "base_osm_em": "2026-11-15T22:14:09Z",
+   "principais_tags": [
+    [
+     "highway=crossing",
+     233
+    ],
+    [
+     "highway=footway",
+     148
+    ],
+    [
+     "natural=tree",
+     80
+    ],
+    [
+     "footway=crossing",
+     59
+    ],
+    [
+     "highway=bus_stop",
+     55
+    ],
+    [
+     "barrier=gate",
+     48
+    ],
+    [
+     "kerb=lowered",
+     34
+    ],
+    [
+     "barrier=lift_gate",
+     6
+    ],
+    [
+     "footway=sidewalk",
+     6
+    ],
+    [
+     "footway=traffic_island",
+     6
+    ]
+   ],
+   "fora_do_recorte": 4
+  },
+  "eventos_oculos": {
+   "existe": true,
+   "arquivo": "chegada/eventos_oculos/eventos_oculos_2026-11-15.json",
+   "bytes": 24149,
+   "sha256": "6026b4ce80b6cff7730164f1e227132c9d1c82de4aa4ab5d870a526543a5e5f5",
+   "modificado_em": "2026-11-15T19:14:23-03:00",
+   "marcas_nao_reais": [],
+   "obrigatoria": true,
+   "eventos": 67,
+   "data_referencia": "2026-11-14",
+   "sintetico": true
+  },
+  "sp156": {
+   "existe": true,
+   "arquivo": "chegada/sp156/sp156_2026-11-15.json",
+   "bytes": 119216,
+   "sha256": "7065aa742011716fe56ccc4458043c1fc50a71a6689300bb9a24c8c6d31e93f0",
+   "modificado_em": "2026-11-15T19:14:26-03:00",
+   "marcas_nao_reais": [],
+   "obrigatoria": false,
+   "camadas": [
+    {
+     "camada": "geoportal:sac_solicitacao_manutencao_sinalizacao_pintura_ciclofaixa",
+     "feicoes": 2,
+     "paginacao": {
+      "paginas": 1,
+      "total_servidor": 2,
+      "coletadas": 2,
+      "completo": true,
+      "paginacao_ignorada": false,
+      "url_ultima_pagina": "https://wfs.geosampa.prefeitura.sp.gov.br/geoserver/geoportal/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=geoportal%3Asac_solicitacao_manutencao_sinalizacao_pintura_ciclofaixa&srsName=EPSG%3A4326&bbox=-46.71%2C-23.575%2C-46.694%2C-23.56%2CEPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=1000&startIndex=0"
+     },
+     "eh_solicitacao": true,
+     "campos_disponiveis": [
+      "cd_identificador",
+      "cd_identificador_original_atendimento_cidadao",
+      "dc_assunto",
+      "dc_servico",
+      "dc_tema",
+      "dt_abertura",
+      "dt_carga",
+      "dt_parecer",
+      "nm_logradouro",
+      "nr_logradouro",
+      "sg_orgao_responsavel",
+      "tx_canal_atendimento",
+      "tx_situacao_solicitacao"
+     ],
+     "compatibilidade_prata": {
+      "protocolo": "cd_identificador",
+      "servico": "dc_servico",
+      "status": "tx_situacao_solicitacao",
+      "data_abertura": "dt_abertura",
+      "data_conclusao": "dt_parecer"
+     },
+     "campos_canonicos_sem_correspondencia": [],
+     "status_encontrados": [
+      [
+       "AGUARDANDO ATENDIMENTO",
+       2
+      ]
+     ],
+     "servicos_encontrados": [
+      [
+       "Ciclovias, ciclofaixas e ciclorrotas - solicitar manutenção da sinalização e pintura",
+       2
+      ]
+     ],
+     "feicoes_com_tipo_de_obstaculo": 2,
+     "abertura_mais_antiga": "2020-07-21",
+     "abertura_mais_recente": "2020-08-30",
+     "pontos_no_recorte": "2/2"
+    },
+    {
+     "camada": "geoportal:sac_remocao_lixeira",
+     "feicoes": 4,
+     "paginacao": {
+      "paginas": 1,
+      "total_servidor": 4,
+      "coletadas": 4,
+      "completo": true,
+      "paginacao_ignorada": false,
+      "url_ultima_pagina": "https://wfs.geosampa.prefeitura.sp.gov.br/geoserver/geoportal/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=geoportal%3Asac_remocao_lixeira&srsName=EPSG%3A4326&bbox=-46.71%2C-23.575%2C-46.694%2C-23.56%2CEPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=1000&startIndex=0"
+     },
+     "eh_solicitacao": true,
+     "campos_disponiveis": [
+      "cd_identificador",
+      "cd_identificador_original_atendimento_cidadao",
+      "dc_assunto",
+      "dc_servico",
+      "dc_tema",
+      "dt_abertura",
+      "dt_carga",
+      "dt_parecer",
+      "nm_logradouro",
+      "nr_logradouro",
+      "sg_orgao_responsavel",
+      "tx_canal_atendimento",
+      "tx_situacao_solicitacao"
+     ],
+     "compatibilidade_prata": {
+      "protocolo": "cd_identificador",
+      "servico": "dc_servico",
+      "status": "tx_situacao_solicitacao",
+      "data_abertura": "dt_abertura",
+      "data_conclusao": "dt_parecer"
+     },
+     "campos_canonicos_sem_correspondencia": [],
+     "status_encontrados": [
+      [
+       "FINALIZADA",
+       4
+      ]
+     ],
+     "servicos_encontrados": [
+      [
+       "Instalação e remoção de lixeira",
+       4
+      ]
+     ],
+     "feicoes_com_tipo_de_obstaculo": 4,
+     "abertura_mais_antiga": "2020-04-08",
+     "abertura_mais_recente": "2020-09-30",
+     "pontos_no_recorte": "4/4"
+    },
+    {
+     "camada": "geoportal:sac_placa_transito",
+     "feicoes": 2,
+     "paginacao": {
+      "paginas": 1,
+      "total_servidor": 2,
+      "coletadas": 2,
+      "completo": true,
+      "paginacao_ignorada": false,
+      "url_ultima_pagina": "https://wfs.geosampa.prefeitura.sp.gov.br/geoserver/geoportal/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=geoportal%3Asac_placa_transito&srsName=EPSG%3A4326&bbox=-46.71%2C-23.575%2C-46.694%2C-23.56%2CEPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=1000&startIndex=0"
+     },
+     "eh_solicitacao": true,
+     "campos_disponiveis": [
+      "cd_identificador",
+      "cd_identificador_original_atendimento_cidadao",
+      "dc_assunto",
+      "dc_servico",
+      "dc_tema",
+      "dt_abertura",
+      "dt_carga",
+      "dt_parecer",
+      "nm_logradouro",
+      "nr_logradouro",
+      "sg_orgao_responsavel",
+      "tx_canal_atendimento",
+      "tx_situacao_solicitacao"
+     ],
+     "compatibilidade_prata": {
+      "protocolo": "cd_identificador",
+      "servico": "dc_servico",
+      "status": "tx_situacao_solicitacao",
+      "data_abertura": "dt_abertura",
+      "data_conclusao": "dt_parecer"
+     },
+     "campos_canonicos_sem_correspondencia": [],
+     "status_encontrados": [
+      [
+       "FINALIZADA",
+       2
+      ]
+     ],
+     "servicos_encontrados": [
+      [
+       "Manutenção de placas de trânsito",
+       2
+      ]
+     ],
+     "feicoes_com_tipo_de_obstaculo": 2,
+     "abertura_mais_antiga": "2020-06-12",
+     "abertura_mais_recente": "2020-07-13",
+     "pontos_no_recorte": "2/2"
+    },
+    {
+     "camada": "geoportal:sac_quadra_arvore_urgencia",
+     "feicoes": 2,
+     "paginacao": {
+      "paginas": 1,
+      "total_servidor": 2,
+      "coletadas": 2,
+      "completo": true,
+      "paginacao_ignorada": false,
+      "url_ultima_pagina": "https://wfs.geosampa.prefeitura.sp.gov.br/geoserver/geoportal/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=geoportal%3Asac_quadra_arvore_urgencia&srsName=EPSG%3A4326&bbox=-46.71%2C-23.575%2C-46.694%2C-23.56%2CEPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=1000&startIndex=0"
+     },
+     "eh_solicitacao": true,
+     "campos_disponiveis": [
+      "cd_identificador",
+      "cd_identificador_original_atendimento_cidadao",
+      "dc_assunto",
+      "dc_servico",
+      "dc_tema",
+      "dt_abertura",
+      "dt_carga",
+      "dt_parecer",
+      "nm_logradouro",
+      "nr_logradouro",
+      "sg_orgao_responsavel",
+      "tx_canal_atendimento",
+      "tx_situacao_solicitacao"
+     ],
+     "compatibilidade_prata": {
+      "protocolo": "cd_identificador",
+      "servico": "dc_servico",
+      "status": "tx_situacao_solicitacao",
+      "data_abertura": "dt_abertura",
+      "data_conclusao": "dt_parecer"
+     },
+     "campos_canonicos_sem_correspondencia": [],
+     "status_encontrados": [
+      [
+       "FINALIZADA",
+       2
+      ]
+     ],
+     "servicos_encontrados": [
+      [
+       "Queda de árvore",
+       2
+      ]
+     ],
+     "feicoes_com_tipo_de_obstaculo": 2,
+     "abertura_mais_antiga": "2020-07-27",
+     "abertura_mais_recente": "2020-09-09",
+     "pontos_no_recorte": "2/2"
+    },
+    {
+     "camada": "geoportal:sac_remocao_entulho",
+     "feicoes": 9,
+     "paginacao": {
+      "paginas": 1,
+      "total_servidor": 9,
+      "coletadas": 9,
+      "completo": true,
+      "paginacao_ignorada": false,
+      "url_ultima_pagina": "https://wfs.geosampa.prefeitura.sp.gov.br/geoserver/geoportal/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=geoportal%3Asac_remocao_entulho&srsName=EPSG%3A4326&bbox=-46.71%2C-23.575%2C-46.694%2C-23.56%2CEPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=1000&startIndex=0"
+     },
+     "eh_solicitacao": true,
+     "campos_disponiveis": [
+      "cd_identificador",
+      "cd_identificador_original_atendimento_cidadao",
+      "dc_assunto",
+      "dc_servico",
+      "dc_tema",
+      "dt_abertura",
+      "dt_carga",
+      "dt_parecer",
+      "nm_logradouro",
+      "nr_logradouro",
+      "sg_orgao_responsavel",
+      "tx_canal_atendimento",
+      "tx_situacao_solicitacao"
+     ],
+     "compatibilidade_prata": {
+      "protocolo": "cd_identificador",
+      "servico": "dc_servico",
+      "status": "tx_situacao_solicitacao",
+      "data_abertura": "dt_abertura",
+      "data_conclusao": "dt_parecer"
+     },
+     "campos_canonicos_sem_correspondencia": [],
+     "status_encontrados": [
+      [
+       "FINALIZADA",
+       9
+      ]
+     ],
+     "servicos_encontrados": [
+      [
+       "Remoção de entulho em via pública",
+       9
+      ]
+     ],
+     "feicoes_com_tipo_de_obstaculo": 9,
+     "abertura_mais_antiga": "2020-04-08",
+     "abertura_mais_recente": "2020-09-30",
+     "pontos_no_recorte": "9/9"
+    },
+    {
+     "camada": "geoportal:sac_tapa_buraco",
+     "feicoes": 151,
+     "paginacao": {
+      "paginas": 1,
+      "total_servidor": 151,
+      "coletadas": 151,
+      "completo": true,
+      "paginacao_ignorada": false,
+      "url_ultima_pagina": "https://wfs.geosampa.prefeitura.sp.gov.br/geoserver/geoportal/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=geoportal%3Asac_tapa_buraco&srsName=EPSG%3A4326&bbox=-46.71%2C-23.575%2C-46.694%2C-23.56%2CEPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=1000&startIndex=0"
+     },
+     "eh_solicitacao": true,
+     "campos_disponiveis": [
+      "cd_identificador",
+      "cd_identificador_original_atendimento_cidadao",
+      "dc_assunto",
+      "dc_servico",
+      "dc_tema",
+      "dt_abertura",
+      "dt_carga",
+      "dt_parecer",
+      "nm_logradouro",
+      "nr_logradouro",
+      "sg_orgao_responsavel",
+      "tx_canal_atendimento",
+      "tx_situacao_solicitacao"
+     ],
+     "compatibilidade_prata": {
+      "protocolo": "cd_identificador",
+      "servico": "dc_servico",
+      "status": "tx_situacao_solicitacao",
+      "data_abertura": "dt_abertura",
+      "data_conclusao": "dt_parecer"
+     },
+     "campos_canonicos_sem_correspondencia": [],
+     "status_encontrados": [
+      [
+       "FINALIZADA",
+       92
+      ],
+      [
+       "INDEFERIDO",
+       51
+      ],
+      [
+       "AGUARDANDO ATENDIMENTO",
+       8
+      ]
+     ],
+     "servicos_encontrados": [
+      [
+       "Tapa-buraco",
+       151
+      ]
+     ],
+     "feicoes_com_tipo_de_obstaculo": 151,
+     "abertura_mais_antiga": "2020-04-06",
+     "abertura_mais_recente": "2020-10-01",
+     "pontos_no_recorte": "146/151"
+    },
+    {
+     "camada": "geoportal:sac_tapa_buraco_faixa_corredor",
+     "feicoes": 3,
+     "paginacao": {
+      "paginas": 1,
+      "total_servidor": 3,
+      "coletadas": 3,
+      "completo": true,
+      "paginacao_ignorada": false,
+      "url_ultima_pagina": "https://wfs.geosampa.prefeitura.sp.gov.br/geoserver/geoportal/wfs?service=WFS&version=1.1.0&request=GetFeature&typeName=geoportal%3Asac_tapa_buraco_faixa_corredor&srsName=EPSG%3A4326&bbox=-46.71%2C-23.575%2C-46.694%2C-23.56%2CEPSG%3A4326&outputFormat=application%2Fjson&maxFeatures=1000&startIndex=0"
+     },
+     "eh_solicitacao": true,
+     "campos_disponiveis": [
+      "cd_identificador",
+      "cd_identificador_original_atendimento_cidadao",
+      "dc_assunto",
+      "dc_servico",
+      "dc_tema",
+      "dt_abertura",
+      "dt_carga",
+      "dt_parecer",
+      "nm_logradouro",
+      "nr_logradouro",
+      "sg_orgao_responsavel",
+      "tx_canal_atendimento",
+      "tx_situacao_solicitacao"
+     ],
+     "compatibilidade_prata": {
+      "protocolo": "cd_identificador",
+      "servico": "dc_servico",
+      "status": "tx_situacao_solicitacao",
+      "data_abertura": "dt_abertura",
+      "data_conclusao": "dt_parecer"
+     },
+     "campos_canonicos_sem_correspondencia": [],
+     "status_encontrados": [
+      [
+       "FINALIZADA",
+       2
+      ],
+      [
+       "AGUARDANDO ATENDIMENTO",
+       1
+      ]
+     ],
+     "servicos_encontrados": [
+      [
+       "Tapa-buraco em faixa exclusiva ou corredor de ônibus",
+       3
+      ]
+     ],
+     "feicoes_com_tipo_de_obstaculo": 3,
+     "abertura_mais_antiga": "2020-07-27",
+     "abertura_mais_recente": "2020-09-13",
+     "pontos_no_recorte": "3/3"
+    }
+   ],
+   "metadados_coleta": {
+    "fonte": "sp156_geosampa_wfs",
+    "bbox": "-46.71,-23.575,-46.694,-23.56,EPSG:4326",
+    "coletado_em": "2026-11-15T22:14:23.614591+00:00",
+    "falhas": [],
+    "camadas_recusadas_nao_solicitacao": [],
+    "camadas_incompletas": [],
+    "camadas_completude_nao_verificavel": []
+   },
+   "total_feicoes": 173
+  },
+  "olhovivo": {
+   "existe": false,
+   "obrigatoria": false
+  }
+ },
+ "aprovada": true,
+ "fontes_com_pendencia": []
+}

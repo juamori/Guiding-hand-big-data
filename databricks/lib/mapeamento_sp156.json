@@ -1,0 +1,13 @@
+{
+ "descricao": "Campos reais do SP156 no GeoSampa -> campos canônicos da Prata. Gerado/atualizado por scripts/perfil_sp156.py.",
+ "campos": {
+  "protocolo": "cd_identificador",
+  "servico": "dc_servico",
+  "status": "tx_situacao_solicitacao",
+  "data_abertura": "dt_abertura",
+  "data_conclusao": "dt_parecer"
+ },
+ "protocolo_composto_com_camada": false,
+ "situacao_protocolo": "DECIDIDO pelos dados reais em 2026-11-15T19:25:37-03:00: único em todas as camadas, preenchido em 100.0% e reconhece 0 solicitações repetidas entre camadas",
+ "evidencia": "docs/evidencias/perfil_sp156_2026-11-15.md"
+}
