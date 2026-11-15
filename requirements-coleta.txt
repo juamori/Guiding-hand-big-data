@@ -1,0 +1,4 @@
+# Coleta e validação de fontes (scripts do Windows e DAG)
+requests>=2.31,<3
+urllib3>=2,<3
+reportlab>=4,<5          # gerador do relatório PDF

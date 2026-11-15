@@ -1,0 +1,10 @@
+{
+  "gh_pasta_chegada": "/opt/airflow/chegada",
+  "gh_pasta_logs": "/opt/airflow/logs_pipeline",
+  "gh_bbox": "-23.5750,-46.7100,-23.5600,-46.6940",
+  "gh_sp156_camadas": [],
+  "gh_overpass_urls": ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"],
+  "gh_olhovivo_termos": ["Pinheiros", "Teodoro Sampaio", "Faria Lima", "Cardeal Arcoverde"],
+  "gh_olhovivo_token": "",
+  "gh_webhook_url": ""
+}

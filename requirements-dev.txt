@@ -1,0 +1,5 @@
+# Testes locais (o Airflow roda no Docker; não é instalado no Windows)
+-r requirements-coleta.txt
+pytest>=8
+pyspark==4.0.1   # requer Java 17+; sem Java os testes Spark são pulados automaticamente
+pypdf>=4                # testes do relatório

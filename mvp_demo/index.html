@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guiding Hand — Mapa de barreiras de Pinheiros</title>
+<style>
+  :root { --fundo:#ffffff; --texto:#111111; --sutil:#555555; --borda:#c8c8c8; --alto:#b00020; --normal:#0b5394;
+          --oficial:#1b7f3b; --cartao:#f4f4f4; --foco:#ffbf00; color-scheme: light; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fundo:#121212; --texto:#f2f2f2; --sutil:#b8b8b8; --borda:#444; --alto:#ff6b81; --normal:#7fb2ff;
+            --oficial:#5fd38a; --cartao:#1e1e1e; color-scheme: dark; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; font: 18px/1.5 system-ui, "Segoe UI", Arial, sans-serif; background:var(--fundo); color:var(--texto); }
+  header, main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  .sutil { color: var(--sutil); }
+  .resumo { display:grid; grid-template-columns: repeat(auto-fit, minmax(170px,1fr)); gap:12px; margin:16px 0; }
+  .resumo div { background:var(--cartao); border:1px solid var(--borda); border-radius:8px; padding:12px; }
+  .resumo strong { display:block; font-size:1.8rem; }
+  .controles { display:flex; flex-wrap:wrap; gap:12px; align-items:end; margin: 8px 0 16px; }
+  label { display:flex; flex-direction:column; font-weight:600; }
+  select, button, input[type=file] { font: inherit; padding: 8px; border:2px solid var(--borda); border-radius:6px;
+           background:var(--fundo); color:var(--texto); }
+  :focus-visible { outline: 4px solid var(--foco); outline-offset: 2px; }
+  .layout { display:grid; grid-template-columns: 1fr; gap:16px; }
+  @media (min-width: 900px) { .layout { grid-template-columns: 420px 1fr; } }
+  .mapa { width:100%; height:auto; background:var(--cartao); border:1px solid var(--borda); border-radius:8px; }
+  ul.lista { list-style:none; margin:0; padding:0; }
+  ul.lista li { border:1px solid var(--borda); border-left:8px solid var(--normal); border-radius:8px; padding:10px 12px; margin-bottom:10px; }
+  ul.lista li.alto { border-left-color: var(--alto); }
+  ul.lista li.oficial { border-left-color: var(--oficial); }
+  .etiqueta { font-size:.85rem; padding:2px 8px; border-radius:999px; border:1px solid currentColor; margin-left:6px; }
+  .aviso { border:2px dashed var(--borda); padding:10px; border-radius:8px; }
+  .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Mapa de barreiras — Pinheiros</h1>
+  <p class="sutil">Guiding Hand · dados da tabela Ouro <code>tb_mvp_mapa_barreiras</code> (Big Data)</p>
+  <p id="origem" class="aviso" role="note">Carregando dados…</p>
+</header>
+<main>
+  <section class="resumo" aria-label="Resumo">
+    <div><span>Barreiras mapeadas</span><strong id="r-total">–</strong></div>
+    <div><span>Na altura da cabeça (a bengala não alcança)</span><strong id="r-alto">–</strong></div>
+    <div><span>Prontas para confirmação</span><strong id="r-conf">–</strong></div>
+    <div><span>Resolvidas pela zeladoria</span><strong id="r-resolv">–</strong></div>
+  </section>
+
+  <div class="controles">
+    <label>Tipo de obstáculo <select id="f-tipo"><option value="">Todos</option></select></label>
+    <label>Origem
+      <select id="f-origem"><option value="">Todas</option>
+        <option value="oculos_sintetico">Óculos (sintético)</option><option value="sp156">Zeladoria SP156</option></select>
+    </label>
+    <label>Arquivo exportado (se a página foi aberta direto do disco)
+      <input type="file" id="arquivo" accept="application/json">
+    </label>
+  </div>
+
+  <div class="layout">
+    <section aria-label="Mapa esquemático do recorte">
+      <svg id="mapa" class="mapa" viewBox="0 0 400 380" role="img" aria-labelledby="mapa-titulo">
+        <title id="mapa-titulo">Mapa esquemático das barreiras no entorno da Estação Pinheiros</title>
+      </svg>
+      <p class="sutil">Vermelho: na altura da cabeça (a bengala não alcança) · Azul: demais · Verde: registro oficial SP156. Círculo maior = mais detecções.</p>
+    </section>
+    <section aria-labelledby="lista-titulo">
+      <h2 id="lista-titulo">Barreiras <span id="contagem" class="sutil"></span></h2>
+      <p class="sr" aria-live="polite" id="anuncio"></p>
+      <ul id="lista" class="lista"></ul>
+    </section>
+  </div>
+</main>
+<script>
+const RECORTE = { sul: -23.5750, oeste: -46.7100, norte: -23.5600, leste: -46.6940 };
+const ESTACAO = { lat: -23.5672, lon: -46.7019 };
+let DADOS = [];
+
+function xy(lat, lon) {
+  const x = (lon - RECORTE.oeste) / (RECORTE.leste - RECORTE.oeste) * 380 + 10;
+  const y = (RECORTE.norte - lat) / (RECORTE.norte - RECORTE.sul) * 360 + 10;
+  return [x, y];
+}
+function texto(b) {
+  const onde = b.geohash7 ? `quadra ${b.geohash7}` : "";
+  const quando = b.ultima_vez ? `última vez em ${String(b.ultima_vez).slice(0, 10)}` : "";
+  return `${b.descricao}${b.bengala_costuma_detectar === false ? " na altura da cabeça" : ""}, ${onde}, ${quando}`;
+}
+function render() {
+  const tipo = document.getElementById("f-tipo").value, origem = document.getElementById("f-origem").value;
+  const lista = DADOS.filter(b => (!tipo || b.tipo_obstaculo === tipo) && (!origem || b.origem === origem))
+    .sort((a, b) => (a.nivel_alerta === "alto" ? -1 : 1) - (b.nivel_alerta === "alto" ? -1 : 1)
+                    || (b.n_ocorrencias || 0) - (a.n_ocorrencias || 0));
+  const ul = document.getElementById("lista"); ul.innerHTML = "";
+  for (const b of lista) {
+    const li = document.createElement("li");
+    li.className = b.origem === "sp156" ? "oficial" : (b.nivel_alerta === "alto" ? "alto" : "");
+    li.tabIndex = 0;
+    const status = b.origem === "sp156" ? `zeladoria: ${b.status_barreira}` :
+      `${b.n_ocorrencias} detecções por ${b.n_dispositivos} dispositivo(s)${b.elegivel_confirmacao ? " · pronta para confirmação" : ""}`;
+    li.innerHTML = `<strong>${b.descricao}</strong>${b.nivel_alerta === "alto" ? '<span class="etiqueta">altura da cabeça</span>' : ""}
+      <div>${status}</div><div class="sutil">${texto(b)}</div>`;
+    ul.appendChild(li);
+  }
+  document.getElementById("contagem").textContent = `(${lista.length})`;
+  document.getElementById("anuncio").textContent = `${lista.length} barreiras listadas`;
+  const svg = document.getElementById("mapa");
+  svg.querySelectorAll("circle, text.rot").forEach(n => n.remove());
+  const [ex, ey] = xy(ESTACAO.lat, ESTACAO.lon);
+  svg.insertAdjacentHTML("beforeend", `<circle cx="${ex}" cy="${ey}" r="9" fill="none" stroke="currentColor" stroke-width="3"/>
+    <text class="rot" x="${ex + 12}" y="${ey + 5}" font-size="13" fill="currentColor">Estação Pinheiros</text>`);
+  for (const b of lista) {
+    if (b.lat == null) continue;
+    const [x, y] = xy(b.lat, b.lon);
+    const cor = b.origem === "sp156" ? "var(--oficial)" : (b.nivel_alerta === "alto" ? "var(--alto)" : "var(--normal)");
+    const r = 4 + Math.min(8, (b.n_ocorrencias || 1));
+    svg.insertAdjacentHTML("beforeend", `<circle cx="${x}" cy="${y}" r="${r}" fill="${cor}" fill-opacity=".8"><title>${texto(b)}</title></circle>`);
+  }
+}
+function carregar(pacote) {
+  DADOS = pacote.barreiras || [];
+  const aviso = pacote.origem_dos_dados || pacote.aviso || "";
+  document.getElementById("origem").textContent =
+    `${DADOS.length} barreiras · gerado em ${pacote.gerado_em || "execução local"}. ${aviso}`;
+  document.getElementById("r-total").textContent = DADOS.length;
+  document.getElementById("r-alto").textContent = DADOS.filter(b => b.bengala_costuma_detectar === false).length;
+  document.getElementById("r-conf").textContent = DADOS.filter(b => b.elegivel_confirmacao).length;
+  document.getElementById("r-resolv").textContent = DADOS.filter(b => b.status_barreira === "resolvida").length;
+  const sel = document.getElementById("f-tipo");
+  [...new Set(DADOS.map(b => b.tipo_obstaculo))].sort().forEach(t => {
+    const d = DADOS.find(b => b.tipo_obstaculo === t).descricao;
+    sel.insertAdjacentHTML("beforeend", `<option value="${t}">${d}</option>`);
+  });
+  render();
+}
+document.getElementById("f-tipo").addEventListener("change", render);
+document.getElementById("f-origem").addEventListener("change", render);
+document.getElementById("arquivo").addEventListener("change", e => {
+  const f = e.target.files[0]; if (!f) return;
+  f.text().then(t => carregar(JSON.parse(t)));
+});
+fetch("data/barreiras_mvp.json").then(r => r.json()).then(carregar).catch(() => {
+  document.getElementById("origem").textContent =
+    "Não foi possível ler data/barreiras_mvp.json automaticamente. Escolha o arquivo exportado no campo abaixo.";
+});
+</script>
+</body>
+</html>

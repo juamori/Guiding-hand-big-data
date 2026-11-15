@@ -1,0 +1,22 @@
+# segredos e configuração local
+.env
+airflow/variables.json
+# dados coletados e lotes, só na raiz (amostras ficam em amostras/; fixtures de teste são versionados)
+/chegada/
+/lotes/
+/logs/
+/logs_pipeline/
+/saida_local/
+# ambientes e caches
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+.DS_Store
+Thumbs.db
+/spark-warehouse/
+metastore_db/
+derby.log
+# relatório PDF: entregue pelo Teams (prévias não devem ir ao GitHub)
+/docs/relatorio/*.pdf
