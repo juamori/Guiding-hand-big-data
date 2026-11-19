@@ -32,6 +32,7 @@
   ul.lista li.alto { border-left-color: var(--alto); }
   ul.lista li.oficial { border-left-color: var(--oficial); }
   .etiqueta { font-size:.85rem; padding:2px 8px; border-radius:999px; border:1px solid currentColor; margin-left:6px; }
+  .resumo small { display:block; margin-top:4px; font-size:.8rem; }
   .aviso { border:2px dashed var(--borda); padding:10px; border-radius:8px; }
   .sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
 </style>
@@ -47,7 +48,7 @@
     <div><span>Barreiras mapeadas</span><strong id="r-total">–</strong></div>
     <div><span>Na altura da cabeça (a bengala não alcança)</span><strong id="r-alto">–</strong></div>
     <div><span>Prontas para confirmação</span><strong id="r-conf">–</strong></div>
-    <div><span>Resolvidas pela zeladoria</span><strong id="r-resolv">–</strong></div>
+    <div><span>Resolvidas pela zeladoria</span><strong id="r-resolv">–</strong><small id="r-resolv-nota" class="sutil"></small></div>
   </section>
 
   <div class="controles">
@@ -66,7 +67,7 @@
       <svg id="mapa" class="mapa" viewBox="0 0 400 380" role="img" aria-labelledby="mapa-titulo">
         <title id="mapa-titulo">Mapa esquemático das barreiras no entorno da Estação Pinheiros</title>
       </svg>
-      <p class="sutil">Vermelho: na altura da cabeça (a bengala não alcança) · Azul: demais · Verde: registro oficial SP156. Círculo maior = mais detecções.</p>
+      <p class="sutil">Vermelho: na altura da cabeça (a bengala não alcança) · Azul: demais · Verde: registro oficial SP156 (os registros disponíveis no GeoSampa são históricos, de 2020). Círculo maior = mais detecções.</p>
     </section>
     <section aria-labelledby="lista-titulo">
       <h2 id="lista-titulo">Barreiras <span id="contagem" class="sutil"></span></h2>
@@ -85,6 +86,14 @@ function xy(lat, lon) {
   const y = (RECORTE.norte - lat) / (RECORTE.norte - RECORTE.sul) * 360 + 10;
   return [x, y];
 }
+// Registros do SP156 com mais de 1 ano em relação à data de exportação são históricos (o GeoSampa só tem 2020).
+let REFERENCIA = new Date();
+function ehHistorico(b) {
+  if (b.origem !== "sp156") return false;
+  const d = new Date(String(b.ultima_vez || b.primeira_vez || "").slice(0, 10));
+  return !isNaN(d) && (REFERENCIA - d) > 365 * 864e5;
+}
+function anoDe(b) { return String(b.ultima_vez || b.primeira_vez || "").slice(0, 4); }
 function texto(b) {
   const onde = b.geohash7 ? `quadra ${b.geohash7}` : "";
   const quando = b.ultima_vez ? `última vez em ${String(b.ultima_vez).slice(0, 10)}` : "";
@@ -100,7 +109,8 @@ function render() {
     const li = document.createElement("li");
     li.className = b.origem === "sp156" ? "oficial" : (b.nivel_alerta === "alto" ? "alto" : "");
     li.tabIndex = 0;
-    const status = b.origem === "sp156" ? `zeladoria: ${b.status_barreira}` :
+    const status = b.origem === "sp156"
+      ? `zeladoria: ${b.status_barreira}${ehHistorico(b) ? ` · <span class="etiqueta historico">registro histórico (${anoDe(b)})</span>` : ""}` :
       `${b.n_ocorrencias} detecções por ${b.n_dispositivos} dispositivo(s)${b.elegivel_confirmacao ? " · pronta para confirmação" : ""}`;
     li.innerHTML = `<strong>${b.descricao}</strong>${b.nivel_alerta === "alto" ? '<span class="etiqueta">altura da cabeça</span>' : ""}
       <div>${status}</div><div class="sutil">${texto(b)}</div>`;
@@ -123,13 +133,19 @@ function render() {
 }
 function carregar(pacote) {
   DADOS = pacote.barreiras || [];
+  const ref = new Date(String(pacote.gerado_em || "").slice(0, 10));
+  if (!isNaN(ref)) REFERENCIA = ref;
   const aviso = pacote.origem_dos_dados || pacote.aviso || "";
   document.getElementById("origem").textContent =
     `${DADOS.length} barreiras · gerado em ${pacote.gerado_em || "execução local"}. ${aviso}`;
   document.getElementById("r-total").textContent = DADOS.length;
   document.getElementById("r-alto").textContent = DADOS.filter(b => b.bengala_costuma_detectar === false).length;
   document.getElementById("r-conf").textContent = DADOS.filter(b => b.elegivel_confirmacao).length;
-  document.getElementById("r-resolv").textContent = DADOS.filter(b => b.status_barreira === "resolvida").length;
+  const resolvidas = DADOS.filter(b => b.status_barreira === "resolvida");
+  document.getElementById("r-resolv").textContent = resolvidas.length;
+  const anos = [...new Set(resolvidas.filter(ehHistorico).map(anoDe))].sort();
+  document.getElementById("r-resolv-nota").textContent =
+    anos.length ? `registros históricos do SP156 (${anos.join(", ")})` : "";
   const sel = document.getElementById("f-tipo");
   [...new Set(DADOS.map(b => b.tipo_obstaculo))].sort().forEach(t => {
     const d = DADOS.find(b => b.tipo_obstaculo === t).descricao;

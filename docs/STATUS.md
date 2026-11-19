@@ -1,9 +1,20 @@
 # Situação do projeto — o que foi verificado e como
 
-Atualizado em 15/11/2026 (adaptação para o GitHub Codespaces). Nada aqui é declarado concluído sem evidência executada.
+Atualizado em 19/11/2026. Nada aqui é declarado concluído sem evidência executada.
 
-> **Situação das fontes e do Databricks em 15/11:** nenhuma fonte externa foi validada com dados reais e nada foi executado no
-> Databricks ainda. Isso só acontece no seu Codespace e na sua conta Databricks (seção 4).
+> **Situação final (19/11):**
+> - **Airflow 3.0.6 (Codespaces):** 3 execuções (15/11 07:00, 15/11 07:14 manual, 16/11 07:00), 0 falhas; Olho Vivo pulado (sem token).
+> - **Bronze (Auto Loader):** lote 1 (15/11) 0 → 4 arquivos, duas reexecuções com 0 novos; lote 2 (16/11) 4 → 8, com checkpoint próprio (`checkpoint_bronze_lote_2`).
+> - **Prata:**
+>   - lote 1: 15 barrados por 4 regras; final: 20 barrados (RQ2 11, RQ3 4, RQ4 2, RQ5 3); clima 48 h;
+>   - eventos dos óculos com os dois lotes: 145 lidos, 11 barrados, 4 duplicados, 130 únicos (59 + 71).
+> - **Ouro:** `fato_ocorrencia_barreira` 365, `dim_barreira` 204, `tb_mvp_mapa_barreiras` 204, `dim_tempo` 114, `dim_local` 123, `dim_tipo_obstaculo` 11, `dim_origem` 3 (fonte: `evidencias/evidencias_lote_2.json`).
+> - **Consultas C1 a C6** executadas com os dois lotes (C3: 24 barreiras recorrentes; C5: 168 SP156 + 36 óculos).
+> - **MVP:** JSON com 204 barreiras; tela com 204 / 17 / 22 / 108.
+> - **Relatório:** `docs/entrega/Guiding_Hand_Global_Solution_2026.pdf`.
+>
+> Detalhes: [`evidencias/lotes_1_e_2_consultas.md`](evidencias/lotes_1_e_2_consultas.md) e [`revisao_final.md`](revisao_final.md).
+> As seções abaixo são o histórico das rodadas anteriores.
 
 ## 0. Rodada de 15/11 — execução no GitHub Codespaces (sem Docker no computador)
 

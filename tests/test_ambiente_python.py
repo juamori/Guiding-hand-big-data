@@ -44,7 +44,8 @@ def _verificar(python, tmp_path, gh_venv):
     env.pop("GH_REEXECUTADO", None)
     # "-S": Python SEM site-packages -> sem requests, como o python3 do sistema no Codespaces
     return subprocess.run([str(python), "-S", str(RAIZ / "scripts" / "verificar_chegada.py"),
-                           "--data", "2026-11-13", "--chegada", str(tmp_path / "chegada")],
+                           "--data", "2026-11-13", "--chegada", str(tmp_path / "chegada"),
+                           "--saida", str(tmp_path / "evidencias")],   # nunca grava em docs/evidencias do projeto
                           capture_output=True, text=True, env=env, cwd=tmp_path)
 
 

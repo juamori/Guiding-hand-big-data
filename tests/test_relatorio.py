@@ -38,6 +38,8 @@ def test_ordem_das_secoes_e_marca_de_previa(evidencias, tmp_path):
         assert f"{cid} —" in texto
 
 
-def test_sem_evidencias_tudo_fica_pendente(tmp_path):
+def test_sem_evidencias_tudo_fica_pendente(tmp_path, monkeypatch):
+    # projeto vazio: sem prints, integrantes, lotes ou configuração (o repositório real já tem esses arquivos)
+    monkeypatch.setattr(gr, "RAIZ", tmp_path / "projeto_vazio")
     texto = _texto(gr.gerar(None, tmp_path / "vazio.pdf"))
     assert texto.count("PENDENTE") >= 5

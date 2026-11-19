@@ -183,7 +183,9 @@ Notebook usado: [`databricks/bronze/bronze_lote_1.py`](databricks/bronze/bronze_
 | lote 1 — reexecução | 4 | 4 | **0** |
 | lote 2 — 1ª execução | 4 | 8 | 4 |
 
-As consultas de duplicidade (mesmo caminho, e mesmo nome com o mesmo conteúdo) retornaram **0 linhas**.
+As consultas de duplicidade (mesmo caminho, e mesmo nome com o mesmo conteúdo) retornaram **0 linhas**. A
+reexecução do lote 2 não foi registrada na tabela de controle. A garantia de não duplicação está demonstrada pelas
+duas reexecuções do lote 1.
 
 O notebook [`01_bronze_autoloader.py`](databricks/bronze/01_bronze_autoloader.py), usado pelo orquestrador
 `00_processar_lote`, tem a mesma lógica, mas os lotes deste trabalho foram processados pelo `bronze_lote_1`.
@@ -203,28 +205,34 @@ Notebook [`databricks/prata/02_prata.py`](databricks/prata/02_prata.py). Transfo
 | MERGE | `MERGE INTO` por chave; só atualiza se o hash do registro mudou |
 | SP156 | Campos reais mapeados em `mapeamento_sp156.json`. O protocolo (`cd_identificador`) foi escolhido pelo perfil dos dados reais ([`perfil_sp156_2026-11-15.md`](docs/evidencias/perfil_sp156_2026-11-15.md)) |
 
-**Resultado do lote 1:**
+**Processamento do lote 2 (eventos dos óculos):** 145 eventos lidos (lotes 1 e 2), 11 barrados pelas regras,
+4 reenvios duplicados removidos, **130 eventos únicos** consolidados (59 de 15/11 e 71 de 16/11), com **71 inseridos**
+pelo MERGE do lote 2.
 
-| Tabela | Chave | Linhas |
-|---|---|---|
-| `prata_eventos_oculos` | `event_id` | 59 |
-| `prata_clima_horario` | `data_hora` | 24 |
-| `prata_osm_infraestrutura` | `osm_key` | 569 |
-| `prata_sp156_solicitacoes` | `protocolo` | 168 |
-| `prata_olhovivo_paradas` | `codigo_parada` | 0 |
-| `prata_quarentena` | `fonte` + `chave_registro` + `regra` | 15 |
+| Tabela | Chave | Lote 1 | Lotes 1 e 2 (final) |
+|---|---|---|---|
+| `prata_eventos_oculos` | `event_id` | 59 | **130** |
+| `prata_clima_horario` | `data_hora` | 24 | **48** |
+| `prata_osm_infraestrutura` | `osm_key` | 569 | 569 |
+| `prata_sp156_solicitacoes` | `protocolo` | 168 | 168 |
+| `prata_olhovivo_paradas` | `codigo_parada` | 0 | 0 |
+| `prata_quarentena` | `fonte` + `chave_registro` + `regra` | 15 | **20** |
+
+O OSM e o SP156 não mudam: os arquivos de 16/11 trazem as mesmas chaves, e o MERGE não duplica. Os valores finais
+vêm de `docs/evidencias/evidencias_lote_2.json`.
 
 **Regras de qualidade e barrados:**
 
-| Regra | Critério | Barrados |
-|---|---|---|
-| RQ1_CAMPOS_OBRIGATORIOS | chave, data/hora e coordenadas presentes | 0 |
-| RQ2_FORA_DO_RECORTE | ponto dentro do retângulo de Pinheiros | **10** (eventos 1, OSM 4, SP156 5) |
-| RQ3_TIPO_FORA_DO_DOMINIO | tipo conhecido pelo produto | **2** |
-| RQ4_CONFIANCA_INVALIDA | 0 ≤ confiança ≤ 1 | **1** |
-| RQ5_CONFIANCA_ABAIXO_DO_LIMIAR | confiança ≥ 0,5 | **2** |
-| RQ6_MEDIDA_FISICA_IMPOSSIVEL | precipitação e visibilidade ≥ 0; temperatura entre -10 e 50 °C | 0 |
-| RQ7_DATAS_INCOERENTES | conclusão ≥ abertura | 0 |
+| Regra | Critério | Lote 1 | Final (lotes 1 e 2) |
+|---|---|---|---|
+| RQ1_CAMPOS_OBRIGATORIOS | chave, data/hora e coordenadas presentes | 0 | 0 |
+| RQ2_FORA_DO_RECORTE | ponto dentro do retângulo de Pinheiros | 10 (eventos 1, OSM 4, SP156 5) | **11** (eventos 2, OSM 4, SP156 5) |
+| RQ3_TIPO_FORA_DO_DOMINIO | tipo conhecido pelo produto | 2 | **4** |
+| RQ4_CONFIANCA_INVALIDA | 0 ≤ confiança ≤ 1 | 1 | **2** |
+| RQ5_CONFIANCA_ABAIXO_DO_LIMIAR | confiança ≥ 0,5 | 2 | **3** |
+| RQ6_MEDIDA_FISICA_IMPOSSIVEL | precipitação e visibilidade ≥ 0; temperatura entre -10 e 50 °C | 0 | 0 |
+| RQ7_DATAS_INCOERENTES | conclusão ≥ abertura | 0 | 0 |
+| **Total** | | **15** | **20** (11 de eventos dos óculos) |
 
 **Os números fecham com a coleta:**
 - OSM: 569 + 4 = 573 elementos;
@@ -247,15 +255,18 @@ erDiagram
   dim_barreira ||--o| tb_mvp_mapa_barreiras : barreira_key
 ```
 
-| Tabela | Papel | Linhas (lote 1) |
-|---|---|---|
-| `fato_ocorrencia_barreira` | Uma ocorrência de barreira: detecção dos óculos, solicitação SP156 ou elemento OSM que é obstáculo | 300 |
-| `dim_tempo` | Data, mês, dia da semana, fim de semana | 114 |
-| `dim_local` | Centro da célula geohash 7 (~150 m) | — |
-| `dim_tipo_obstaculo` | Descrição, altura, se a bengala costuma detectar | — |
-| `dim_origem` | oculos_sintetico, sp156, osm | — |
-| `dim_barreira` | Barreira única: células do mesmo tipo a até 20 m são unificadas (ruído de GPS) | 194 |
-| `tb_mvp_mapa_barreiras` | Tabela consumida pelo MVP, **sem dado de dispositivo** | 194 |
+| Tabela | Papel | Lote 1 | Lotes 1 e 2 (final) |
+|---|---|---|---|
+| `fato_ocorrencia_barreira` | Uma ocorrência de barreira: detecção dos óculos, solicitação SP156 ou elemento OSM que é obstáculo | 300 | **365** |
+| `dim_tempo` | Data, mês, dia da semana, fim de semana | 114 | 114 |
+| `dim_local` | Centro da célula geohash 7 (~150 m) | — | 123 |
+| `dim_tipo_obstaculo` | Descrição, altura, se a bengala costuma detectar | — | 11 |
+| `dim_origem` | oculos_sintetico, sp156, osm | — | 3 |
+| `dim_barreira` | Barreira única: células do mesmo tipo a até 20 m são unificadas (ruído de GPS) | 194 | **204** |
+| `tb_mvp_mapa_barreiras` | Tabela consumida pelo MVP, **sem dado de dispositivo** | 194 | **204** |
+
+Conferência do fato final: 365 = 116 detecções dos óculos (C4: 70 + 46) + 168 solicitações SP156 + 81 elementos OSM
+(estes não mudaram entre os lotes).
 
 Detalhes: [`docs/modelo_dimensional.md`](docs/modelo_dimensional.md).
 
@@ -264,18 +275,21 @@ Detalhes: [`docs/modelo_dimensional.md`](docs/modelo_dimensional.md).
 Arquivo [`databricks/sql/consultas_mvp.sql`](databricks/sql/consultas_mvp.sql), executado pelo notebook
 [`04_consultas_mvp`](databricks/ouro/04_consultas_mvp.py). São seis consultas; a **C5 mede o impacto**.
 
-| ID | Pergunta | Resultado (lote 1) |
+| ID | Pergunta | Resultado (lotes 1 e 2, 19/11) |
 |---|---|---|
-| C1 | Quais tipos de obstáculo são mais recorrentes, e quantos a bengala não detecta? | Buraco (SP156) lidera, com 149 ocorrências. Galho, placa e orelhão são os tipos invisíveis à bengala |
+| C1 | Quais tipos de obstáculo são mais recorrentes, e quantos a bengala não detecta? | 16 linhas. Buraco (SP156) lidera, com 149 ocorrências; buraco nos óculos: 30 ocorrências em 10 barreiras. Galho, placa e orelhão são os tipos invisíveis à bengala |
 | C2 | Quais quadras (~150 m) concentram mais barreiras? | A célula `6gyccht` lidera, com 9 barreiras distintas |
-| C3 | Quais barreiras aparecem em mais de uma coleta? | Vazia com um só dia na Ouro. Depende da Ouro com os dois lotes |
-| C4 | Como a chuva se relaciona com as detecções? | Sem chuva: 2,8 detecções/h. Com chuva: 4,6 detecções/h (ver ressalva) |
-| C5 | **Impacto:** barreiras mapeadas, invisíveis à bengala, prontas para confirmação e resolvidas | 194 mapeadas. 13 invisíveis à bengala (6 SP156 + 7 óculos). 6 prontas para confirmação. 108 resolvidas pela zeladoria |
-| C6 | Como evolui, dia a dia, o número de barreiras identificadas e resolvidas? | 101 dias com movimento (inclui o histórico de 2020 do SP156) |
+| C3 | Quais barreiras aparecem em mais de uma coleta? | **24 barreiras** detectadas nas duas coletas (era 0 com um só dia) |
+| C4 | Como a chuva se relaciona com as detecções? | Sem chuva: 70 detecções em 19 h (3,68/h). Com chuva: 46 em 11 h (4,18/h). Ver ressalva |
+| C5 | **Impacto:** barreiras mapeadas, invisíveis à bengala, prontas para confirmação e resolvidas | **204 mapeadas** (168 SP156 + 36 óculos). Invisíveis à bengala: 6 no SP156 (3,6%) e 11 nos óculos (30,6%). 22 barreiras dos óculos prontas para confirmação. 108 solicitações resolvidas pela zeladoria (registros de 2020, média de 8,7 dias até a resolução) |
+| C6 | Como evolui, dia a dia, o número de barreiras identificadas e resolvidas? | 102 dias com movimento (inclui o histórico de 2020 do SP156). O JSON de evidências guarda as 30 primeiras linhas |
+
+Com só o lote 1, eram 194 barreiras e a C3 ficava vazia. A evolução entre os lotes está em
+[`docs/evidencias/lotes_1_e_2_consultas.md`](docs/evidencias/lotes_1_e_2_consultas.md).
 
 **Conferências:**
-- a soma da C1 é igual ao total do fato (300);
-- 168 (SP156) + 26 (óculos) = 194 = `dim_barreira`.
+- no lote 1, a soma da C1 era igual ao total do fato (300), e 168 (SP156) + 26 (óculos) = 194 = `dim_barreira`;
+- no final, 168 + 36 = 204 = `dim_barreira` = `tb_mvp_mapa_barreiras` = barreiras do JSON do MVP.
 
 **Ressalvas:**
 - A **C4** cruza clima real com detecções sintéticas, e o gerador não usa o clima. Ela demonstra a integração das
@@ -285,14 +299,20 @@ Arquivo [`databricks/sql/consultas_mvp.sql`](databricks/sql/consultas_mvp.sql), 
 ## 11. MVP
 
 A tela [`mvp_demo/index.html`](mvp_demo/index.html) lê o `barreiras_mvp.json` exportado da `tb_mvp_mapa_barreiras`
-pelo notebook [`05_exportar_mvp`](databricks/mvp/05_exportar_mvp.py). A tela gerada em 18/11 mostra:
-- **194 barreiras mapeadas**;
-- **13 na altura da cabeça**;
-- **6 prontas para confirmação**;
-- **108 resolvidas pela zeladoria**.
+pelo notebook [`05_exportar_mvp`](databricks/mvp/05_exportar_mvp.py). A exportação final (19/11, depois dos dois lotes)
+tem **204 barreiras**: 168 do SP156 e 36 dos óculos (sintéticas). A tela mostra:
+- **204 barreiras mapeadas**;
+- **17 na altura da cabeça**, que a bengala não alcança (6 SP156 + 11 óculos, como na C5);
+- **22 prontas para confirmação**;
+- **108 resolvidas pela zeladoria** (registros históricos de 2020).
 
-Os números são os mesmos da C5. Filtros: tipo de obstáculo e origem. As solicitações do SP156 com mais de um ano
-aparecem marcadas como **registro histórico (2020)**.
+Filtros: tipo de obstáculo e origem. No mapa, os registros oficiais do SP156 aparecem em verde, e cada
+solicitação do SP156 traz a marca **registro histórico (2020)**. Capturas:
+- tela completa: `docs/relatorio/prints/10_tela_mvp.png`;
+- filtro SP156 mostrando a marca: `docs/evidencias/prints_lote2_final/08_tela_mvp_filtro_sp156_historico.png`;
+- captura feita no Codespace em 19/11: `docs/evidencias/prints_lote2_final/07_tela_mvp_codespace_19-11_204.png`.
+
+Para abrir: `python -m http.server 8000 --directory mvp_demo` e acesse a porta 8000 (no Codespaces, a 8080 é do Airflow).
 
 <img src="docs/relatorio/prints/10_tela_mvp.png" alt="Tela do MVP com o mapa de barreiras de Pinheiros" width="480">
 
@@ -384,19 +404,26 @@ python scripts/pipeline_local.py   # Bronze → Ouro local com dados de teste
 | Perfil do SP156 (escolha do protocolo) | `docs/evidencias/perfil_sp156_2026-11-15.md` |
 | Lotes preparados | `docs/lotes/lote_1.md`, `docs/lotes/lote_2.md` |
 | Volume com o lote 1 | `docs/relatorio/prints/05_upload_lote1.png` |
+| Volume com o lote 2 | `docs/relatorio/prints/06_upload_lote2.png` |
 | Bronze: contagens dos lotes 1 e 2 | `docs/relatorio/prints/07_bronze_contagens.png` |
 | Bronze: reexecução e duplicidade | `docs/evidencias/prints_databricks_lote1/02_*.png` e `03_*.png` |
 | Prata: MERGE e quarentena por regra | `docs/evidencias/prints_databricks_lote1/06_*.png`, `docs/relatorio/prints/08_prata_quarentena.png` |
 | Ouro: tabelas | `docs/relatorio/prints/09_ouro_tabelas.png` |
-| Consultas C1 a C6 | `docs/evidencias/prints_databricks_lote1/09_*.png` a `14_*.png` |
-| Tela do MVP | `docs/relatorio/prints/10_tela_mvp.png` |
+| Consultas C1 a C6 (lote 1) | `docs/evidencias/prints_databricks_lote1/09_*.png` a `14_*.png` |
+| Consultas C1 a C6 (lotes 1 e 2) e exportação das evidências | `docs/evidencias/prints_lote2_final/` |
+| Evidências exportadas do Databricks | `docs/evidencias/evidencias_lote_2.json` |
+| Tela do MVP (204 barreiras, 19/11) | `docs/relatorio/prints/10_tela_mvp.png` |
+| JSON do MVP (204 barreiras) | `mvp_demo/data/barreiras_mvp.json` |
+| Relatório final | `docs/entrega/Guiding_Hand_Global_Solution_2026.pdf` |
 | Testes no Codespace | `docs/evidencias/prints_airflow_lote2_mvp/03_testes_codespace_68_passed.png` |
 
 Transcrição dos números observados: [`docs/evidencias/databricks_lote_1.md`](docs/evidencias/databricks_lote_1.md) e
 [`docs/evidencias/airflow_lote2_mvp.md`](docs/evidencias/airflow_lote2_mvp.md). Nos prints do Databricks, o caminho
 da pasta pessoal do workspace foi ocultado.
 
-**Pendentes:** print do Volume com o lote 2 e resultados da Prata, da Ouro e das consultas depois do lote 2.
+O arquivo `docs/evidencias/airflow_manual__20261115_191410.json` registra os estados das tarefas de uma execução
+manual do Airflow. Os prints antigos que mostram o estado do lote 1 (por exemplo, a tela com 194 barreiras) estão
+identificados no nome do arquivo.
 
 ## 16. Estrutura do repositório
 
@@ -439,9 +466,16 @@ docs/                       arquitetura, fontes, contrato, qualidade, LGPD, mode
 O pipeline foi implementado de ponta a ponta e executado com dados reais:
 - **Coleta:** Airflow com coletas em 15 e 16/11, sem falhas.
 - **Bronze:** dois lotes ingeridos pelo Auto Loader (0 → 4 → 8 arquivos), com reexecuções sem duplicação.
-- **Prata:** 820 registros válidos e 15 barrados por 4 regras.
-- **Ouro:** 300 ocorrências e 194 barreiras.
-- **Consultas e MVP:** seis consultas SQL e uma tela com os mesmos números da consulta de impacto.
+- **Prata:** 7 regras de qualidade com quarentena (20 registros barrados por 4 regras, 11 deles eventos dos
+  óculos), deduplicação de reenvios e MERGE idempotente; 130 eventos únicos dos óculos e 48 horas de clima.
+- **Ouro:** 365 ocorrências e 204 barreiras, 24 delas detectadas nas duas coletas.
+- **Consultas e MVP:** seis consultas SQL executadas com os dois lotes e uma tela com as 204 barreiras da tabela Ouro.
 
-Os resultados se conferem entre si e com a coleta original. As limitações (eventos sintéticos, SP156 histórico)
-estão declaradas, junto com o que seria necessário para usar dados reais.
+Os resultados se conferem entre si e com a coleta original. As limitações estão declaradas, junto com o que seria
+necessário para usar dados reais:
+- eventos dos óculos sintéticos;
+- SP156 com registros históricos de 2020;
+- clima real, mas sem relação causal demonstrada;
+- Olho Vivo sem token.
+
+O Guiding Hand, nesta entrega, é um **piloto de demonstração**, não um serviço de navegação validado em produção.

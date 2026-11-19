@@ -227,9 +227,11 @@ if __name__ == "__main__":
     ap.add_argument("--data", help="dia de coleta AAAA-MM-DD (padrão: hoje em São Paulo)")
     ap.add_argument("--chegada", type=Path, default=RAIZ / "chegada")
     ap.add_argument("--desde", help="início da execução (ISO 8601); arquivos mais antigos são apontados")
+    ap.add_argument("--saida", type=Path, default=RAIZ / "docs" / "evidencias",
+                    help="pasta onde gravar coleta_<data>.md/.json (padrão: docs/evidencias)")
     a = ap.parse_args()
     d = date.fromisoformat(a.data) if a.data else datetime.now(SP).date()
     r = verificar(d, a.chegada, datetime.fromisoformat(a.desde) if a.desde else None)
-    print(f"Verificação: {escrever(r)}")
+    print(f"Verificação: {escrever(r, a.saida)}")
     print("APROVADA" if r["aprovada"] else "COM PENDÊNCIAS: " + ", ".join(r["fontes_com_pendencia"]))
     sys.exit(0 if r["aprovada"] else 1)

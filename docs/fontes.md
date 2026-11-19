@@ -1,15 +1,16 @@
 # Fontes de dados
 
-> Situação de validação: a coluna "Validação" é atualizada com o relatório de `scripts/validar_fontes.py` executado com internet.
-> Enquanto não houver relatório real em `docs/validacao_fontes/`, nenhuma fonte externa deve ser considerada testada.
+> Situação em 16/11: a conectividade das fontes foi validada em 15/11 (relatório real no Codespace) e a **coleta real de 15/11**
+> foi processada no Databricks (lote 1): clima 24 horas, OSM 569 elementos, SP156 168 solicitações e 59 eventos sintéticos
+> válidos na Prata. Olho Vivo não foi coletado (sem token). Ver `docs/evidencias/databricks_lote_1.md`.
 
 | Fonte | Origem | Formato | Frequência de coleta | Atualização na origem | Finalidade no Guiding Hand | Validação |
 |---|---|---|---|---|---|---|
-| Clima | Open-Meteo Forecast API (`api.open-meteo.com/v1/forecast`), sem chave | JSON (listas horárias paralelas) | Diária (dia anterior completo) | A cada hora | Contextualizar detecções: chuva → poças/piso liso, rajadas → galhos. **Contexto regional**: um ponto de grade representa todo o recorte (ver limitação abaixo) | conectividade OK em 15/11 (relatório real); coleta oficial pendente |
-| Infraestrutura de calçada | OpenStreetMap via Overpass API, licença ODbL | JSON | Diária | Contínua (colaborativa) | Postes, árvores, lixeiras, rebaixamentos, piso tátil, faixas e pontos de ônibus no recorte | conectividade OK em 15/11; coleta oficial pendente |
-| Zeladoria SP156 | Prefeitura de SP — 7 camadas SP156 georreferenciadas do GeoSampa (WFS) | GeoJSON | Diária | **Na coleta real de 15/11, as solicitações vão de abril a outubro de 2020**: série histórica, sem atualização recente no GeoSampa | Barreiras reais (buraco, calçada, poda, sinalização) com status oficial e data de conclusão → "resolvidas". **Só camadas de solicitações**; cadastros de infraestrutura são excluídos. Coleta **paginada e completa** | conectividade OK em 15/11; camadas a reconfirmar com o validador corrigido |
-| Paradas de ônibus (opcional) | SPTrans Olho Vivo API v2.1, token gratuito | JSON | Diária | Cadastro estável | Destinos de rota e pontos de calçada congestionada | depende de token |
-| Eventos dos óculos | Gerador `sintetico_v1` (este repositório) | JSON | Diária | — | Simular as detecções que Applied Computer Vision produzirá | testado (sintético) |
+| Clima | Open-Meteo Forecast API (`api.open-meteo.com/v1/forecast`), sem chave | JSON (listas horárias paralelas) | Diária (dia anterior completo) | A cada hora | Contextualizar detecções: chuva → poças/piso liso, rajadas → galhos. **Contexto regional**: um ponto de grade representa todo o recorte (ver limitação abaixo) | conectividade OK em 15/11; **coletado em 15/11** (24 h na Prata) |
+| Infraestrutura de calçada | OpenStreetMap via Overpass API, licença ODbL | JSON | Diária | Contínua (colaborativa) | Postes, árvores, lixeiras, rebaixamentos, piso tátil, faixas e pontos de ônibus no recorte | conectividade OK em 15/11; **coletado em 15/11** (569 elementos na Prata) |
+| Zeladoria SP156 | Prefeitura de SP — 7 camadas SP156 georreferenciadas do GeoSampa (WFS) | GeoJSON | Diária | **Na coleta real de 15/11, as solicitações vão de abril a outubro de 2020**: série histórica, sem atualização recente no GeoSampa | Barreiras reais (buraco, calçada, poda, sinalização) com status oficial e data de conclusão → "resolvidas". **Só camadas de solicitações**; cadastros de infraestrutura são excluídos. Coleta **paginada e completa** | conectividade OK em 15/11; **coletado em 15/11** (168 solicitações na Prata, protocolo `cd_identificador`) |
+| Paradas de ônibus (opcional) | SPTrans Olho Vivo API v2.1, token gratuito | JSON | Diária | Cadastro estável | Destinos de rota e pontos de calçada congestionada | **não coletado** (sem token) |
+| Eventos dos óculos | Gerador `sintetico_v1` (este repositório) | JSON | Diária | — | Simular as detecções que Applied Computer Vision produzirá | gerado em 15/11 (59 eventos válidos na Prata) |
 | *Portal CKAN — Dados do SP156* | dados.prefeitura.sp.gov.br | CSV | **Não coletado** | Recursos de 2012/2013 (metadados atualizados em 2022), segundo o relatório de 15/11 | **Somente contexto histórico** no relatório; não entra no Airflow nem nas camadas | conectividade OK em 15/11 |
 
 ## Como os eventos sintéticos são gerados (`dags/guiding_hand_lib/sintetico.py`)

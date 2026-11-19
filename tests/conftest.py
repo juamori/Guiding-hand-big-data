@@ -21,8 +21,12 @@ def _impressao(caminhos):
 def _mapeamento_e_coletas_intocados():
     """Nenhum teste pode alterar o mapeamento real nem os arquivos brutos de chegada/ do projeto."""
     chegada = RAIZ / "chegada"
+    evidencias = RAIZ / "docs" / "evidencias"
+    ev_antes = {p.name for p in evidencias.glob("*")} if evidencias.is_dir() else set()
     caminhos = PROTEGIDOS + (sorted(p for p in chegada.rglob("*") if p.is_file()) if chegada.is_dir() else [])
     antes = _impressao(caminhos)
     yield
     alterados = [c for c, h in _impressao(caminhos).items() if h != antes[c]]
     assert not alterados, f"Testes alteraram arquivos protegidos: {alterados}"
+    novos = ({p.name for p in evidencias.glob("*")} if evidencias.is_dir() else set()) - ev_antes
+    assert not novos, f"Testes criaram arquivos em docs/evidencias (evidência falsa): {sorted(novos)}"

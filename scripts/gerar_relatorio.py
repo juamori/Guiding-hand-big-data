@@ -37,11 +37,11 @@ PRINTS = {
     "airflow_variables": ("03_airflow_variables.png", "Airflow — Admin › Variables (chaves fora do código)"),
     "chegada": ("04_pasta_chegada.png", "Pasta chegada/ com um arquivo por fonte e por dia"),
     "upload_lote1": ("05_upload_lote1.png", "Upload do lote 1 no Volume chegada"),
-    "upload_lote2": ("06_upload_lote2.png", "Upload do lote 2 no Volume chegada"),
-    "bronze": ("07_bronze_contagens.png", "Notebook — contagens da Bronze por execução"),
-    "prata": ("08_prata_quarentena.png", "Notebook — barrados por regra de qualidade"),
-    "ouro": ("09_ouro_tabelas.png", "Notebook — tabelas da Ouro"),
-    "mvp": ("10_tela_mvp.png", "Tela do MVP consumindo tb_mvp_mapa_barreiras"),
+    "upload_lote2": ("06_upload_lote2.png", "Volume chegada com os arquivos de 15/11 (lote 1) e 16/11 (lote 2)"),
+    "bronze": ("07_bronze_contagens.png", "controle_execucoes_bronze — lote 1 (1ª execução e reexecuções) e lote 2"),
+    "prata": ("08_prata_quarentena.png", "prata_quarentena — registros barrados por regra (execução do lote 1)"),
+    "ouro": ("09_ouro_tabelas.png", "Notebook 03_ouro — tabelas da Ouro na execução do lote 1 (contagens finais na seção 7)"),
+    "mvp": ("10_tela_mvp.png", "Tela do MVP com as 204 barreiras exportadas de tb_mvp_mapa_barreiras (19/11)"),
 }
 
 est = getSampleStyleSheet()
@@ -64,7 +64,7 @@ def pendente(texto: str) -> Paragraph:
 
 
 def tabela(linhas: list[list], larguras=None, cab=True) -> Table:
-    dados = [[Paragraph(esc(c), PEQ) for c in l] for l in linhas]
+    dados = [[Paragraph(esc("—" if c is None else c), PEQ) for c in l] for l in linhas]
     t = Table(dados, colWidths=larguras, repeatRows=1 if cab else 0)
     estilo = [("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#999999")),
               ("VALIGN", (0, 0), (-1, -1), "TOP")]
@@ -81,15 +81,52 @@ def tabela_de_dicts(registros: list[dict], limite=12, larguras=None) -> Table | 
     return tabela([cols] + [[r.get(c) for c in cols] for r in registros[:limite]], larguras)
 
 
-def figura(chave: str, largura=16 * cm):
+def inventario_lotes():
+    """Arquivos de chegada/ registrados por scripts/preparar_lote.py em docs/lotes/lote_N.md (dados reais)."""
+    linhas = []
+    for md in sorted((RAIZ / "docs" / "lotes").glob("lote_*.md")):
+        for l in md.read_text(encoding="utf-8").splitlines():
+            cel = [c.strip() for c in l.strip().strip("|").split("|")]
+            if l.startswith("|") and len(cel) == 5 and cel[0].endswith(".json"):
+                linhas.append([md.stem] + cel)
+    return linhas
+
+
+def figura(chave: str, largura=16 * cm, altura_max=18 * cm):
     nome, legenda = PRINTS[chave]
     caminho = RAIZ / "docs" / "relatorio" / "prints" / nome
+    if not caminho.exists() and chave == "chegada" and inventario_lotes():
+        return [Paragraph("Arquivos de <i>chegada/</i> registrados por scripts/preparar_lote.py (docs/lotes/): "
+                          "um arquivo por fonte e por dia, com tamanho e SHA-256.", TXT),
+                tabela([["Lote", "Arquivo", "Fonte", "Dia de coleta", "Bytes", "SHA-256 (12)"]] + inventario_lotes()),
+                Spacer(1, 6)]
     if not caminho.exists():
         return [pendente(f"print '{legenda}' — salve como docs/relatorio/prints/{nome}")]
     img = Image(str(caminho))
     proporcao = img.imageHeight / img.imageWidth
-    img.drawWidth, img.drawHeight = largura, min(largura * proporcao, 18 * cm)
+    img.drawWidth, img.drawHeight = largura, largura * proporcao
+    if img.drawHeight > altura_max:
+        img.drawWidth, img.drawHeight = altura_max / proporcao, altura_max
     return [KeepTogether([img, Paragraph(f"Figura — {esc(legenda)}", LEG)]), Spacer(1, 6)]
+
+
+def figura_par(chaves, largura=8 * cm):
+    """Duas figuras lado a lado (mesma altura máxima), cada uma com a sua legenda."""
+    celulas = []
+    for chave in chaves:
+        nome, legenda = PRINTS[chave]
+        caminho = RAIZ / "docs" / "relatorio" / "prints" / nome
+        if not caminho.exists():
+            return [pendente(f"print '{legenda}' — salve como docs/relatorio/prints/{nome}")]
+        img = Image(str(caminho))
+        prop = img.imageHeight / img.imageWidth
+        img.drawWidth, img.drawHeight = largura, largura * prop
+        if img.drawHeight > 9.5 * cm:
+            img.drawWidth, img.drawHeight = 9.5 * cm / prop, 9.5 * cm
+        celulas.append([img, Paragraph(f"Figura — {esc(legenda)}", LEG)])
+    t = Table([celulas], colWidths=[largura + 0.3 * cm] * len(chaves))
+    t.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("ALIGN", (0, 0), (-1, -1), "CENTER")]))
+    return [t, Spacer(1, 6)]
 
 
 def diagrama() -> Drawing:
@@ -132,11 +169,14 @@ def interpretar(cid: str, r: list[dict]) -> str:
                     f"{t['barreiras_distintas']} barreiras distintas e {t['ocorrencias']} ocorrências: é a primeira "
                     "candidata para ação de zeladoria no recorte.")
         if cid == "C3":
-            return (f"{len(r)} barreiras foram detectadas em mais de um dia de coleta. Recorrência entre coletas é "
-                    "evidência de barreira persistente (não um falso alarme pontual).")
+            return (f"{len(r)} barreiras foram detectadas em mais de um dia de coleta. Recorrência entre coletas indica "
+                    "barreira persistente, e não um falso alarme pontual. Os eventos dos óculos são sintéticos: o resultado "
+                    "demonstra a lógica do pipeline, não o estado real das calçadas.")
         if cid == "C4":
             partes = [f"{x['condicao']}: {x['deteccoes']} detecções ({x['deteccoes_por_hora']} por hora)" for x in r]
-            return "; ".join(partes) + ". A comparação por hora evita confundir mais horas secas com mais barreiras."
+            return ("; ".join(partes) + ". A comparação por hora evita confundir mais horas secas com mais barreiras. "
+                    "O clima é real (Open-Meteo), mas as detecções são sintéticas e o gerador não usa o clima: a "
+                    "diferença NÃO indica relação causal entre chuva e barreiras.")
         if cid == "C5":
             partes = []
             for x in r:
@@ -145,11 +185,15 @@ def interpretar(cid: str, r: list[dict]) -> str:
                               f"{x['elegiveis_confirmacao_rpa']} prontas para confirmação pelo RPA, "
                               f"{x['resolvidas_oficialmente']} resolvidas pela zeladoria")
             return ("Impacto: " + "; ".join(partes) + ". Cada barreira invisível à bengala que entra no mapa é um "
-                    "risco de queda ou batida na cabeça que passa a ter alerta e encaminhamento.")
+                    "risco de queda ou batida na cabeça que passa a ter alerta e encaminhamento. Ressalvas: os registros "
+                    "do SP156 são históricos (2020), e as barreiras dos óculos vêm de eventos sintéticos.")
         if cid == "C6":
             ident = sum(x["identificadas"] for x in r)
             resol = sum(x["resolvidas"] for x in r)
-            return f"No período há {ident} identificações de barreiras e {resol} resoluções registradas, dia a dia."
+            return (f"O arquivo de evidências guarda as {len(r)} primeiras datas do resultado (a tabela mostra as 10 "
+                    f"primeiras): nelas há {ident} identificações e {resol} resoluções. O resultado completo, no notebook "
+                    "04_consultas_mvp, cobre todos os dias com movimento. As datas de 2020 vêm do histórico do SP156; as "
+                    "de novembro de 2026, dos eventos sintéticos.")
     except (KeyError, TypeError, IndexError):
         pass
     return "Ver tabela de resultados."
@@ -164,6 +208,20 @@ def ultimo(padrao: str) -> Path | None:
 def carregar_evidencias(caminho: str | None) -> dict | None:
     p = Path(caminho) if caminho else ultimo("docs/evidencias/evidencias_lote_*.json")
     return json.loads(p.read_text(encoding="utf-8-sig")) if p and p.exists() else None
+
+
+def resumo_c5(ev: dict) -> str:
+    """Distingue mapeadas, prontas para confirmação e resolvidas, com os números da consulta C5."""
+    c5 = next((c for c in ev.get("consultas", []) if c["id"] == "C5"), None)
+    if not c5 or not c5["resultado"]:
+        return ""
+    try:
+        conf = sum(int(x["elegiveis_confirmacao_rpa"]) for x in c5["resultado"])
+        resol = sum(int(x["resolvidas_oficialmente"]) for x in c5["resultado"])
+    except (KeyError, TypeError, ValueError):
+        return ""
+    return (f" (C5: {conf} prontas para confirmação e {resol} resolvidas pela zeladoria, estas registros históricos do "
+            "SP156 de 2020)")
 
 
 def integrantes() -> list[list[str]]:
@@ -224,26 +282,32 @@ def gerar(ev: dict | None, saida: Path) -> Path:
     h.append(PageBreak())
     h.append(Paragraph("5. Requisitos 01 a 09", H1))
     req = [
-        ("01 · Fontes", "4 fontes externas reais e eventos sintéticos com geração documentada (docs/fontes.md).", None),
+        ("01 · Fontes", "3 fontes externas reais coletadas (Open-Meteo, OpenStreetMap/Overpass e SP156/GeoSampa, este com "
+                     "registros históricos de 2020); Olho Vivo implementado, mas não coletado por falta de token; eventos dos "
+                     "óculos sintéticos, com geração documentada (docs/fontes.md).", None),
         ("02 · DAG agendado", "guiding_hand_coleta, diário 07:00 (America/Sao_Paulo); grava chegada/<fonte>/<fonte>_<AAAA-MM-DD>.json; reexecutar regrava o mesmo arquivo."
          + (f" Ambiente de execução do Airflow: {cfg['ambiente_airflow']}." if cfg.get("ambiente_airflow") else ""), "chegada"),
         ("03 · Paralelismo e segurança", "5 coletas em paralelo entre 'inicio' e 'conferir'; conferir valida existência, JSON e estrutura; chaves em Variables; 2 retries e callback de falha com notificação; credenciais mascaradas em mensagens de erro.", "airflow_variables"),
-        ("04 · Dois lotes", "Lotes montados por scripts/preparar_lote.py (só arquivos ainda não enviados), registrados em docs/lotes/.", "upload_lote1"),
+        ("04 · Dois lotes", "Lotes montados por scripts/preparar_lote.py (só arquivos ainda não enviados), registrados em docs/lotes/ "
+         "e enviados manualmente ao Volume chegada: lote 1 com a coleta de 15/11 e lote 2 com a coleta de 16/11.", "lotes"),
         ("05 · Bronze", "Auto Loader (cloudFiles, text/wholetext) com checkpoint e trigger availableNow; uma linha por arquivo, bruto preservado, arquivo_origem, data_coleta, hash e carregado_em.", "bronze"),
         ("06 · Prata", "Schema explícito, nulos tratados, normalização, deduplicação, MERGE por chave com hash (idempotente) e 7 regras de qualidade com quarentena.", "prata"),
         ("07 · Ouro e SQL", "Fato de ocorrências + dim_tempo, dim_local, dim_tipo_obstaculo, dim_origem, dim_barreira; 6 consultas (C5 de impacto).", "ouro"),
         ("08 · LGPD e MVP", "device_hash SHA-256 + salt, coordenadas generalizadas, nenhuma imagem; o MVP consome tb_mvp_mapa_barreiras (sem dado pessoal).", "mvp"),
         ("09 · Repositório", "README com integrantes, arquitetura e reprodução; DAGs, notebooks, SQL, amostras; scanner de segredos.", None),
     ]
+    lotes_md = sorted((RAIZ / "docs" / "lotes").glob("lote_*.md"))
     for titulo, texto, chave in req:
         h.append(Paragraph(titulo, H2))
         h.append(Paragraph(esc(texto), TXT))
-        if chave:
-            h += figura(chave, 13 * cm)
-    lotes_md = sorted((RAIZ / "docs" / "lotes").glob("lote_*.md"))
-    h.append(Paragraph("Lotes registrados: " + (", ".join(p.stem for p in lotes_md) if lotes_md else "nenhum"),
-                       TXT if len(lotes_md) >= 2 else PEND))
-    h += figura("upload_lote2", 13 * cm)
+        if chave == "lotes":
+            h.append(Paragraph("Lotes registrados: " + (", ".join(p.stem for p in lotes_md) if lotes_md else "nenhum"),
+                               TXT if len(lotes_md) >= 2 else PEND))
+            h += figura_par(["upload_lote1", "upload_lote2"])
+        elif chave == "mvp":
+            h += figura(chave, 9.5 * cm, altura_max=15 * cm)
+        elif chave:
+            h += figura(chave, 13 * cm, altura_max=11 * cm)
 
     h.append(PageBreak())
     h.append(Paragraph("6. Prints do Airflow (Graph e Grid)", H1))
@@ -278,25 +342,33 @@ def gerar(ev: dict | None, saida: Path) -> Path:
     for c in (ev or {}).get("consultas", []):
         bloco = [Paragraph(f"{esc(c['id'])} — {esc(c['pergunta'])}", H2),
                  Preformatted(c["sql"], CODIGO, maxLineLength=120),
-                 Spacer(1, 3), tabela_de_dicts(c["resultado"], 10), Spacer(1, 3),
+                 Spacer(1, 3), tabela_de_dicts(c["resultado"], limite := (10 if c["id"] == "C6" else 30)),
+                 Paragraph(f"Mostrando {min(limite, len(c['resultado']))} de {len(c['resultado'])} linhas do resultado exportado."
+                           if len(c["resultado"]) > limite else f"Resultado completo: {len(c['resultado'])} linhas.", PEQ),
+                 Spacer(1, 3),
                  Paragraph("<b>Interpretação:</b> " + esc(interpretar(c["id"], c["resultado"])), TXT)]
         h += bloco
 
+    inicio_conclusao = len(h)
     h.append(Paragraph("9. Conclusão técnica e link do repositório", H1))
     if ev:
         cont = ev.get("contagens", {})
         h.append(Paragraph(esc(
-            f"O pipeline coleta 5 fontes em paralelo no Airflow 3, ingere de forma incremental e idempotente no "
-            f"Databricks e entrega ao MVP {cont.get('tb_mvp_mapa_barreiras', '?')} barreiras resolvidas a partir de "
-            f"{cont.get('fato_ocorrencia_barreira', '?')} ocorrências. A resolução de entidade espacial evita contar o "
+            f"O pipeline executa 5 coletas em paralelo no Airflow 3 (Olho Vivo pulado por falta de token), ingere "
+            f"dois lotes de dias diferentes de forma incremental e idempotente no "
+            f"Databricks e entrega ao MVP {cont.get('tb_mvp_mapa_barreiras', '?')} barreiras mapeadas a partir de "
+            f"{cont.get('fato_ocorrencia_barreira', '?')} ocorrências{resumo_c5(ev)}. A resolução de entidade espacial evita contar o "
             "mesmo obstáculo várias vezes; regras de qualidade isolam registros inválidos sem perder rastreabilidade; "
             "a tabela do MVP não contém dados pessoais. Limitações: eventos dos óculos sintéticos até o protótipo gerar "
-            "dados de campo; transferência para o Volume manual por restrição do Free Edition."), TXT))
+            "dados de campo; SP156 com registros históricos de 2020; clima real sem relação causal demonstrada; "
+            "transferência para o Volume manual por restrição do Free Edition. É um piloto de demonstração, não um "
+            "serviço de navegação validado em produção."), TXT))
     else:
         h.append(pendente("conclusão (gerada automaticamente quando houver evidências do Databricks)"))
     link = cfg.get("link_repositorio")
     h.append(Paragraph(f"Repositório: {esc(link)}", TXT) if link else
              pendente("link público do GitHub em docs/relatorio/config_relatorio.json"))
+    h[inicio_conclusao:] = [KeepTogether(h[inicio_conclusao:])]   # título não fica sozinho no fim da página
 
     def rodape(canvas, doc):
         canvas.saveState()
@@ -329,7 +401,8 @@ if __name__ == "__main__":
         pendencias.append("integrantes.csv")
     if not ev or ev.get("ambiente") != "databricks":
         pendencias.append("evidências do Databricks")
-    faltando = [n for n, _ in PRINTS.values() if not (RAIZ / "docs" / "relatorio" / "prints" / n).exists()]
+    faltando = [n for k, (n, _) in PRINTS.items() if not (RAIZ / "docs" / "relatorio" / "prints" / n).exists()
+                and not (k == "chegada" and inventario_lotes())]
     if faltando:
-        pendencias.append(f"{len(faltando)} prints")
+        pendencias.append(f"{len(faltando)} prints ({', '.join(faltando)})")
     print("Pendências: " + (", ".join(pendencias) if pendencias else "nenhuma"))
