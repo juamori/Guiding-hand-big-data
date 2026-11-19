@@ -14,11 +14,11 @@
   "evidencia": "docs/evidencias/perfil_sp156_2026-11-15.md"
  },
  "execucao_iniciada_em": null,
- "verificado_em": "2026-11-15T20:40:26-03:00",
+ "verificado_em": "2026-11-16T23:22:43-03:00",
  "fontes": {
   "clima": {
    "existe": true,
-   "arquivo": "/tmp/pytest-of-vscode/pytest-1/test_venv_com_link_simbolico_p0/chegada/clima/clima_2026-11-13.json",
+   "arquivo": "/tmp/pytest-of-vscode/pytest-2/test_venv_com_link_simbolico_p0/chegada/clima/clima_2026-11-13.json",
    "bytes": 1588,
    "sha256": "bfccdc692d16fafde772a2db12ea54a96bf29068972d069549b36617f3c9c8d6",
    "modificado_em": "2026-11-15T15:58:09-03:00",
@@ -43,7 +43,7 @@
   },
   "osm": {
    "existe": true,
-   "arquivo": "/tmp/pytest-of-vscode/pytest-1/test_venv_com_link_simbolico_p0/chegada/osm/osm_2026-11-13.json",
+   "arquivo": "/tmp/pytest-of-vscode/pytest-2/test_venv_com_link_simbolico_p0/chegada/osm/osm_2026-11-13.json",
    "bytes": 780,
    "sha256": "c65484e1e8d35bd9d919823174cab6df3fdae18f185be1edd888147b68290a62",
    "modificado_em": "2026-11-15T15:58:09-03:00",
@@ -90,7 +90,7 @@
   },
   "eventos_oculos": {
    "existe": true,
-   "arquivo": "/tmp/pytest-of-vscode/pytest-1/test_venv_com_link_simbolico_p0/chegada/eventos_oculos/eventos_oculos_2026-11-13.json",
+   "arquivo": "/tmp/pytest-of-vscode/pytest-2/test_venv_com_link_simbolico_p0/chegada/eventos_oculos/eventos_oculos_2026-11-13.json",
    "bytes": 27669,
    "sha256": "5a977117089175f45ab79b6bf44d08ba2e6ab3c37b61b8eeadd53739f7e60d19",
    "modificado_em": "2026-11-15T15:58:09-03:00",
@@ -102,7 +102,7 @@
   },
   "sp156": {
    "existe": true,
-   "arquivo": "/tmp/pytest-of-vscode/pytest-1/test_venv_com_link_simbolico_p0/chegada/sp156/sp156_2026-11-13.json",
+   "arquivo": "/tmp/pytest-of-vscode/pytest-2/test_venv_com_link_simbolico_p0/chegada/sp156/sp156_2026-11-13.json",
    "bytes": 1334,
    "sha256": "c13233b322d9f8c31ca9d9737a8e0215f1964699172ac86c4362130657af3bee",
    "modificado_em": "2026-11-15T15:58:09-03:00",
@@ -172,7 +172,7 @@
   },
   "olhovivo": {
    "existe": true,
-   "arquivo": "/tmp/pytest-of-vscode/pytest-1/test_venv_com_link_simbolico_p0/chegada/olhovivo/olhovivo_2026-11-13.json",
+   "arquivo": "/tmp/pytest-of-vscode/pytest-2/test_venv_com_link_simbolico_p0/chegada/olhovivo/olhovivo_2026-11-13.json",
    "bytes": 335,
    "sha256": "809e3f2d157f429042015347967e4fb4c28dcedefd7caf493b35df46e2454b78",
    "modificado_em": "2026-11-15T15:58:09-03:00",
