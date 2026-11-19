@@ -1,0 +1,801 @@
+{
+ "ambiente": "databricks",
+ "lote": "2",
+ "gerado_em": "2026-11-19T13:16:04.992685+00:00",
+ "etapas": {},
+ "bronze_execucoes": [
+  {
+   "rotulo": "lote 1 - 1a execucao",
+   "linhas_antes": 0,
+   "linhas_depois": 4,
+   "arquivos_novos": 4,
+   "executado_em": "2026-11-15 20:57:05.228332"
+  },
+  {
+   "rotulo": "lote 1 - reexecucao",
+   "linhas_antes": 4,
+   "linhas_depois": 4,
+   "arquivos_novos": 0,
+   "executado_em": "2026-11-15 20:58:43.023963"
+  },
+  {
+   "rotulo": "lote 1 - reexecucao",
+   "linhas_antes": 4,
+   "linhas_depois": 4,
+   "arquivos_novos": 0,
+   "executado_em": "2026-11-15 21:03:47.620114"
+  },
+  {
+   "rotulo": "lote 2 - 1a execucao",
+   "linhas_antes": 4,
+   "linhas_depois": 8,
+   "arquivos_novos": 4,
+   "executado_em": "2026-11-17 00:43:27.383378"
+  }
+ ],
+ "bronze_por_fonte_data": [
+  {
+   "fonte": "clima",
+   "data_coleta": "2026-11-15",
+   "arquivos": 1
+  },
+  {
+   "fonte": "eventos_oculos",
+   "data_coleta": "2026-11-15",
+   "arquivos": 1
+  },
+  {
+   "fonte": "osm",
+   "data_coleta": "2026-11-15",
+   "arquivos": 1
+  },
+  {
+   "fonte": "sp156",
+   "data_coleta": "2026-11-15",
+   "arquivos": 1
+  },
+  {
+   "fonte": "clima",
+   "data_coleta": "2026-11-16",
+   "arquivos": 1
+  },
+  {
+   "fonte": "eventos_oculos",
+   "data_coleta": "2026-11-16",
+   "arquivos": 1
+  },
+  {
+   "fonte": "osm",
+   "data_coleta": "2026-11-16",
+   "arquivos": 1
+  },
+  {
+   "fonte": "sp156",
+   "data_coleta": "2026-11-16",
+   "arquivos": 1
+  }
+ ],
+ "quarentena_por_regra": [
+  {
+   "regra": "RQ2_FORA_DO_RECORTE",
+   "fonte": "eventos_oculos",
+   "barrados": 2
+  },
+  {
+   "regra": "RQ2_FORA_DO_RECORTE",
+   "fonte": "osm",
+   "barrados": 4
+  },
+  {
+   "regra": "RQ2_FORA_DO_RECORTE",
+   "fonte": "sp156",
+   "barrados": 5
+  },
+  {
+   "regra": "RQ3_TIPO_FORA_DO_DOMINIO",
+   "fonte": "eventos_oculos",
+   "barrados": 4
+  },
+  {
+   "regra": "RQ4_CONFIANCA_INVALIDA",
+   "fonte": "eventos_oculos",
+   "barrados": 2
+  },
+  {
+   "regra": "RQ5_CONFIANCA_ABAIXO_DO_LIMIAR",
+   "fonte": "eventos_oculos",
+   "barrados": 3
+  }
+ ],
+ "contagens": {
+  "prata_eventos_oculos": 130,
+  "prata_clima_horario": 48,
+  "prata_osm_infraestrutura": 569,
+  "prata_sp156_solicitacoes": 168,
+  "prata_olhovivo_paradas": 0,
+  "prata_quarentena": 20,
+  "dim_tempo": 114,
+  "dim_local": 123,
+  "dim_tipo_obstaculo": 11,
+  "dim_origem": 3,
+  "dim_barreira": 204,
+  "fato_ocorrencia_barreira": 365,
+  "tb_mvp_mapa_barreiras": 204
+ },
+ "consultas": [
+  {
+   "id": "C1",
+   "pergunta": "Quais tipos de obstáculo são mais recorrentes, e quantos a bengala não detecta?",
+   "sql": "SELECT t.descricao                       AS tipo_obstaculo,\n       t.altura,\n       f.sk_origem                       AS origem,\n       count(*)                          AS ocorrencias,\n       count(DISTINCT f.barreira_key)    AS barreiras_distintas,\n       NOT t.bengala_costuma_detectar    AS invisivel_para_bengala\nFROM workspace.guiding_hand.fato_ocorrencia_barreira f\nJOIN workspace.guiding_hand.dim_tipo_obstaculo t ON t.sk_tipo = f.sk_tipo\nGROUP BY t.descricao, t.altura, f.sk_origem, t.bengala_costuma_detectar\nORDER BY ocorrencias DESC",
+   "resultado": [
+    {
+     "tipo_obstaculo": "Buraco",
+     "altura": "chao",
+     "origem": "sp156",
+     "ocorrencias": 149,
+     "barreiras_distintas": 149,
+     "invisivel_para_bengala": false
+    },
+    {
+     "tipo_obstaculo": "Galho de árvore baixo",
+     "altura": "acima_cintura",
+     "origem": "osm",
+     "ocorrencias": 80,
+     "barreiras_distintas": 0,
+     "invisivel_para_bengala": true
+    },
+    {
+     "tipo_obstaculo": "Buraco",
+     "altura": "chao",
+     "origem": "oculos_sintetico",
+     "ocorrencias": 30,
+     "barreiras_distintas": 10,
+     "invisivel_para_bengala": false
+    },
+    {
+     "tipo_obstaculo": "Galho de árvore baixo",
+     "altura": "acima_cintura",
+     "origem": "oculos_sintetico",
+     "ocorrencias": 18,
+     "barreiras_distintas": 5,
+     "invisivel_para_bengala": true
+    },
+    {
+     "tipo_obstaculo": "Calçada irregular ou quebrada",
+     "altura": "chao",
+     "origem": "oculos_sintetico",
+     "ocorrencias": 17,
+     "barreiras_distintas": 6,
+     "invisivel_para_bengala": false
+    },
+    {
+     "tipo_obstaculo": "Placa ou letreiro",
+     "altura": "acima_cintura",
+     "origem": "oculos_sintetico",
+     "ocorrencias": 16,
+     "barreiras_distintas": 5,
+     "invisivel_para_bengala": true
+    },
+    {
+     "tipo_obstaculo": "Carro sobre a calçada",
+     "altura": "abaixo_cintura",
+     "origem": "oculos_sintetico",
+     "ocorrencias": 13,
+     "barreiras_distintas": 4,
+     "invisivel_para_bengala": false
+    },
+    {
+     "tipo_obstaculo": "Poste",
+     "altura": "acima_cintura",
+     "origem": "oculos_sintetico",
+     "ocorrencias": 12,
+     "barreiras_distintas": 3,
+     "invisivel_para_bengala": false
+    },
+    {
+     "tipo_obstaculo": "Entulho ou material de obra",
+     "altura": "abaixo_cintura",
+     "origem": "sp156",
+     "ocorrencias": 9,
+     "barreiras_distintas": 9,
+     "invisivel_para_bengala": false
+    },
+    {
+     "tipo_obstaculo": "Placa ou letreiro",
+     "altura": "acima_cintura",
+     "origem": "sp156",
+     "ocorrencias": 4,
+     "barreiras_distintas": 4,
+     "invisivel_para_bengala": true
+    },
+    {
+     "tipo_obstaculo": "Entulho ou material de obra",
+     "altura": "abaixo_cintura",
+     "origem": "oculos_sintetico",
+     "ocorrencias": 4,
+     "barreiras_distintas": 1,
+     "invisivel_para_bengala": false
+    },
+    {
+     "tipo_obstaculo": "Lixeira",
+     "altura": "abaixo_cintura",
+     "origem": "sp156",
+     "ocorrencias": 4,
+     "barreiras_distintas": 4,
+     "invisivel_para_bengala": false
+    },
+    {
+     "tipo_obstaculo": "Orelhão",
+     "altura": "acima_cintura",
+     "origem": "oculos_sintetico",
+     "ocorrencias": 4,
+     "barreiras_distintas": 1,
+     "invisivel_para_bengala": true
+    },
+    {
+     "tipo_obstaculo": "Galho de árvore baixo",
+     "altura": "acima_cintura",
+     "origem": "sp156",
+     "ocorrencias": 2,
+     "barreiras_distintas": 2,
+     "invisivel_para_bengala": true
+    },
+    {
+     "tipo_obstaculo": "Lixeira",
+     "altura": "abaixo_cintura",
+     "origem": "oculos_sintetico",
+     "ocorrencias": 2,
+     "barreiras_distintas": 1,
+     "invisivel_para_bengala": false
+    },
+    {
+     "tipo_obstaculo": "Lixeira",
+     "altura": "abaixo_cintura",
+     "origem": "osm",
+     "ocorrencias": 1,
+     "barreiras_distintas": 0,
+     "invisivel_para_bengala": false
+    }
+   ]
+  },
+  {
+   "id": "C2",
+   "pergunta": "Quais quadras (células de ~150 m) concentram mais barreiras?",
+   "sql": "SELECT l.sk_local                        AS celula_geohash7,\n       l.lat_centro, l.lon_centro,\n       count(DISTINCT f.barreira_key)    AS barreiras_distintas,\n       count(*)                          AS ocorrencias,\n       sum(CASE WHEN t.altura = 'acima_cintura' THEN 1 ELSE 0 END) AS ocorrencias_acima_cintura\nFROM workspace.guiding_hand.fato_ocorrencia_barreira f\nJOIN workspace.guiding_hand.dim_local l          ON l.sk_local = f.sk_local\nJOIN workspace.guiding_hand.dim_tipo_obstaculo t ON t.sk_tipo  = f.sk_tipo\nWHERE f.barreira_key IS NOT NULL\nGROUP BY l.sk_local, l.lat_centro, l.lon_centro\nORDER BY barreiras_distintas DESC, ocorrencias DESC\nLIMIT 10",
+   "resultado": [
+    {
+     "celula_geohash7": "6gyccht",
+     "lat_centro": -23.57323,
+     "lon_centro": -46.70631,
+     "barreiras_distintas": 9,
+     "ocorrencias": 9,
+     "ocorrencias_acima_cintura": 0
+    },
+    {
+     "celula_geohash7": "6gyccqc",
+     "lat_centro": -23.56087,
+     "lon_centro": -46.70082,
+     "barreiras_distintas": 8,
+     "ocorrencias": 8,
+     "ocorrencias_acima_cintura": 0
+    },
+    {
+     "celula_geohash7": "6gycckb",
+     "lat_centro": -23.57185,
+     "lon_centro": -46.70219,
+     "barreiras_distintas": 8,
+     "ocorrencias": 8,
+     "ocorrencias_acima_cintura": 0
+    },
+    {
+     "celula_geohash7": "6gyccqj",
+     "lat_centro": -23.56499,
+     "lon_centro": -46.69533,
+     "barreiras_distintas": 8,
+     "ocorrencias": 8,
+     "ocorrencias_acima_cintura": 0
+    },
+    {
+     "celula_geohash7": "6gycchy",
+     "lat_centro": -23.57185,
+     "lon_centro": -46.70494,
+     "barreiras_distintas": 7,
+     "ocorrencias": 12,
+     "ocorrencias_acima_cintura": 0
+    },
+    {
+     "celula_geohash7": "6gycck8",
+     "lat_centro": -23.57323,
+     "lon_centro": -46.70219,
+     "barreiras_distintas": 7,
+     "ocorrencias": 8,
+     "ocorrencias_acima_cintura": 2
+    },
+    {
+     "celula_geohash7": "6gyccm4",
+     "lat_centro": -23.57048,
+     "lon_centro": -46.69945,
+     "barreiras_distintas": 7,
+     "ocorrencias": 7,
+     "ocorrencias_acima_cintura": 0
+    },
+    {
+     "celula_geohash7": "6gyccqd",
+     "lat_centro": -23.56224,
+     "lon_centro": -46.69945,
+     "barreiras_distintas": 6,
+     "ocorrencias": 7,
+     "ocorrencias_acima_cintura": 0
+    },
+    {
+     "celula_geohash7": "6gycchg",
+     "lat_centro": -23.57185,
+     "lon_centro": -46.70906,
+     "barreiras_distintas": 6,
+     "ocorrencias": 6,
+     "ocorrencias_acima_cintura": 0
+    },
+    {
+     "celula_geohash7": "6gycchw",
+     "lat_centro": -23.57323,
+     "lon_centro": -46.70494,
+     "barreiras_distintas": 6,
+     "ocorrencias": 6,
+     "ocorrencias_acima_cintura": 0
+    }
+   ]
+  },
+  {
+   "id": "C3",
+   "pergunta": "Quais barreiras foram identificadas em mais de uma coleta (dias diferentes)?",
+   "sql": "SELECT substr(f.barreira_key, 1, 12)              AS barreira_id,\n       f.sk_tipo                                  AS tipo_obstaculo,\n       f.sk_local                                 AS celula_geohash7,\n       count(DISTINCT f.data_coleta)              AS coletas_distintas,\n       count(*)                                   AS deteccoes,\n       count(DISTINCT f.device_hash)              AS dispositivos_distintos,\n       min(f.data_identificacao)                  AS primeira_vez,\n       max(f.data_identificacao)                  AS ultima_vez\nFROM workspace.guiding_hand.fato_ocorrencia_barreira f\nWHERE f.sk_origem = 'oculos_sintetico'\nGROUP BY f.barreira_key, f.sk_tipo, f.sk_local\nHAVING count(DISTINCT f.data_coleta) > 1\nORDER BY coletas_distintas DESC, deteccoes DESC",
+   "resultado": [
+    {
+     "barreira_id": "22db27dab113",
+     "tipo_obstaculo": "poste",
+     "celula_geohash7": "6gyccnt",
+     "coletas_distintas": 2,
+     "deteccoes": 6,
+     "dispositivos_distintos": 6,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "e0d0e1fdd627",
+     "tipo_obstaculo": "buraco",
+     "celula_geohash7": "6gycchy",
+     "coletas_distintas": 2,
+     "deteccoes": 6,
+     "dispositivos_distintos": 5,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "9c263efd212e",
+     "tipo_obstaculo": "galho_arvore",
+     "celula_geohash7": "6gyccm1",
+     "coletas_distintas": 2,
+     "deteccoes": 6,
+     "dispositivos_distintos": 4,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "c7c31fe490ef",
+     "tipo_obstaculo": "galho_arvore",
+     "celula_geohash7": "6gyccjx",
+     "coletas_distintas": 2,
+     "deteccoes": 5,
+     "dispositivos_distintos": 4,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "b366c84955f1",
+     "tipo_obstaculo": "carro_calcada",
+     "celula_geohash7": "6gyccme",
+     "coletas_distintas": 2,
+     "deteccoes": 5,
+     "dispositivos_distintos": 4,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "5d58c57b0f83",
+     "tipo_obstaculo": "calcada_irregular",
+     "celula_geohash7": "6gyccmc",
+     "coletas_distintas": 2,
+     "deteccoes": 5,
+     "dispositivos_distintos": 4,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "bce579ae8516",
+     "tipo_obstaculo": "placa",
+     "celula_geohash7": "6gyccjr",
+     "coletas_distintas": 2,
+     "deteccoes": 5,
+     "dispositivos_distintos": 4,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "565b3b60ff18",
+     "tipo_obstaculo": "galho_arvore",
+     "celula_geohash7": "6gyccmb",
+     "coletas_distintas": 2,
+     "deteccoes": 5,
+     "dispositivos_distintos": 3,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "731565332121",
+     "tipo_obstaculo": "placa",
+     "celula_geohash7": "6gyccme",
+     "coletas_distintas": 2,
+     "deteccoes": 4,
+     "dispositivos_distintos": 3,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "672683a3f2e9",
+     "tipo_obstaculo": "buraco",
+     "celula_geohash7": "6gyccq7",
+     "coletas_distintas": 2,
+     "deteccoes": 4,
+     "dispositivos_distintos": 4,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "61a09c412a82",
+     "tipo_obstaculo": "orelhao",
+     "celula_geohash7": "6gyccjy",
+     "coletas_distintas": 2,
+     "deteccoes": 4,
+     "dispositivos_distintos": 3,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "2334aa2bdddf",
+     "tipo_obstaculo": "entulho",
+     "celula_geohash7": "6gycckv",
+     "coletas_distintas": 2,
+     "deteccoes": 4,
+     "dispositivos_distintos": 4,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "e76ab6e5e798",
+     "tipo_obstaculo": "calcada_irregular",
+     "celula_geohash7": "6gyccjt",
+     "coletas_distintas": 2,
+     "deteccoes": 4,
+     "dispositivos_distintos": 2,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "48d74bad27ca",
+     "tipo_obstaculo": "poste",
+     "celula_geohash7": "6gycckt",
+     "coletas_distintas": 2,
+     "deteccoes": 4,
+     "dispositivos_distintos": 2,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "6f824e1140a5",
+     "tipo_obstaculo": "buraco",
+     "celula_geohash7": "6gyccns",
+     "coletas_distintas": 2,
+     "deteccoes": 4,
+     "dispositivos_distintos": 2,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "4cacbd98acbc",
+     "tipo_obstaculo": "placa",
+     "celula_geohash7": "6gyccq1",
+     "coletas_distintas": 2,
+     "deteccoes": 4,
+     "dispositivos_distintos": 3,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "fecc394b9b48",
+     "tipo_obstaculo": "buraco",
+     "celula_geohash7": "6gyccq5",
+     "coletas_distintas": 2,
+     "deteccoes": 4,
+     "dispositivos_distintos": 4,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "f040154378ed",
+     "tipo_obstaculo": "carro_calcada",
+     "celula_geohash7": "6gycchz",
+     "coletas_distintas": 2,
+     "deteccoes": 3,
+     "dispositivos_distintos": 3,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "382f3db0517e",
+     "tipo_obstaculo": "buraco",
+     "celula_geohash7": "6gyccqe",
+     "coletas_distintas": 2,
+     "deteccoes": 3,
+     "dispositivos_distintos": 3,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "e1dac3273c77",
+     "tipo_obstaculo": "buraco",
+     "celula_geohash7": "6gyccjg",
+     "coletas_distintas": 2,
+     "deteccoes": 3,
+     "dispositivos_distintos": 3,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "a23a82693dc0",
+     "tipo_obstaculo": "calcada_irregular",
+     "celula_geohash7": "6gycchz",
+     "coletas_distintas": 2,
+     "deteccoes": 2,
+     "dispositivos_distintos": 2,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "381320dae434",
+     "tipo_obstaculo": "calcada_irregular",
+     "celula_geohash7": "6gyccqn",
+     "coletas_distintas": 2,
+     "deteccoes": 2,
+     "dispositivos_distintos": 1,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "d981c443ec60",
+     "tipo_obstaculo": "calcada_irregular",
+     "celula_geohash7": "6gyccje",
+     "coletas_distintas": 2,
+     "deteccoes": 2,
+     "dispositivos_distintos": 2,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    },
+    {
+     "barreira_id": "a7ed4790cb00",
+     "tipo_obstaculo": "buraco",
+     "celula_geohash7": "6gyccn5",
+     "coletas_distintas": 2,
+     "deteccoes": 2,
+     "dispositivos_distintos": 2,
+     "primeira_vez": "2026-11-14",
+     "ultima_vez": "2026-11-15"
+    }
+   ]
+  },
+  {
+   "id": "C4",
+   "pergunta": "Como a chuva se relaciona com as detecções de barreiras?",
+   "sql": "SELECT CASE WHEN f.choveu THEN 'com chuva' WHEN f.choveu = false THEN 'sem chuva'\n            ELSE 'sem dado de clima' END            AS condicao,\n       count(*)                                    AS deteccoes,\n       count(DISTINCT date_trunc('HOUR', f.data_hora)) AS horas_com_deteccao,\n       round(count(*) / greatest(count(DISTINCT date_trunc('HOUR', f.data_hora)), 1), 2)\n                                                   AS deteccoes_por_hora,\n       round(avg(f.precipitacao_mm), 2)            AS precipitacao_media_mm\nFROM workspace.guiding_hand.fato_ocorrencia_barreira f\nWHERE f.sk_origem = 'oculos_sintetico'\nGROUP BY 1\nORDER BY deteccoes DESC",
+   "resultado": [
+    {
+     "condicao": "sem chuva",
+     "deteccoes": 70,
+     "horas_com_deteccao": 19,
+     "deteccoes_por_hora": 3.68,
+     "precipitacao_media_mm": 0.0
+    },
+    {
+     "condicao": "com chuva",
+     "deteccoes": 46,
+     "horas_com_deteccao": 11,
+     "deteccoes_por_hora": 4.18,
+     "precipitacao_media_mm": 0.58
+    }
+   ]
+  },
+  {
+   "id": "C5",
+   "pergunta": "IMPACTO: barreiras mapeadas, invisíveis à bengala, prontas para confirmação e resolvidas pela zeladoria",
+   "sql": "SELECT origem,\n       count(*)                                                         AS barreiras_mapeadas,\n       sum(CASE WHEN NOT bengala_costuma_detectar THEN 1 ELSE 0 END)    AS invisiveis_para_bengala,\n       round(100.0 * sum(CASE WHEN NOT bengala_costuma_detectar THEN 1 ELSE 0 END) / count(*), 1)\n                                                                        AS pct_invisiveis_para_bengala,\n       sum(CASE WHEN elegivel_confirmacao THEN 1 ELSE 0 END)            AS elegiveis_confirmacao_rpa,\n       sum(CASE WHEN status_barreira IN ('resolvida') THEN 1 ELSE 0 END) AS resolvidas_oficialmente,\n       sum(CASE WHEN status_barreira = 'nao_redetectada' THEN 1 ELSE 0 END) AS nao_redetectadas,\n       round(avg(CASE WHEN status_barreira = 'resolvida'\n                      THEN datediff(data_resolucao, to_date(primeira_vez)) END), 1) AS dias_medios_ate_resolucao\nFROM workspace.guiding_hand.tb_mvp_mapa_barreiras\nGROUP BY origem\nORDER BY barreiras_mapeadas DESC",
+   "resultado": [
+    {
+     "origem": "sp156",
+     "barreiras_mapeadas": 168,
+     "invisiveis_para_bengala": 6,
+     "pct_invisiveis_para_bengala": "3.6",
+     "elegiveis_confirmacao_rpa": 0,
+     "resolvidas_oficialmente": 108,
+     "nao_redetectadas": 0,
+     "dias_medios_ate_resolucao": 8.7
+    },
+    {
+     "origem": "oculos_sintetico",
+     "barreiras_mapeadas": 36,
+     "invisiveis_para_bengala": 11,
+     "pct_invisiveis_para_bengala": "30.6",
+     "elegiveis_confirmacao_rpa": 22,
+     "resolvidas_oficialmente": 0,
+     "nao_redetectadas": 0,
+     "dias_medios_ate_resolucao": null
+    }
+   ]
+  },
+  {
+   "id": "C6",
+   "pergunta": "Como evolui, dia a dia, o número de barreiras identificadas e resolvidas?",
+   "sql": "WITH identificadas AS (\n  SELECT data_identificacao AS data, count(DISTINCT barreira_key) AS identificadas\n  FROM workspace.guiding_hand.fato_ocorrencia_barreira\n  WHERE barreira_key IS NOT NULL GROUP BY data_identificacao\n), resolvidas AS (\n  SELECT data_resolucao AS data, count(*) AS resolvidas\n  FROM workspace.guiding_hand.fato_ocorrencia_barreira\n  WHERE data_resolucao IS NOT NULL GROUP BY data_resolucao\n)\nSELECT d.data, coalesce(i.identificadas, 0) AS identificadas, coalesce(r.resolvidas, 0) AS resolvidas\nFROM workspace.guiding_hand.dim_tempo d\nLEFT JOIN identificadas i ON i.data = d.data\nLEFT JOIN resolvidas r    ON r.data = d.data\nWHERE coalesce(i.identificadas, 0) + coalesce(r.resolvidas, 0) > 0\nORDER BY d.data",
+   "resultado": [
+    {
+     "data": "2020-04-06",
+     "identificadas": 1,
+     "resolvidas": 0
+    },
+    {
+     "data": "2020-04-08",
+     "identificadas": 2,
+     "resolvidas": 2
+    },
+    {
+     "data": "2020-04-09",
+     "identificadas": 8,
+     "resolvidas": 0
+    },
+    {
+     "data": "2020-04-12",
+     "identificadas": 1,
+     "resolvidas": 0
+    },
+    {
+     "data": "2020-04-13",
+     "identificadas": 1,
+     "resolvidas": 1
+    },
+    {
+     "data": "2020-04-14",
+     "identificadas": 1,
+     "resolvidas": 0
+    },
+    {
+     "data": "2020-04-15",
+     "identificadas": 1,
+     "resolvidas": 0
+    },
+    {
+     "data": "2020-04-16",
+     "identificadas": 1,
+     "resolvidas": 0
+    },
+    {
+     "data": "2020-04-17",
+     "identificadas": 1,
+     "resolvidas": 1
+    },
+    {
+     "data": "2020-04-18",
+     "identificadas": 2,
+     "resolvidas": 0
+    },
+    {
+     "data": "2020-04-19",
+     "identificadas": 0,
+     "resolvidas": 8
+    },
+    {
+     "data": "2020-04-24",
+     "identificadas": 0,
+     "resolvidas": 1
+    },
+    {
+     "data": "2020-04-25",
+     "identificadas": 1,
+     "resolvidas": 0
+    },
+    {
+     "data": "2020-04-26",
+     "identificadas": 0,
+     "resolvidas": 1
+    },
+    {
+     "data": "2020-04-30",
+     "identificadas": 0,
+     "resolvidas": 1
+    },
+    {
+     "data": "2020-05-01",
+     "identificadas": 1,
+     "resolvidas": 0
+    },
+    {
+     "data": "2020-05-04",
+     "identificadas": 3,
+     "resolvidas": 1
+    },
+    {
+     "data": "2020-05-05",
+     "identificadas": 8,
+     "resolvidas": 0
+    },
+    {
+     "data": "2020-05-07",
+     "identificadas": 1,
+     "resolvidas": 0
+    },
+    {
+     "data": "2020-05-08",
+     "identificadas": 0,
+     "resolvidas": 4
+    },
+    {
+     "data": "2020-05-10",
+     "identificadas": 1,
+     "resolvidas": 0
+    },
+    {
+     "data": "2020-05-13",
+     "identificadas": 1,
+     "resolvidas": 1
+    },
+    {
+     "data": "2020-05-14",
+     "identificadas": 7,
+     "resolvidas": 1
+    },
+    {
+     "data": "2020-05-15",
+     "identificadas": 1,
+     "resolvidas": 7
+    },
+    {
+     "data": "2020-05-16",
+     "identificadas": 0,
+     "resolvidas": 2
+    },
+    {
+     "data": "2020-05-18",
+     "identificadas": 3,
+     "resolvidas": 0
+    },
+    {
+     "data": "2020-05-19",
+     "identificadas": 2,
+     "resolvidas": 0
+    },
+    {
+     "data": "2020-05-21",
+     "identificadas": 3,
+     "resolvidas": 0
+    },
+    {
+     "data": "2020-05-22",
+     "identificadas": 1,
+     "resolvidas": 0
+    },
+    {
+     "data": "2020-05-23",
+     "identificadas": 2,
+     "resolvidas": 0
+    }
+   ]
+  }
+ ]
+}
